@@ -54,14 +54,22 @@ app.whenReady().then(async () => {
 
   // 4. 注册全局热键
   hotkeyManager = new HotkeyManager({
-    onToggleOverlay: () => overlay.toggle(),
+    onToggleOverlay: () => {
+      // 热键触发时，先捕获当前前台窗口，再切换浮窗
+      textInjector.captureTargetWindow();
+      overlay.toggle();
+    },
   });
   hotkeyManager.register();
 
   // 5. 创建桌面悬浮球
   floatingBall = new FloatingBall(
-    () => overlay.toggle(),   // 单击 → 切换浮窗
-    () => handleTrayAction('toggle-overlay'), // 右键 → 切换浮窗
+    () => {
+      // 悬浮球单击时，先捕获当前前台窗口，再切换浮窗
+      textInjector.captureTargetWindow();
+      overlay.toggle();
+    },
+    () => handleTrayAction('toggle-overlay'),
   );
   floatingBall.show();
 
@@ -70,6 +78,7 @@ app.whenReady().then(async () => {
 
   // 7. 单实例锁 — 第二个实例启动时激活第一个实例
   app.on('second-instance', () => {
+    textInjector.captureTargetWindow();
     overlay.show();
   });
 
@@ -94,6 +103,7 @@ app.on('before-quit', () => {
 function handleTrayAction(action: string) {
   switch (action) {
     case 'toggle-overlay':
+      textInjector.captureTargetWindow();
       overlay.toggle();
       break;
     case 'open-full-window':
@@ -112,7 +122,11 @@ function handleTrayAction(action: string) {
 
 function registerIPC() {
   // 浮窗控制
-  ipcMain.on(IPC_CHANNELS.OVERLAY_SHOW, () => overlay.show());
+  ipcMain.on(IPC_CHANNELS.OVERLAY_SHOW, () => {
+    // 渲染进程请求显示浮窗时，也捕获一次前台窗口
+    textInjector.captureTargetWindow();
+    overlay.show();
+  });
   ipcMain.on(IPC_CHANNELS.OVERLAY_HIDE, () => overlay.hide());
 
   // 窗口切换
@@ -121,15 +135,14 @@ function registerIPC() {
     // 完整窗口由用户关闭
   });
 
-  // 文本注入（两阶段：先准备剪贴板 → 隐藏浮窗 → 再 OS 级粘贴）
+  // 文本注入：写入剪贴板 → 隐藏浮窗 → 精确粘贴到捕获的目标窗口
   ipcMain.handle(IPC_CHANNELS.TEXT_INJECT, async (_event, text: string) => {
     if (!text) return false;
     try {
       textInjector.prepare(text);
       overlay.hide();
-      // 等待浮窗隐藏完成，焦点回到外部应用
-      await delay(150);
-      return await textInjector.paste();
+      await delay(80);
+      return await textInjector.pasteToTarget();
     } catch (err) {
       console.error('[App] 文本注入失败:', err);
       return false;

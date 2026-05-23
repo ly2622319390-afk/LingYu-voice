@@ -1,23 +1,54 @@
 /**
  * 文本注入引擎 — 将文本"输入"到当前聚焦的外部应用
  *
- * 两阶段设计:
- *   1. prepare(text) — 保存原始剪贴板，写入新文本
- *   2. paste()       — 操作系统级 Ctrl+V，延迟恢复剪贴板
+ * 核心策略（最流畅方案）:
+ *   1. captureTargetWindow() — 语音开始前，记录当前前台窗口的句柄 (HWND)
+ *   2. prepare(text) — 保存原始剪贴板，写入目标文本
+ *   3. pasteToTarget() — 将目标窗口置前，操作系统级 Ctrl+V，恢复剪贴板
  *
- * 主进程 IPC 处理器负责在 prepare 和 paste 之间隐藏浮窗，
- * 确保焦点回到外部应用后再模拟粘贴。
+ * 无需猜测焦点恢复行为，全程精确控制目标窗口。
  */
 import { clipboard } from 'electron';
 import { exec } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
 
 export class TextInjector {
+  /** 目标窗口句柄（十进制字符串，如 "987654"） */
+  private targetHwnd = '';
   private savedText = '';
   private savedImage: Electron.NativeImage | null = null;
 
+  // ─── 目标窗口捕获 ──────────────────────────────────────────────
+
   /**
-   * 第一阶段：保存原始剪贴板，写入目标文本
+   * 捕获当前前台窗口句柄
+   * 在浮窗显示前调用（用户已选好文本框后，按快捷键前）
    */
+  async captureTargetWindow(): Promise<boolean> {
+    const script = `Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public class WinAPI {
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+}
+'@
+write-host ([WinAPI]::GetForegroundWindow())`;
+
+    const hwnd = await this.runPowerShell(script);
+    if (hwnd) {
+      this.targetHwnd = hwnd;
+      console.log('[TextInjector] 已捕获目标窗口:', hwnd);
+      return true;
+    }
+    console.warn('[TextInjector] 未能捕获目标窗口');
+    return false;
+  }
+
+  // ─── 剪贴板管理 ───────────────────────────────────────────────
+
   prepare(text: string): void {
     if (!text) return;
     this.savedText = clipboard.readText();
@@ -25,33 +56,6 @@ export class TextInjector {
     clipboard.writeText(text);
   }
 
-  /**
-   * 第二阶段：操作系统级模拟粘贴，延迟恢复剪贴板
-   *
-   * 调用前必须确保：
-   *   - prepare() 已被调用
-   *   - 浮窗已隐藏，焦点已回到目标外部应用
-   */
-  async paste(): Promise<boolean> {
-    try {
-      // 短暂等待剪贴板 + 焦点切换就绪
-      await this.delay(80);
-
-      const ok = await this.osPaste();
-
-      // 延迟恢复原始剪贴板
-      this.delay(1200).then(() => this.restoreClipboard());
-
-      return ok;
-    } catch (err) {
-      console.error('[TextInjector] 粘贴失败:', err);
-      return false;
-    }
-  }
-
-  /**
-   * 恢复剪贴板为原始内容
-   */
   private restoreClipboard(): void {
     try {
       if (this.savedImage && !this.savedImage.isEmpty()) {
@@ -66,48 +70,133 @@ export class TextInjector {
     this.savedImage = null;
   }
 
+  // ─── 粘贴到目标窗口 ────────────────────────────────────────────
+
   /**
-   * 操作系统级模拟粘贴（Ctrl+V / Cmd+V）
+   * 将文本粘贴到之前捕获的目标窗口
    *
-   * Windows: PowerShell SendKeys（最可靠，支持所有 Win32 应用）
-   * macOS:   osascript AppleScript
-   * Linux:   xdotool
+   * 流程:
+   *   SetForegroundWindow(HWND) → 等待焦点切换 → SendKeys('^v')
+   *
+   * 调用前需确保：
+   *   - prepare(text) 已调用（文本已在剪贴板）
+   *   - 浮窗已隐藏
    */
-  private osPaste(): Promise<boolean> {
-    return new Promise((resolve) => {
-      let command: string;
+  async pasteToTarget(): Promise<boolean> {
+    if (!this.targetHwnd) {
+      console.warn('[TextInjector] 无目标窗口句柄，改用常规方式');
+      return this.pasteFallback();
+    }
 
-      switch (process.platform) {
-        case 'win32':
-          command =
-            'powershell -Command "Add-Type -AssemblyName System.Windows.Forms; ' +
-            '[System.Windows.Forms.SendKeys]::SendWait(\'^v\')"';
-          break;
-        case 'darwin':
-          command =
-            'osascript -e \'tell application "System Events" to keystroke "v" using command down\'';
-          break;
-        case 'linux':
-          command = 'xdotool key ctrl+v';
-          break;
-        default:
-          console.warn('[TextInjector] 不支持的平台:', process.platform);
-          resolve(false);
-          return;
-      }
+    const script = `
+param([string]$hwndStr)
 
-      exec(command, { timeout: 3000 }, (error, _stdout, stderr) => {
-        if (error) {
-          console.warn('[TextInjector] 模拟粘贴失败:', error.message, stderr);
-          resolve(false);
-        } else {
-          resolve(true);
-        }
-      });
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public class WinAPI {
+    [DllImport("user32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+}
+'@
+
+Add-Type -AssemblyName System.Windows.Forms
+
+$hwnd = [IntPtr]::Parse($hwndStr)
+[WinAPI]::SetForegroundWindow($hwnd)
+Start-Sleep -Milliseconds 80
+[System.Windows.Forms.SendKeys]::SendWait('^v')
+write-host "ok"
+`.trim();
+
+    try {
+      const result = await this.runPowerShellWithArg(script, this.targetHwnd);
+      const ok = result === 'ok';
+      this.scheduleRestore();
+      return ok;
+    } catch (err) {
+      console.error('[TextInjector] 目标粘贴失败:', err);
+      this.scheduleRestore();
+      return false;
+    }
+  }
+
+  /**
+   * 备用方案：不使用目标窗口句柄，仅发送 OS 级 Ctrl+V。
+   * 用于未捕获到句柄或句柄失效时的降级。
+   */
+  private async pasteFallback(): Promise<boolean> {
+    const script = `Add-Type -AssemblyName System.Windows.Forms
+Start-Sleep -Milliseconds 50
+[System.Windows.Forms.SendKeys]::SendWait('^v')
+write-host "ok"`;
+
+    try {
+      const result = await this.runPowerShell(script);
+      const ok = result === 'ok';
+      this.scheduleRestore();
+      return ok;
+    } catch (err) {
+      console.error('[TextInjector] 备用粘贴失败:', err);
+      this.scheduleRestore();
+      return false;
+    }
+  }
+
+  /** 延迟恢复原始剪贴板 */
+  private scheduleRestore(): void {
+    setTimeout(() => this.restoreClipboard(), 1200);
+  }
+
+  // ─── PowerShell 执行 ──────────────────────────────────────────
+
+  /**
+   * 执行不含参数的内联 PowerShell 脚本
+   */
+  private runPowerShell(script: string): Promise<string> {
+    const tmpFile = path.join(os.tmpdir(), `vi_cap_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.ps1`);
+    fs.writeFileSync(tmpFile, script, 'utf8');
+
+    return new Promise((resolve, reject) => {
+      exec(
+        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}"`,
+        { timeout: 5000, windowsHide: true },
+        (error, stdout) => {
+          this.cleanupTemp(tmpFile);
+          if (error) {
+            reject(new Error(stdout || error.message));
+          } else {
+            resolve(stdout.trim());
+          }
+        },
+      );
     });
   }
 
-  private delay(ms: number): Promise<void> {
-    return new Promise((r) => setTimeout(r, ms));
+  /**
+   * 执行带参数的 PowerShell 脚本
+   */
+  private runPowerShellWithArg(script: string, arg: string): Promise<string> {
+    const tmpFile = path.join(os.tmpdir(), `vi_paste_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.ps1`);
+    fs.writeFileSync(tmpFile, script, 'utf8');
+
+    return new Promise((resolve, reject) => {
+      exec(
+        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}" "${arg}"`,
+        { timeout: 5000, windowsHide: true },
+        (error, stdout) => {
+          this.cleanupTemp(tmpFile);
+          if (error) {
+            reject(new Error(stdout || error.message));
+          } else {
+            resolve(stdout.trim());
+          }
+        },
+      );
+    });
+  }
+
+  private cleanupTemp(file: string): void {
+    try { fs.unlinkSync(file); } catch { /* ignore */ }
   }
 }
