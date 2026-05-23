@@ -1,0 +1,213 @@
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; }
+
+/* ─── App Layout ─── */
+.app { max-width: 1400px; margin: 0 auto; padding: 16px; min-height: 100vh; }
+
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px; color: white; margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+.app-title { font-size: 20px; font-weight: 700; }
+.header-nav { display: flex; gap: 8px; }
+.nav-btn {
+  padding: 8px 18px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+  color: white; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.2); }
+.nav-btn.active { background: white; color: #667eea; border-color: white; font-weight: 600; }
+
+.browser-warning {
+  background: #fff3cd; border: 1px solid #ffc107; color: #856404;
+  padding: 12px 20px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;
+}
+
+/* ─── Main Content ─── */
+.main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.left-panel, .right-panel { display: flex; flex-direction: column; gap: 16px; }
+
+/* ─── Card ─── */
+.card {
+  background: white; border-radius: 12px; padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.card-title {
+  font-size: 15px; font-weight: 600; color: #333; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ─── Scene Switcher ─── */
+.scene-switcher { display: flex; gap: 8px; }
+.scene-btn {
+  flex: 1; padding: 10px 16px; border: 2px solid #e0e0e0; border-radius: 10px;
+  background: white; cursor: pointer; text-align: center; transition: all 0.2s;
+  font-size: 14px; font-weight: 500;
+}
+.scene-btn:hover { border-color: #667eea; }
+.scene-btn.active {
+  border-color: #667eea; background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white; box-shadow: 0 2px 8px rgba(102,126,234,0.3);
+}
+.scene-btn .scene-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+.scene-btn .scene-label { font-size: 11px; display: block; margin-top: 2px; opacity: 0.7; }
+
+/* ─── Recorder ─── */
+.recorder-area { display: flex; align-items: center; gap: 16px; }
+.record-btn {
+  width: 64px; height: 64px; border-radius: 50%; border: none;
+  cursor: pointer; font-size: 28px; transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative;
+}
+.record-btn.idle { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.record-btn.listening {
+  background: linear-gradient(135deg, #e74c3c, #c0392b); color: white;
+  animation: pulse 1.5s infinite;
+}
+.record-btn:hover { transform: scale(1.05); }
+.record-btn:active { transform: scale(0.95); }
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.6); }
+  50% { box-shadow: 0 0 0 16px rgba(231, 76, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+.record-status { flex: 1; }
+.record-status .status-text { font-size: 14px; color: #666; }
+.record-status .status-text.active { color: #e74c3c; font-weight: 600; }
+.record-btn-group { display: flex; gap: 8px; align-items: center; }
+.clear-btn {
+  padding: 8px 16px; border: 1px solid #ddd; border-radius: 8px;
+  background: white; cursor: pointer; font-size: 13px; color: #666;
+}
+.clear-btn:hover { background: #f5f5f5; }
+
+/* ─── Transcript ─── */
+.transcript-box {
+  min-height: 120px; max-height: 300px; overflow-y: auto;
+  padding: 16px; background: #fafafa; border-radius: 8px;
+  border: 1px solid #eee; line-height: 1.8; font-size: 15px;
+}
+.transcript-text { white-space: pre-wrap; word-wrap: break-word; }
+.interim-text { color: #999; }
+.empty-hint { color: #bbb; text-align: center; padding: 24px 0; }
+
+.uncertain-word {
+  display: inline; border-bottom: 2px wavy #e74c3c; cursor: pointer;
+  position: relative; color: #c0392b;
+}
+.uncertain-popup {
+  position: absolute; bottom: calc(100% + 4px); left: 0;
+  background: white; border: 1px solid #ddd; border-radius: 8px;
+  padding: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  z-index: 100; min-width: 160px; white-space: nowrap;
+}
+.uncertain-popup .suggestion-item {
+  padding: 4px 10px; cursor: pointer; border-radius: 4px;
+  font-size: 13px; transition: background 0.15s;
+}
+.uncertain-popup .suggestion-item:hover { background: #f0f2ff; color: #667eea; }
+
+/* ─── Optimized View ─── */
+.optimize-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.optimize-tab {
+  padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px;
+  background: white; cursor: pointer; font-size: 12px; transition: all 0.15s;
+}
+.optimize-tab:hover { border-color: #667eea; color: #667eea; }
+.optimize-tab.active { background: #667eea; color: white; border-color: #667eea; }
+
+.optimize-content { min-height: 120px; }
+.optimize-text {
+  font-size: 14px; line-height: 1.7; color: #333;
+  padding: 12px; background: #f9f9ff; border-radius: 8px;
+  white-space: pre-wrap;
+}
+.optimize-desc { font-size: 12px; color: #999; margin-bottom: 8px; }
+
+.optimize-actions { display: flex; gap: 8px; margin-top: 12px; }
+.action-btn {
+  padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer;
+  font-size: 12px; transition: all 0.15s;
+}
+.action-btn.primary { background: #667eea; color: white; }
+.action-btn.primary:hover { background: #5a6fd6; }
+.action-btn.secondary { background: #f0f0f0; color: #333; }
+.action-btn.secondary:hover { background: #e0e0e0; }
+
+/* ─── Scene Empty ─── */
+.scene-empty { text-align: center; padding: 40px 20px; color: #bbb; font-size: 14px; }
+
+/* ─── Lexicon Manager ─── */
+.lexicon-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1000px; margin: 0 auto;
+}
+.lexicon-form { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.lexicon-input {
+  flex: 1; min-width: 120px; padding: 8px 12px; border: 1px solid #ddd;
+  border-radius: 8px; font-size: 14px; outline: none;
+}
+.lexicon-input:focus { border-color: #667eea; }
+.lexicon-select {
+  padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;
+  background: white; outline: none;
+}
+.lexicon-add-btn {
+  padding: 8px 20px; border: none; border-radius: 8px;
+  background: #667eea; color: white; cursor: pointer; font-size: 14px;
+}
+.lexicon-add-btn:hover { background: #5a6fd6; }
+
+.lexicon-list { max-height: 400px; overflow-y: auto; }
+.lexicon-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid #f0f0f0; transition: background 0.15s;
+}
+.lexicon-item:hover { background: #f9f9ff; }
+.lexicon-item .word-text { font-size: 15px; font-weight: 500; }
+.lexicon-item .word-meta { font-size: 12px; color: #999; display: flex; gap: 8px; }
+.lexicon-item .word-tag {
+  padding: 2px 8px; border-radius: 4px; font-size: 11px;
+  background: #e8f4fd; color: #2980b9;
+}
+.lexicon-del-btn {
+  padding: 4px 10px; border: 1px solid #ff6b6b; color: #ff6b6b;
+  border-radius: 6px; background: white; cursor: pointer; font-size: 12px;
+}
+.lexicon-del-btn:hover { background: #ff6b6b; color: white; }
+
+/* ─── History ─── */
+.history-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1000px; margin: 0 auto;
+}
+.history-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.history-list { max-height: 600px; overflow-y: auto; }
+.history-item {
+  padding: 14px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 8px;
+  cursor: pointer; transition: all 0.15s;
+}
+.history-item:hover { border-color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.1); }
+.history-item .h-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.history-item .h-preview { font-size: 13px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-item .h-meta { font-size: 11px; color: #999; margin-top: 6px; display: flex; gap: 8px; }
+.history-detail-card .h-raw { white-space: pre-wrap; background: #fafafa; padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 14px; }
+.history-detail-card .h-optimized { white-space: pre-wrap; background: #f0f8ff; padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 14px; }
+
+/* ─── Tab menu for sub-views within lexicon/history ─── */
+.sub-nav { display: flex; gap: 8px; margin-bottom: 16px; }
+.sub-nav-btn {
+  padding: 6px 16px; border: 1px solid #ddd; border-radius: 6px;
+  background: white; cursor: pointer; font-size: 13px;
+}
+.sub-nav-btn.active { background: #667eea; color: white; border-color: #667eea; }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .main-content { grid-template-columns: 1fr; }
+  .lexicon-grid { grid-template-columns: 1fr; }
+  .history-grid { grid-template-columns: 1fr; }
+}
