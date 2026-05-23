@@ -124,7 +124,7 @@ function registerIPC() {
   // 浮窗控制
   ipcMain.on(IPC_CHANNELS.OVERLAY_SHOW, () => {
     // 渲染进程请求显示浮窗时，也捕获一次前台窗口
-    textInjector.captureTargetWindow();
+    textInjector.captureTargetWindow().catch(() => {});
     overlay.show();
   });
   ipcMain.on(IPC_CHANNELS.OVERLAY_HIDE, () => overlay.hide());
