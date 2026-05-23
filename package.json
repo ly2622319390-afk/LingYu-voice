@@ -1,0 +1,15 @@
+{
+  "name": "voice-input-app",
+  "version": "2.0.0",
+  "private": true,
+  "description": "智能语音输入法 — 场景化语音输入桌面应用",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && uvicorn main:app --reload --port 8000",
+    "dev:electron": "cd electron && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "python build/build_backend.py",
+    "build:electron": "cd electron && npm run build:electron",
+    "build:all": "build/build_all.bat"
+  }
+}
