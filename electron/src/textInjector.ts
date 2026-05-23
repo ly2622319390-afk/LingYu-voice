@@ -1,14 +1,15 @@
 /**
  * 文本注入引擎 — 将文本"输入"到当前聚焦的外部应用
  *
- * 核心策略:
- *   1. captureTargetWindow() — 语音开始前，记录当前前台窗口句柄 (HWND)
- *   2. prepare(text) — 保存原始剪贴板，写入目标文本
- *   3. pasteToTarget() — AttachThreadInput + SetForegroundWindow + SendKeys
+ * 方案演进:
+ *   1st: Electron sendInputEvent → 只对 Electron 自身窗口生效（失败）
+ *   2nd: PowerShell SendKeys → 被执行策略/杀软限制（失败）
+ *   3rd: C# 编译辅助程序 + AttachThreadInput + SendInput（当前）
  *
- * 注意: PowerShell 中必须用 Write-Output 而非 Write-Host，
- *       write-host 输出到信息流 (stream 6) 而非 stdout (stream 1)，
- *       Node.js exec 的 stdout 捕获不到 write-host 的结果。
+ * 当前方案:
+ *   编译一个 C# 辅助程序 (PasteHelper.exe)，通过 Windows API
+ *   AttachThreadInput + SetForegroundWindow + SendInput 实现
+ *   跨进程文本注入，绕过所有权限限制。
  */
 import { clipboard } from 'electron';
 import { exec } from 'child_process';
@@ -17,39 +18,147 @@ import * as path from 'path';
 import * as os from 'os';
 
 export class TextInjector {
-  /** 目标窗口句柄（十进制字符串，如 "987654"） */
   private targetHwnd = '';
   private savedText = '';
   private savedImage: Electron.NativeImage | null = null;
+  private pasteHelperExe = '';
+
+  private readonly CSC_PATHS = [
+    'C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\csc.exe',
+    'C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe',
+  ];
+
+  /** 窗口标题（调试用） */
+  private targetTitle = '';
+
+  // ─── 初始化 ──────────────────────────────────────────────────
+
+  constructor() {
+    // 辅助 exe 缓存在用户临时目录
+    this.pasteHelperExe = path.join(os.tmpdir(), 'vi_paste_helper.exe');
+  }
+
+  /**
+   * 确保辅助程序已编译
+   * 程序: PasteHelper.exe — 接收 HWND 参数，唤回窗口后发送 Ctrl+V
+   */
+  async ensureHelper(): Promise<boolean> {
+    // 检查是否已编译
+    if (fs.existsSync(this.pasteHelperExe)) return true;
+
+    const csPath = await this.findCsc();
+    if (!csPath) {
+      console.warn('[TextInjector] 未找到 C# 编译器 (csc.exe)');
+      return false;
+    }
+
+    const sourcePath = path.join(os.tmpdir(), 'vi_paste_helper.cs');
+    const source = [
+      'using System;',
+      'using System.Runtime.InteropServices;',
+      'using System.Windows.Forms;',
+      'class PasteHelper {',
+      '  [DllImport("user32.dll")]',
+      '  static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);',
+      '  [DllImport("kernel32.dll")]',
+      '  static extern uint GetCurrentThreadId();',
+      '  [DllImport("user32.dll")]',
+      '  static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);',
+      '  [DllImport("user32.dll")]',
+      '  static extern bool SetForegroundWindow(IntPtr hWnd);',
+      '  [DllImport("user32.dll")]',
+      '  static extern IntPtr GetForegroundWindow();',
+      '  [DllImport("user32.dll")]',
+      '  static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder text, int count);',
+      '  static void Main(string[] a) {',
+      '    if (a.Length > 0 && long.TryParse(a[0], out long h)) {',
+      '      IntPtr hwnd = new IntPtr(h);',
+      '      StringBuilder sb = new StringBuilder(256);',
+      '      GetWindowText(hwnd, sb, 256);',
+      '      uint tt = GetWindowThreadProcessId(hwnd, IntPtr.Zero);',
+      '      uint ct = GetCurrentThreadId();',
+      '      AttachThreadInput(ct, tt, true);',
+      '      SetForegroundWindow(hwnd);',
+      '      AttachThreadInput(ct, tt, false);',
+      '      System.Threading.Thread.Sleep(100);',
+      '    }',
+      '    SendKeys.SendWait("^v");',
+      '  }',
+      '}',
+    ].join('\n');
+
+    fs.writeFileSync(sourcePath, source, 'utf8');
+
+    return new Promise((resolve) => {
+      exec(
+        `"${csPath}" /nologo /reference:System.Windows.Forms.dll /target:exe /out:"${this.pasteHelperExe}" "${sourcePath}"`,
+        { timeout: 30000, windowsHide: true },
+        (error, stdout, stderr) => {
+          try { fs.unlinkSync(sourcePath); } catch { /* ignore */ }
+          if (error) {
+            console.error('[TextInjector] 编译 PasteHelper 失败:', error.message, stderr);
+            resolve(false);
+          } else {
+            console.log('[TextInjector] PasteHelper 编译成功');
+            resolve(true);
+          }
+        },
+      );
+    });
+  }
+
+  private findCsc(): Promise<string> {
+    for (const p of this.CSC_PATHS) {
+      if (fs.existsSync(p)) return Promise.resolve(p);
+    }
+    return Promise.resolve('');
+  }
 
   // ─── 目标窗口捕获 ──────────────────────────────────────────────
 
-  /**
-   * 捕获当前前台窗口句柄
-   * 在浮窗显示前调用（用户已选好文本框后，按快捷键前）
-   */
   async captureTargetWindow(): Promise<boolean> {
-    const script = [
+    // 方法1: 通过 Powershell 获取 HWND + 窗口标题
+    const psScript = [
       'Add-Type -TypeDefinition @\'',
       'using System;',
       'using System.Runtime.InteropServices;',
+      'using System.Text;',
       'public class WinAPI {',
       '    [DllImport("user32.dll")]',
       '    public static extern IntPtr GetForegroundWindow();',
+      '    [DllImport("user32.dll")]',
+      '    public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);',
       '}',
       '\'@',
-      '# 必须用 Write-Output，不能用 Write-Host（后者不进 stdout）',
-      'Write-Output ([WinAPI]::GetForegroundWindow().ToInt64())',
+      '$hwnd = [WinAPI]::GetForegroundWindow()',
+      '$sb = New-Object System.Text.StringBuilder 256',
+      '[WinAPI]::GetWindowText($hwnd, $sb, 256) | Out-Null',
+      '# 输出格式: HWND|WindowTitle',
+      'Write-Output ($hwnd.ToInt64().ToString() + "|" + $sb.ToString())',
     ].join('\n');
 
-    const hwnd = await this.runPowerShell(script);
-    if (hwnd && hwnd !== '0') {
-      this.targetHwnd = hwnd;
-      console.log('[TextInjector] 已捕获目标窗口 HWND:', hwnd);
-      return true;
-    }
-    console.warn('[TextInjector] 未能捕获目标窗口, stdout="' + hwnd + '"');
-    return false;
+    const tmpFile = this.tempFile('cap');
+    fs.writeFileSync(tmpFile, psScript, 'utf8');
+
+    return new Promise((resolve) => {
+      exec(
+        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}"`,
+        { timeout: 5000, windowsHide: true },
+        (error, stdout) => {
+          this.cleanupTemp(tmpFile);
+          const line = (stdout || '').trim().split('\n')[0] || '';
+          const pipeIdx = line.indexOf('|');
+          if (pipeIdx > 0) {
+            this.targetHwnd = line.substring(0, pipeIdx);
+            this.targetTitle = line.substring(pipeIdx + 1);
+            console.log('[TextInjector] 已捕获: HWND=' + this.targetHwnd + ', Title=' + this.targetTitle);
+            return resolve(true);
+          }
+          console.warn('[TextInjector] 捕获失败, stdout="' + stdout.trim() + '"');
+          resolve(false);
+        },
+      );
+    });
   }
 
   // ─── 剪贴板管理 ───────────────────────────────────────────────
@@ -68,38 +177,54 @@ export class TextInjector {
       } else if (this.savedText) {
         clipboard.writeText(this.savedText);
       }
-    } catch {
-      // 恢复失败不影响主要功能
-    }
+    } catch { /* ignore */ }
     this.savedText = '';
     this.savedImage = null;
   }
 
-  // ─── 粘贴到目标窗口 ────────────────────────────────────────────
+  // ─── 粘贴 ─────────────────────────────────────────────────────
 
-  /**
-   * 将文本粘贴到之前捕获的目标窗口
-   *
-   * 核心技巧:
-   *   1. AttachThreadInput — 绕过 Windows SetForegroundWindow 权限限制
-   *   2. SetForegroundWindow — 把目标窗口拉到前台
-   *   3. SendKeys — 发送 Ctrl+V
-   *
-   * 调用前需确保 prepare(text) 已调用，浮窗已隐藏。
-   */
   async pasteToTarget(): Promise<boolean> {
-    if (!this.targetHwnd) {
-      console.warn('[TextInjector] 无目标窗口句柄，改用备用粘贴');
-      return this.pasteFallback();
-    }
+    // 尝试3种方法，任一成功即可
+    if (await this.pasteViaHelper()) return true;
+    console.warn('[TextInjector] 辅助程序失败，尝试 PowerShell 备用');
+    if (await this.pasteViaPowerShell()) return true;
+    console.warn('[TextInjector] PowerShell 也失败');
+    return false;
+  }
 
+  /** 方法1: C# 辅助程序 (PasteHelper.exe) — 最可靠 */
+  private async pasteViaHelper(): Promise<boolean> {
+    if (!this.targetHwnd) return false;
+    if (!fs.existsSync(this.pasteHelperExe)) {
+      const ok = await this.ensureHelper();
+      if (!ok) return false;
+    }
+    return new Promise((resolve) => {
+      exec(
+        `"${this.pasteHelperExe}" "${this.targetHwnd}"`,
+        { timeout: 5000, windowsHide: true },
+        (error) => {
+          if (error) {
+            console.warn('[TextInjector] Helper 执行失败:', error.message);
+            resolve(false);
+          } else {
+            this.scheduleRestore();
+            resolve(true);
+          }
+        },
+      );
+    });
+  }
+
+  /** 方法2: PowerShell 备用 */
+  private async pasteViaPowerShell(): Promise<boolean> {
+    const tmpFile = this.tempFile('fallback');
     const script = [
-      'param([string]$hwndStr)',
-      '',
       'Add-Type -TypeDefinition @\'',
       'using System;',
       'using System.Runtime.InteropServices;',
-      'public class WinAPI {',
+      'public class WinAPI2 {',
       '    [DllImport("user32.dll")]',
       '    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);',
       '    [DllImport("kernel32.dll")]',
@@ -110,110 +235,43 @@ export class TextInjector {
       '    public static extern bool SetForegroundWindow(IntPtr hWnd);',
       '}',
       '\'@',
-      '',
       'Add-Type -AssemblyName System.Windows.Forms',
-      '',
-      '$hwnd = [IntPtr]::new([Int64]::Parse($hwndStr))',
-      '',
-      '# AttachThreadInput 绕过 SetForegroundWindow 权限限制',
-      '$targetThread = [WinAPI]::GetWindowThreadProcessId($hwnd, [IntPtr]::Zero)',
-      '$currentThread = [WinAPI]::GetCurrentThreadId()',
-      '[WinAPI]::AttachThreadInput($currentThread, $targetThread, $true)',
-      '[WinAPI]::SetForegroundWindow($hwnd)',
-      '[WinAPI]::AttachThreadInput($currentThread, $targetThread, $false)',
-      '',
-      'Start-Sleep -Milliseconds 100',
-      '[System.Windows.Forms.SendKeys]::SendWait("^v")',
-      '',
-      'Write-Output "ok"',
-    ].join('\n');
-
-    try {
-      const result = await this.runPowerShellWithArg(script, this.targetHwnd);
-      const ok = result.trim() === 'ok';
-      if (!ok) console.warn('[TextInjector] pasteToTarget 返回值异常:', result);
-      this.scheduleRestore();
-      return ok;
-    } catch (err) {
-      console.error('[TextInjector] 目标粘贴异常:', err);
-      this.scheduleRestore();
-      return false;
-    }
-  }
-
-  /**
-   * 备用方案：隐藏浮窗后用 SendKeys 直接发送 Ctrl+V。
-   * 不指定目标窗口（粘贴到当前焦点窗口）。
-   */
-  private async pasteFallback(): Promise<boolean> {
-    const script = [
-      'Add-Type -AssemblyName System.Windows.Forms',
-      'Start-Sleep -Milliseconds 80',
+      // READ HWND FROM ARG
+      '$hwndStr = $args[0]',
+      'if ($hwndStr) {',
+      '  $hwnd = [IntPtr]::new([long]::Parse($hwndStr))',
+      '  $tt = [WinAPI2]::GetWindowThreadProcessId($hwnd, [IntPtr]::Zero)',
+      '  $ct = [WinAPI2]::GetCurrentThreadId()',
+      '  [WinAPI2]::AttachThreadInput($ct, $tt, $true)',
+      '  [WinAPI2]::SetForegroundWindow($hwnd)',
+      '  [WinAPI2]::AttachThreadInput($ct, $tt, $false)',
+      '  Start-Sleep -Milliseconds 100',
+      '}',
       '[System.Windows.Forms.SendKeys]::SendWait("^v")',
       'Write-Output "ok"',
     ].join('\n');
 
-    try {
-      const result = await this.runPowerShell(script);
-      const ok = result.trim() === 'ok';
-      if (!ok) console.warn('[TextInjector] pasteFallback 返回值异常:', result);
-      this.scheduleRestore();
-      return ok;
-    } catch (err) {
-      console.error('[TextInjector] 备用粘贴异常:', err);
-      this.scheduleRestore();
-      return false;
-    }
+    fs.writeFileSync(tmpFile, script, 'utf8');
+
+    return new Promise((resolve) => {
+      exec(
+        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}" "${this.targetHwnd}"`,
+        { timeout: 5000, windowsHide: true },
+        (error, stdout) => {
+          this.cleanupTemp(tmpFile);
+          const ok = !error && stdout.trim() === 'ok';
+          if (ok) this.scheduleRestore();
+          resolve(ok);
+        },
+      );
+    });
   }
 
-  /** 延迟恢复原始剪贴板 */
   private scheduleRestore(): void {
     setTimeout(() => this.restoreClipboard(), 1200);
   }
 
-  // ─── PowerShell 执行 ──────────────────────────────────────────
-
-  private runPowerShell(script: string): Promise<string> {
-    const tmpFile = this.tempFile('cap');
-    fs.writeFileSync(tmpFile, script, 'utf8');
-
-    return new Promise((resolve) => {
-      exec(
-        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}"`,
-        { timeout: 5000, windowsHide: true },
-        (error, stdout, stderr) => {
-          this.cleanupTemp(tmpFile);
-          if (error) {
-            console.warn('[TextInjector] PS 执行失败:', error.message, stderr);
-            resolve('');
-          } else {
-            resolve(stdout.trim());
-          }
-        },
-      );
-    });
-  }
-
-  private runPowerShellWithArg(script: string, arg: string): Promise<string> {
-    const tmpFile = this.tempFile('paste');
-    fs.writeFileSync(tmpFile, script, 'utf8');
-
-    return new Promise((resolve) => {
-      exec(
-        `powershell -NoProfile -ExecutionPolicy Bypass -File "${tmpFile}" "${arg}"`,
-        { timeout: 5000, windowsHide: true },
-        (error, stdout, stderr) => {
-          this.cleanupTemp(tmpFile);
-          if (error) {
-            console.warn('[TextInjector] PS 执行失败:', error.message, stderr);
-            resolve('');
-          } else {
-            resolve(stdout.trim());
-          }
-        },
-      );
-    });
-  }
+  // ─── 工具函数 ────────────────────────────────────────────────
 
   private tempFile(prefix: string): string {
     return path.join(os.tmpdir(), `vi_${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.ps1`);

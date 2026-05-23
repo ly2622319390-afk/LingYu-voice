@@ -49,7 +49,13 @@ app.whenReady().then(async () => {
     console.warn('[App] 后端启动失败（可手动启动）:', err.message)
   );
 
-  // 3. 创建系统托盘
+  // 3. 编译粘贴辅助程序（后台异步，不阻塞启动）
+  textInjector.ensureHelper().then((ok) => {
+    if (ok) console.log('[App] PasteHelper 就绪');
+    else console.warn('[App] PasteHelper 编译失败，将使用备用方案');
+  });
+
+  // 4. 创建系统托盘
   createTray(handleTrayAction);
 
   // 4. 注册全局热键
