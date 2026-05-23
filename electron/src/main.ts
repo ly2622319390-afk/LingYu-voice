@@ -21,6 +21,9 @@ import { FloatingBall } from './floatingBall';
 import { TextInjector } from './textInjector';
 import { IPC_CHANNELS } from './ipc';
 
+// 工具函数
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 // 全局实例
 const backend = new BackendManager();
 const overlay = new OverlayManager();
@@ -118,13 +121,19 @@ function registerIPC() {
     // 完整窗口由用户关闭
   });
 
-  // 文本注入
+  // 文本注入（两阶段：先准备剪贴板 → 隐藏浮窗 → 再 OS 级粘贴）
   ipcMain.handle(IPC_CHANNELS.TEXT_INJECT, async (_event, text: string) => {
-    const success = await textInjector.inject(text);
-    if (success) {
-      overlay.hide(); // 注入成功后自动关闭浮窗
+    if (!text) return false;
+    try {
+      textInjector.prepare(text);
+      overlay.hide();
+      // 等待浮窗隐藏完成，焦点回到外部应用
+      await delay(150);
+      return await textInjector.paste();
+    } catch (err) {
+      console.error('[App] 文本注入失败:', err);
+      return false;
     }
-    return success;
   });
 
   // 后端状态
