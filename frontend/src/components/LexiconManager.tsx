@@ -134,8 +134,14 @@ export default function LexiconManager() {
           </div>
           <div style={{ fontSize: 13, color: '#666', padding: 16, textAlign: 'center' }}>
             {industry
-              ? `已选择「${industry}」行业。导入文档后可自动提取行业词汇。\n（第二阶段实现智能行业词库扩充）`
-              : '请选择行业标签查看对应词汇。\n目前支持：互联网、金融、法律、医疗、教育、游戏、制造、传媒'}
+              ? `已选择「${industry}」行业。`
+              : '请选择行业标签查看对应词汇。'}
+            <div style={{ marginTop: 12 }}>
+              <a href="#" onClick={e => { e.preventDefault(); window.location.hash = '#/industry' }}
+                 style={{ color: '#4fc3f7' }}>
+                前往行业专业词库系统 →
+              </a>
+            </div>
           </div>
         </div>
       )}

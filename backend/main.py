@@ -31,6 +31,8 @@ logger = logging.getLogger("voice-input")
 from config import settings
 from database.db_manager import db_manager
 from database import lexicon_db, corrections_db, history_db, emoji_db, documents_db
+from database import industry_lexicon_db
+from database.seed_industry_words import INDUSTRY_WORDS
 from services.optimization_service import office_polish, chat_recommend, creation_process
 
 # ─── AI 服务层 ───
@@ -41,6 +43,7 @@ from ai_services.emotion.emotion_detector import EmotionDetector
 from ai_services.emotion.emoji_recommender import EmojiRecommender
 from ai_services.lexicon.lexicon_rag import LexiconRAG
 from ai_services.lexicon.user_profile import UserProfile
+from ai_services.lexicon.industry_lexicon_system import IndustryLexiconSystem, get_industry_lexicon_system
 from ai_services.asr.hotwords import HotwordManager
 from ai_services.cache.cache_manager import CacheManager
 from ai_services.prompts.prompt_manager import PromptManager
@@ -68,6 +71,9 @@ cache_manager = CacheManager()
 prompt_manager = PromptManager()
 user_profiles: dict[str, UserProfile] = {}
 
+# 行业词库系统
+industry_lexicon = get_industry_lexicon_system()
+
 # ASR 引擎实例（全局共享，避免重复加载）
 _asr_engine_instance = None
 _asr_engine_loaded = False
@@ -80,6 +86,16 @@ def get_user_profile(user_id: str = "default") -> UserProfile:
     return user_profiles[user_id]
 
 
+def _seed_industry_words():
+    """启动时自动导入种子行业词库（仅首次）"""
+    existing = industry_lexicon_db.get_all_industries()
+    if existing:
+        logger.info(f"行业词库已存在: {len(existing)} 个行业，跳过种子导入")
+        return
+    count = industry_lexicon_db.add_industry_words(INDUSTRY_WORDS)
+    logger.info(f"行业词库初始化完成: 已导入 {count} 条词条")
+
+
 # ─── 生命周期 ───
 @app.on_event("startup")
 def startup():
@@ -89,6 +105,8 @@ def startup():
     history_db.init_db()
     emoji_db.init_db()
     documents_db.init_db()
+    industry_lexicon_db.init_db()
+    _seed_industry_words()
 
     # 注册 Prompt 模板
     if not settings.MVP_MODE:
@@ -134,13 +152,15 @@ def shutdown():
 
 
 def _sync_hotwords():
-    """从用户词库同步热词到 HotwordManager"""
+    """从用户词库 + 行业词库同步热词到 HotwordManager"""
     words = lexicon_db.get_all_words()
     hotword_manager.sync_from_lexicon(words)
-    # 如果有行业词库配置，也同步
-    for industry in ["互联网", "金融", "法律", "医疗"]:
-        industry_words = lexicon_db.get_industry_words(industry)
-        hotword_manager.sync_from_industry(industry_words)
+    # 从行业词库系统获取热词（如果有活跃行业）
+    active_industries = industry_lexicon.get_selected_industries("default")
+    if active_industries:
+        industry_hotwords = industry_lexicon.get_hotwords("default", force_refresh=True)
+        hotword_manager.sync_from_industry_system(industry_hotwords)
+        logger.info(f"行业热词已同步: {len(industry_hotwords)} 个 ({active_industries})")
 
 
 # ─── 数据模型 ───
@@ -170,6 +190,15 @@ class HistorySave(BaseModel):
 class OptimizeRequest(BaseModel):
     text: str
     scene_type: str = "办公"
+
+
+class IndustrySelectRequest(BaseModel):
+    user_id: str = "default"
+    industries: list[str]
+
+
+class IndustryWordImport(BaseModel):
+    words: list[dict]
 
 
 class AIPipelineRequest(BaseModel):
@@ -280,17 +309,22 @@ async def asr_websocket(websocket: WebSocket):
                             # SenseVoice/FunASR 模式：对完整累积音频做最终识别
                             result = await asr_engine.transcribe_buffer()
                             if result.get("text"):
+                                raw_text = result["text"]
+                                corrected = industry_lexicon.correct_text(raw_text)
                                 await websocket.send_json({
                                     "type": "final",
-                                    "text": result["text"],
+                                    "text": corrected["corrected"],
                                     "confidence": result.get("confidence", 0.95),
+                                    "corrections": corrected["corrections"],
                                 })
                         else:
                             # 模拟模式
                             if simulated_chunks > 0:
                                 final_text = simulated_texts[-1] if simulated_chunks >= len(simulated_texts) else simulated_texts[min(simulated_chunks, len(simulated_texts) - 1)]
+                                corrected = industry_lexicon.correct_text(final_text)
                                 await websocket.send_json({
-                                    "type": "final", "text": final_text, "confidence": 0.85
+                                    "type": "final", "text": corrected["corrected"], "confidence": 0.85,
+                                    "corrections": corrected["corrections"],
                                 })
                         await websocket.send_json({"type": "end"})
                         break
@@ -618,7 +652,113 @@ def delete_document(doc_id: int):
 
 
 # ═══════════════════════════════════════════════
-#  10. Prompt 管理
+#  10. 行业专业词库系统 (Industry Lexicon System)
+# ═══════════════════════════════════════════════
+
+@app.get("/api/industry-lexicon/industries")
+def list_industries():
+    """获取所有可用行业分类"""
+    industries = industry_lexicon_db.get_all_industries()
+    # 调试：检查数据库状态
+    import sqlite3
+    try:
+        from database.db_manager import db_manager
+        conn = db_manager.get_connection("lexicon")
+        cur = conn.execute("SELECT COUNT(*) as cnt FROM industry_words")
+        row = cur.fetchone()
+        db_status = {
+            "industry_words_count": row["cnt"] if row else -1,
+        }
+    except Exception as e:
+        db_status = {"error": str(e)}
+    return {"industries": industries, "_debug": db_status}
+
+
+@app.get("/api/industry-lexicon/industries/{industry}")
+def get_industry_words(industry: str):
+    """获取指定行业的词条"""
+    return {"industry": industry, "words": industry_lexicon_db.get_industry_words(industry)}
+
+
+@app.get("/api/industry-lexicon/categories/{industry}")
+def get_industry_categories(industry: str):
+    """获取行业各层级的词条数量统计"""
+    counts = industry_lexicon_db.get_category_counts(industry)
+    return {"industry": industry, "categories": counts}
+
+
+@app.get("/api/industry-lexicon/{industry}/{category}")
+def get_industry_words_by_category(industry: str, category: str):
+    """按层级获取行业词条"""
+    words = industry_lexicon_db.get_words_by_category(industry, category)
+    return {"industry": industry, "category": category, "words": words}
+
+
+@app.get("/api/industry-lexicon/search")
+def search_industry_lexicon(keyword: str = Query(...), industry: str = ""):
+    """搜索行业词条"""
+    return {"results": industry_lexicon.search_words(keyword, industry)}
+
+
+@app.post("/api/industry-lexicon/select")
+def select_industries(req: IndustrySelectRequest):
+    """用户选择行业"""
+    industry_lexicon.select_industries(req.user_id, req.industries)
+    # 选择后自动同步热词
+    hotwords = industry_lexicon.get_hotwords(req.user_id, force_refresh=True)
+    hotword_manager.sync_from_industry_system(hotwords)
+    return {
+        "status": "ok",
+        "industries": req.industries,
+        "hotwords_loaded": len(hotwords)
+    }
+
+
+@app.get("/api/industry-lexicon/selected")
+def get_selected_industries(user_id: str = "default"):
+    """获取用户已选择的行业"""
+    industries = industry_lexicon.get_selected_industries(user_id)
+    return {"industries": industries}
+
+
+@app.post("/api/industry-lexicon/import")
+def import_industry_words(data: IndustryWordImport):
+    """批量导入行业词条"""
+    result = industry_lexicon.import_words(data.words)
+    return result
+
+
+@app.post("/api/industry-lexicon/correct")
+def correct_asr_text(text: str = Query(...), user_id: str = "default"):
+    """ASR 文本纠错 — 基于行业词库"""
+    result = industry_lexicon.correct_text(text, user_id)
+    return result
+
+
+@app.post("/api/industry-lexicon/learn")
+def learn_correction(original_word: str = Query(...), corrected_word: str = Query(...), user_id: str = "default"):
+    """用户修正学习"""
+    industry_lexicon.learn_correction(user_id, original_word, corrected_word)
+    hotword_manager.add_hotword(corrected_word)
+    return {"status": "learned"}
+
+
+@app.get("/api/industry-lexicon/hotwords")
+def get_industry_hotwords(user_id: str = "default"):
+    """获取当前行业的热词列表"""
+    hotwords = industry_lexicon.get_hotwords(user_id)
+    return {"hotwords": hotwords, "count": len(hotwords)}
+
+
+@app.get("/api/industry-lexicon/rag")
+def industry_rag_query(text: str = Query(...), user_id: str = "default", top_k: int = 5):
+    """行业词库 RAG 检索"""
+    candidates = industry_lexicon.retrieve_candidates(text, user_id, top_k)
+    return {"text": text, "candidates": candidates, "count": len(candidates)}
+
+
+# ═══════════════════════════════════════════════
+#  11. Prompt 管理
 # ═══════════════════════════════════════════════
 
 @app.get("/api/prompts")
@@ -631,7 +771,7 @@ def list_prompts(scene: str = ""):
 
 
 # ═══════════════════════════════════════════════
-#  11. 缓存管理
+#  12. 缓存管理
 # ═══════════════════════════════════════════════
 
 @app.post("/api/cache/clear")
@@ -651,7 +791,7 @@ def cache_stats():
 
 
 # ═══════════════════════════════════════════════
-#  12. AI 架构状态
+#  13. AI 架构状态
 # ═══════════════════════════════════════════════
 
 @app.get("/api/ai/status")
@@ -672,12 +812,17 @@ def ai_status():
             "prompts": {"templates": len(prompt_manager._templates)},
             "rag": {"status": "ready"},
             "user_profile": {"status": "ready"},
+            "industry_lexicon": {
+                "status": "ready",
+                "industries": len(industry_lexicon_db.get_all_industries()),
+                "active": industry_lexicon._active_industries
+            },
         }
     }
 
 
 # ═══════════════════════════════════════════════
-#  13. WebSocket 调试
+#  14. WebSocket 调试
 # ═══════════════════════════════════════════════
 
 @app.websocket("/ws/debug")
@@ -703,7 +848,7 @@ async def debug_websocket(websocket: WebSocket):
 
 
 # ═══════════════════════════════════════════════
-#  14. 健康检查
+#  15. 健康检查
 # ═══════════════════════════════════════════════
 
 @app.get("/api/health")
