@@ -1,0 +1,200 @@
+/**
+ * 智能语音输入法 — Electron 主进程入口
+ *
+ * 启动顺序:
+ *   1. 单实例锁检查
+ *   2. 启动 Python 后端子进程
+ *   3. 创建系统托盘
+ *   4. 注册全局热键
+ *   5. 等待用户触发 (Ctrl+Space → 浮窗)
+ *
+ * 生命周期:
+ *   所有窗口关闭 → 隐藏到托盘
+ *   退出 → 停止后端 → 清理热键 → 退出
+ */
+import { app, ipcMain } from 'electron';
+import { BackendManager } from './backend';
+import { createTray, destroyTray, updateTrayIcon } from './tray';
+import { HotkeyManager } from './hotkeys';
+import { OverlayManager } from './overlay';
+import { FloatingBall } from './floatingBall';
+import { TextInjector } from './textInjector';
+import { IPC_CHANNELS } from './ipc';
+
+// 工具函数
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// 全局实例
+const backend = new BackendManager();
+const overlay = new OverlayManager();
+const textInjector = new TextInjector();
+let hotkeyManager: HotkeyManager;
+let floatingBall: FloatingBall;
+
+/** 是否有待粘贴的文本（卡片点击后、失焦前） */
+let pendingPaste = false;
+
+// ─── 应用生命周期 ───
+
+app.whenReady().then(async () => {
+  console.log('[App] 启动...');
+
+  // 1. 单实例锁
+  const gotLock = app.requestSingleInstanceLock();
+  if (!gotLock) {
+    console.log('[App] 已有实例运行，退出');
+    app.quit();
+    return;
+  }
+
+  // 2. 启动后端（非阻塞，继续启动）
+  backend.start().catch((err) =>
+    console.warn('[App] 后端启动失败（可手动启动）:', err.message)
+  );
+
+  // 3. 编译粘贴辅助程序（后台异步，不阻塞启动）
+  textInjector.ensureHelper().then((ok) => {
+    if (ok) console.log('[App] PasteHelper 就绪');
+    else console.warn('[App] PasteHelper 编译失败，将使用备用方案');
+  });
+
+  // 4. 创建系统托盘
+  createTray(handleTrayAction);
+
+  // 4. 注册全局热键
+  hotkeyManager = new HotkeyManager({
+    onToggleOverlay: () => {
+      // 热键触发时，先捕获当前前台窗口，再切换浮窗
+      textInjector.captureTargetWindow();
+      overlay.toggle();
+    },
+  });
+  hotkeyManager.register();
+
+  // 5. 创建桌面悬浮球
+  floatingBall = new FloatingBall(
+    () => {
+      // 悬浮球单击时，先捕获当前前台窗口，再切换浮窗
+      textInjector.captureTargetWindow();
+      overlay.toggle();
+    },
+    () => handleTrayAction('toggle-overlay'),
+  );
+  floatingBall.show();
+
+  // 5.5 浮窗失焦 → 自动粘贴（如果有待粘贴文本）
+  overlay.onBlur = () => {
+    if (pendingPaste) {
+      pendingPaste = false;
+      console.log('[App] 浮窗失焦，自动粘贴');
+      overlay.hide();
+      delay(80).then(() => textInjector.pasteToTarget());
+    }
+  };
+
+  // 6. 注册 IPC 处理
+  registerIPC();
+
+  // 7. 单实例锁 — 第二个实例启动时激活第一个实例
+  app.on('second-instance', () => {
+    textInjector.captureTargetWindow();
+    overlay.show();
+  });
+
+  console.log('[App] 就绪 — 按 Alt+Q 或点击悬浮球呼出语音输入浮窗');
+});
+
+app.on('window-all-closed', () => {
+  // 不退出（隐藏到托盘）
+});
+
+app.on('before-quit', () => {
+  console.log('[App] 退出中...');
+  HotkeyManager.unregisterAll();
+  backend.stop();
+  overlay.destroy();
+  floatingBall?.destroy();
+  destroyTray();
+});
+
+// ─── 托盘菜单事件 ───
+
+function handleTrayAction(action: string) {
+  switch (action) {
+    case 'toggle-overlay':
+      textInjector.captureTargetWindow();
+      overlay.toggle();
+      break;
+    case 'open-full-window':
+      overlay.createFullWindow();
+      break;
+    case 'open-settings':
+      // TODO: 设置窗口
+      break;
+    case 'quit':
+      app.quit();
+      break;
+  }
+}
+
+// ─── IPC 处理 ───
+
+function registerIPC() {
+  // 浮窗控制
+  ipcMain.on(IPC_CHANNELS.OVERLAY_SHOW, () => {
+    // 渲染进程请求显示浮窗时，也捕获一次前台窗口
+    textInjector.captureTargetWindow().catch(() => {});
+    overlay.show();
+  });
+  ipcMain.on(IPC_CHANNELS.OVERLAY_HIDE, () => {
+    pendingPaste = false;  // 用户主动关闭 → 取消待粘贴
+    overlay.hide();
+  });
+
+  // 窗口切换
+  ipcMain.on(IPC_CHANNELS.WINDOW_OPEN_FULL, () => overlay.createFullWindow());
+  ipcMain.on(IPC_CHANNELS.WINDOW_CLOSE_FULL, () => {
+    // 完整窗口由用户关闭
+  });
+
+  // 文本注入：写入剪贴板 → 隐藏浮窗 → 精确粘贴到捕获的目标窗口
+  ipcMain.handle(IPC_CHANNELS.TEXT_INJECT, async (_event, text: string) => {
+    if (!text) return false;
+    try {
+      textInjector.prepare(text);
+      overlay.hide();
+      await delay(80);
+      return await textInjector.pasteToTarget();
+    } catch (err) {
+      console.error('[App] 文本注入失败:', err);
+      return false;
+    }
+  });
+
+  // 仅复制到剪贴板（用于两步操作：先复制，失焦后自动粘贴）
+  ipcMain.on(IPC_CHANNELS.TEXT_PREPARE, (_event, text: string) => {
+    if (!text) return;
+    textInjector.prepare(text);
+    pendingPaste = true;
+    console.log('[App] 文本已就绪，失焦后自动粘贴');
+  });
+
+  // 后端状态
+  ipcMain.handle(IPC_CHANNELS.BACKEND_STATUS, () => ({
+    running: backend.ready,
+    port: backend.port,
+  }));
+
+  // 录音状态通知（渲染进程 → 托盘图标更新）
+  ipcMain.on(IPC_CHANNELS.RECORD_STATUS, (_event, status: string) => {
+    updateTrayIcon(status === 'recording');
+  });
+
+  // 音频数据转发（渲染进程 → 主进程 → WebSocket → Python ASR）
+  // 实际 ASR WebSocket 连接在渲染进程中直接建立，减少延迟
+  // 音频数据通过此通道转发仅在需要时使用
+  ipcMain.on(IPC_CHANNELS.AUDIO_DATA, (_event, chunk: ArrayBuffer) => {
+    // 可选: 在主进程维护 WebSocket 连接
+    // 当前直接在渲染进程建立 WebSocket 连接
+  });
+}
