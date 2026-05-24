@@ -14,6 +14,12 @@ export class OverlayManager {
   private window: BrowserWindow | null = null;
   private isVisible = false;
   private fullAppWindow: BrowserWindow | null = null;
+  /** 窗口失焦回调 — 用于自动粘贴 */
+  private onBlurCallback: (() => void) | null = null;
+
+  set onBlur(cb: (() => void) | null) {
+    this.onBlurCallback = cb;
+  }
 
   get ready(): boolean {
     return this.window !== null;
@@ -72,6 +78,11 @@ export class OverlayManager {
 
     this.window.webContents.on('did-fail-load', (_event, code, desc, url2) => {
       console.log('[Overlay] ' + '加载失败! code=' + code + ' desc=' + desc + ' url=' + url2);
+    });
+
+    this.window.on('blur', () => {
+      console.log('[Overlay] ' + '窗口失焦');
+      this.onBlurCallback?.();
     });
 
     this.window.on('closed', () => {

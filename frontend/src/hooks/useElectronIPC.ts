@@ -49,6 +49,17 @@ export function useElectronIPC() {
   }, []);
 
   /**
+   * 仅复制文本到剪贴板（两步粘贴：先准备，失焦后自动粘贴）
+   */
+  const prepareText = useCallback((text: string) => {
+    if (isElectron) {
+      window.electronAPI!.prepareText(text);
+    } else {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+  }, [isElectron]);
+
+  /**
    * 发送音频块（通过主进程转发）
    */
   const sendAudioChunk = useCallback((chunk: ArrayBuffer) => {
@@ -72,6 +83,7 @@ export function useElectronIPC() {
   return {
     isElectron,
     injectText,
+    prepareText,
     hideOverlay,
     openFullWindow,
     sendAudioChunk,

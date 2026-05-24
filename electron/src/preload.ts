@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // 文本注入
   injectText: (text: string) => ipcRenderer.invoke('text:inject', text),
+  prepareText: (text: string) => ipcRenderer.send('text:prepare', text),
 
   // 窗口
   openFullWindow: () => ipcRenderer.send('window:open-full'),

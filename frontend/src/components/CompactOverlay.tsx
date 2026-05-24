@@ -87,6 +87,7 @@ export default function CompactOverlay({
   const [scene, setScene] = useState<SceneType>('办公');
   const [cards, setCards] = useState<CardItem[]>([]);
   const [loadingCards, setLoadingCards] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const prevListening = useRef(isListening);
   const prevScene = useRef(scene);
 
@@ -133,7 +134,20 @@ export default function CompactOverlay({
     if (transcript) doOptimize(transcript, s);
   };
 
-  // 注入文字到目标应用
+  // 复制文字到剪贴板（两步粘贴：仅复制，不隐藏浮窗）
+  const copyText = useCallback(async (text: string, cardId: string) => {
+    if (!text.trim()) return;
+    if (isElectron && (window as any).electronAPI?.prepareText) {
+      (window as any).electronAPI.prepareText(text);
+    } else {
+      await navigator.clipboard.writeText(text).catch(() => {});
+    }
+    // 视觉反馈
+    setCopiedId(cardId);
+    setTimeout(() => setCopiedId(null), 1500);
+  }, [isElectron]);
+
+  // 注入文字到目标应用（保留旧功能用于非 Electron 或特殊场景）
   const injectText = useCallback(async (text: string) => {
     if (!text.trim()) return;
     if (isElectron && (window as any).electronAPI?.injectText) {
@@ -237,11 +251,16 @@ export default function CompactOverlay({
           <div
             key={card.id}
             className="ov-card"
-            style={styles.card}
-            onClick={() => injectText(card.text)}
-            title={card.text + (card.description ? `\n\n${card.description}\n\n点击发送到目标应用` : '')}
+            style={{
+              ...styles.card,
+              ...(copiedId === card.id ? styles.cardCopied : {}),
+            }}
+            onClick={() => copyText(card.text, card.id)}
+            title={card.text + (card.description ? `\n\n${card.description}\n\n点击复制到剪贴板，点击目标窗口自动粘贴` : '')}
           >
-            <div style={styles.cardLabel}>{card.label}</div>
+            <div style={styles.cardLabel}>
+              {copiedId === card.id ? '✓ 已复制' : card.label}
+            </div>
             <div style={styles.cardText} title={card.text}>{card.text}</div>
           </div>
         ))}
@@ -266,13 +285,16 @@ export default function CompactOverlay({
         </div>
 
         <div style={styles.footerRight}>
+          {state === 'result' && isElectron && (
+            <span style={styles.hintAutoPaste}>点击目标窗口自动粘贴</span>
+          )}
           {state === 'result' && (
             <button
               className="ov-btn-primary"
               style={styles.btnPrimary}
-              onClick={() => injectText(transcript)}
+              onClick={() => copyText(transcript, 'send-original')}
             >
-              📋 发送原文
+              {copiedId === 'send-original' ? '✓ 已复制' : '📋 复制原文'}
             </button>
           )}
           {state === 'idle' && isElectron && (
@@ -403,6 +425,16 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 12,
     padding: '8px 0',
     fontStyle: 'italic',
+  },
+  cardCopied: {
+    background: 'rgba(46, 204, 113, 0.15) !important',
+    borderColor: 'rgba(46, 204, 113, 0.4) !important',
+  },
+  hintAutoPaste: {
+    fontSize: 11,
+    color: '#888',
+    marginRight: 8,
+    alignSelf: 'center',
   },
   card: {
     flex: 1,

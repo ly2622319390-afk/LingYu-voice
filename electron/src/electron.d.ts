@@ -12,6 +12,7 @@ interface ElectronAPI {
 
   // 文本注入
   injectText: (text: string) => Promise<void>;
+  prepareText: (text: string) => void;
 
   // 窗口
   openFullWindow: () => void;

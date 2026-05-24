@@ -31,6 +31,9 @@ const textInjector = new TextInjector();
 let hotkeyManager: HotkeyManager;
 let floatingBall: FloatingBall;
 
+/** 是否有待粘贴的文本（卡片点击后、失焦前） */
+let pendingPaste = false;
+
 // ─── 应用生命周期 ───
 
 app.whenReady().then(async () => {
@@ -78,6 +81,16 @@ app.whenReady().then(async () => {
     () => handleTrayAction('toggle-overlay'),
   );
   floatingBall.show();
+
+  // 5.5 浮窗失焦 → 自动粘贴（如果有待粘贴文本）
+  overlay.onBlur = () => {
+    if (pendingPaste) {
+      pendingPaste = false;
+      console.log('[App] 浮窗失焦，自动粘贴');
+      overlay.hide();
+      delay(80).then(() => textInjector.pasteToTarget());
+    }
+  };
 
   // 6. 注册 IPC 处理
   registerIPC();
@@ -133,7 +146,10 @@ function registerIPC() {
     textInjector.captureTargetWindow().catch(() => {});
     overlay.show();
   });
-  ipcMain.on(IPC_CHANNELS.OVERLAY_HIDE, () => overlay.hide());
+  ipcMain.on(IPC_CHANNELS.OVERLAY_HIDE, () => {
+    pendingPaste = false;  // 用户主动关闭 → 取消待粘贴
+    overlay.hide();
+  });
 
   // 窗口切换
   ipcMain.on(IPC_CHANNELS.WINDOW_OPEN_FULL, () => overlay.createFullWindow());
@@ -153,6 +169,14 @@ function registerIPC() {
       console.error('[App] 文本注入失败:', err);
       return false;
     }
+  });
+
+  // 仅复制到剪贴板（用于两步操作：先复制，失焦后自动粘贴）
+  ipcMain.on(IPC_CHANNELS.TEXT_PREPARE, (_event, text: string) => {
+    if (!text) return;
+    textInjector.prepare(text);
+    pendingPaste = true;
+    console.log('[App] 文本已就绪，失焦后自动粘贴');
   });
 
   // 后端状态

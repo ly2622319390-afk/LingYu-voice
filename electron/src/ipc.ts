@@ -26,6 +26,7 @@ export const IPC_CHANNELS = {
 
   // 文本注入
   TEXT_INJECT: 'text:inject',
+  TEXT_PREPARE: 'text:prepare',  // 仅复制到剪贴板，不粘贴
   TEXT_INJECTED: 'text:injected',
 
   // 后端状态
