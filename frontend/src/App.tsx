@@ -8,9 +8,10 @@ import Recorder from './components/Recorder'
 import Transcript from './components/Transcript'
 import SceneSwitcher from './components/SceneSwitcher'
 import OptimizedView from './components/OptimizedView'
-import LexiconManager from './components/LexiconManager'
+import LexiconIndustryManager from './components/LexiconIndustryManager'
 import HistoryView from './components/HistoryView'
 import CompactOverlay from './components/CompactOverlay'
+import { industryApi } from './services/api'
 
 type PageView = 'main' | 'lexicon' | 'history'
 type AppMode = 'web' | 'overlay' | 'full'
@@ -43,6 +44,8 @@ export default function App() {
   const [view, setView] = useState<PageView>('main')
   const [optimizedResult, setOptimizedResult] = useState<any>(null)
   const [uncertainWords, setUncertainWords] = useState<{ word: string; suggestions: string[]; position: number }[]>([])
+  const [industrySelected, setIndustrySelected] = useState<string[]>([])
+  const [industryHotwords, setIndustryHotwords] = useState(0)
 
   const handleTranscriptChange = (newTranscript: string) => {
     resetTranscript()
@@ -58,6 +61,13 @@ export default function App() {
     setUncertainWords(uncertain)
     setOptimizedResult(null)
   }
+
+  // 完整窗口加载行业词库状态
+  useEffect(() => {
+    if (appMode !== 'full') return
+    industryApi.selected().then(res => setIndustrySelected(res.industries ?? [])).catch(() => setIndustrySelected([]))
+    industryApi.hotwords().then(res => setIndustryHotwords(res.count)).catch(() => {})
+  }, [view])
 
   // ─── 紧凑浮窗模式 ───
   if (appMode === 'overlay') {
@@ -119,6 +129,35 @@ export default function App() {
             />
           </div>
           <div className="right-panel">
+            {appMode === 'full' && (
+              <div className="industry-status-card">
+                <div className="status-header">
+                  <span className="status-title">行业词库</span>
+                  {(industrySelected?.length ?? 0) > 0 && (
+                    <span className="status-badge">{industryHotwords} 热词</span>
+                  )}
+                </div>
+                {(industrySelected?.length ?? 0) > 0 ? (
+                  <>
+                    <div className="status-tags">
+                      {(industrySelected ?? []).map(ind => (
+                        <span key={ind} className="status-tag">{ind}</span>
+                      ))}
+                    </div>
+                    <button className="status-action" onClick={() => setView('lexicon')}>
+                      管理行业词库
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="status-hint">选择行业可提升专业术语识别准确率</div>
+                    <button className="status-action" onClick={() => setView('lexicon')}>
+                      去选择行业
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
             <OptimizedView
               scene={scene}
               text={transcript}
@@ -129,7 +168,7 @@ export default function App() {
         </main>
       )}
 
-      {view === 'lexicon' && <LexiconManager />}
+      {view === 'lexicon' && <LexiconIndustryManager />}
       {view === 'history' && <HistoryView />}
     </div>
   )

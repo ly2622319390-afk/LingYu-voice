@@ -43,5 +43,21 @@ class HotwordManager:
         sorted_words = sorted(self._hotwords.items(), key=lambda x: -x[1])
         return [w for w, _ in sorted_words[:limit]]
 
+    def sync_from_industry_system(self, industry_system_hotwords: list[str]):
+        """从行业词库系统同步热词"""
+        for word in industry_system_hotwords:
+            self._hotwords[word] = max(self._hotwords.get(word, 0), 80)  # 行业词给予较高优先级
+
+    def rebuild_from_sources(self, user_words: list[dict], industry_hotwords: list[str]):
+        """从全部来源重建热词表"""
+        self._hotwords.clear()
+        # 用户词库（最高优先级）
+        for w in user_words:
+            priority = (w.get("usage_count", 0) * 10) + int(w.get("confidence", 0) * 100)
+            self._hotwords[w["word"]] = priority
+        # 行业词（次高优先级）
+        for word in industry_hotwords:
+            self._hotwords[word] = max(self._hotwords.get(word, 0), 80)
+
     def clear(self):
         self._hotwords.clear()

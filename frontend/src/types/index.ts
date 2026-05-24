@@ -77,3 +77,49 @@ export interface UncertainWord {
   suggestions: string[];
   position: number;
 }
+
+// ─── 行业词库 ───
+
+export interface IndustryWord {
+  id: number;
+  word: string;
+  aliases: string[];
+  industry: string;
+  sub_industry: string;
+  category: string;        // 基础层 / 专业层 / 办公层 / 黑话层
+  weight: number;
+  type: string;
+  language: string;
+  frequency: number;
+  description: string;
+}
+
+export interface CategoryCounts {
+  [category: string]: number;
+}
+
+export interface IndustrySelectRequest {
+  user_id: string;
+  industries: string[];
+}
+
+export interface CorrectionResult {
+  original: string;
+  corrected: string;
+  correction_count: number;
+  details: { wrong: string; correct: string; pos: number }[];
+}
+
+export interface RAGCandidate {
+  word: string;
+  score: number;
+  industry: string;
+  type: string;
+  match_type: string;
+}
+
+export interface HotwordEntry {
+  text: string;
+  weight: number;
+  source: string;
+}

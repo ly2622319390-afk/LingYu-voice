@@ -137,13 +137,31 @@ export class OverlayManager {
     this.fullAppWindow = new BrowserWindow({
       width: 1200, height: 800, minWidth: 800, minHeight: 600,
       title: '智能语音输入法',
+      backgroundColor: '#1a1a2e',
+      show: false,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: false, contextIsolation: true,
+        webSecurity: false,
+        devTools: true,
       },
     });
 
+    this.fullAppWindow.webContents.openDevTools();
+
     this.fullAppWindow.loadURL('http://localhost:3000?mode=full');
+
+    this.fullAppWindow.webContents.on('did-finish-load', () => {
+      console.log('[FullWindow] 页面加载完成');
+      if (!this.fullAppWindow) return;
+      this.fullAppWindow.show();
+      this.fullAppWindow.focus();
+    });
+
+    this.fullAppWindow.webContents.on('did-fail-load', (_event, code, desc) => {
+      console.error('[FullWindow] 加载失败! code=' + code + ' desc=' + desc);
+    });
+
     this.fullAppWindow.on('closed', () => { this.fullAppWindow = null; });
     return this.fullAppWindow;
   }

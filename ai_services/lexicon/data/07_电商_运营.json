@@ -1,0 +1,9930 @@
+[
+  {
+    "word": "SKU",
+    "aliases": [
+      "S K U",
+      "stock keeping unit",
+      "库存单位",
+      "商品编码"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "库存量单位",
+    "category": "专业层"
+  },
+  {
+    "word": "仓储物流",
+    "aliases": [
+      "仓储物瘤",
+      "warehousing logistics",
+      "仓配",
+      "仓储配送"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "仓库管理和物流配送",
+    "category": "专业层"
+  },
+  {
+    "word": "供应链",
+    "aliases": [
+      "供应连",
+      "supply chain",
+      "供应量",
+      "供应链管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品供应全链条管理",
+    "category": "专业层"
+  },
+  {
+    "word": "选品",
+    "aliases": [
+      "选频",
+      "product selection",
+      "选版",
+      "商品选品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品选择和筛选",
+    "category": "专业层"
+  },
+  {
+    "word": "ERP",
+    "aliases": [
+      "E R P",
+      "enterprise resource planning",
+      "企业资源计划",
+      "企业管理软件"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "企业资源计划管理系统"
+  },
+  {
+    "word": "ERP系统",
+    "aliases": [
+      "E R P系统",
+      "ERP system",
+      "erp细统",
+      "企业资源计划管理系统"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "进销存和财务一体化的管理软件"
+  },
+  {
+    "word": "FBA",
+    "aliases": [
+      "F B A",
+      "fulfillment by amazon",
+      "亚马逊物流",
+      "亚马逊配送服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "亚马逊物流仓储配送服务"
+  },
+  {
+    "word": "FBM",
+    "aliases": [
+      "F B M",
+      "fulfillment by merchant",
+      "自发货",
+      "商家自发货模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "service",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "商家自己负责仓储配送的模式"
+  },
+  {
+    "word": "SCM",
+    "aliases": [
+      "S C M",
+      "supply chain management",
+      "供应链管理系统",
+      "供应链软件"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "供应链管理信息系统"
+  },
+  {
+    "word": "SRM",
+    "aliases": [
+      "S R M",
+      "supplier relationship mgmt",
+      "供应商关系管理",
+      "供方管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.6,
+    "description": "供应商关系管理系统"
+  },
+  {
+    "word": "TMS",
+    "aliases": [
+      "T M S",
+      "transportation management",
+      "运输管理系统",
+      "物流管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "运输管理信息系统"
+  },
+  {
+    "word": "WMS",
+    "aliases": [
+      "W M S",
+      "warehouse management system",
+      "仓储管理系统",
+      "仓库管理软件"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "仓储管理信息系统"
+  },
+  {
+    "word": "WMS系统",
+    "aliases": [
+      "W M S系统",
+      "WMS system",
+      "仓储系统",
+      "仓库管理系统"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "专业的仓库管理系统软件"
+  },
+  {
+    "word": "一件代发",
+    "aliases": [
+      "一件代法",
+      "dropshipping",
+      "意见代发",
+      "供应商直发不持有库存的模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "商家接单后由供应商直接发货的模式"
+  },
+  {
+    "word": "中心仓",
+    "aliases": [
+      "中星仓",
+      "central warehouse",
+      "忠辛仓",
+      "区域中心的大型总仓库"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "覆盖较大区域的核心中心仓库"
+  },
+  {
+    "word": "仓储",
+    "aliases": [
+      "苍储",
+      "warehousing",
+      "仓处",
+      "商品存储和仓库管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品的仓库存储和管理"
+  },
+  {
+    "word": "代运营",
+    "aliases": [
+      "待运营",
+      "third-party operation",
+      "带运营",
+      "第三方代为运营管理的模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "委托第三方专业公司运营店铺或仓储"
+  },
+  {
+    "word": "供应商",
+    "aliases": [
+      "供影商",
+      "supplier",
+      "供应伤",
+      "商品供货方"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "提供商品的供应商/工厂"
+  },
+  {
+    "word": "供应链金融",
+    "aliases": [
+      "供应连金融",
+      "supply chain finance",
+      "供应连今融",
+      "围绕供应链的金融服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "基于供应链交易数据的金融服务模式"
+  },
+  {
+    "word": "保税",
+    "aliases": [
+      "宝税",
+      "bonded",
+      "报水",
+      "保税仓储模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "海关监管下暂缓征税的仓储模式"
+  },
+  {
+    "word": "入库",
+    "aliases": [
+      "如库",
+      "inbound",
+      "入酷",
+      "商品进入仓库的流程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品进入仓库的入库操作"
+  },
+  {
+    "word": "出库",
+    "aliases": [
+      "出酷",
+      "outbound",
+      "初库",
+      "商品从仓库发出的流程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品从仓库发出的出库操作"
+  },
+  {
+    "word": "分销商",
+    "aliases": [
+      "分消商",
+      "distributor",
+      "分小商",
+      "中间分销渠道"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "从品牌方拿货再分销的中间商"
+  },
+  {
+    "word": "到货率",
+    "aliases": [
+      "到或率",
+      "arrival rate",
+      "导货率",
+      "货物按时到达的比例指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "商品按时到达仓库/客户的比例"
+  },
+  {
+    "word": "制造商",
+    "aliases": [
+      "制造伤",
+      "manufacturer",
+      "制照商",
+      "商品生产厂家"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "负责商品生产的制造企业"
+  },
+  {
+    "word": "前置仓",
+    "aliases": [
+      "钱置仓",
+      "front warehouse",
+      "前质仓",
+      "靠近消费者的快速配送仓库"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "在消费者附近设立的小型快速配送仓"
+  },
+  {
+    "word": "发货",
+    "aliases": [
+      "发或",
+      "shipping",
+      "发火",
+      "将打包好的包裹发出"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品打包后交快递公司发出的环节"
+  },
+  {
+    "word": "呆滞",
+    "aliases": [
+      "代滞",
+      "dead stock",
+      "呆志",
+      "长期不动销的库存商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "长期未销售出去的呆滞库存"
+  },
+  {
+    "word": "商检",
+    "aliases": [
+      "伤检",
+      "inspection",
+      "上检",
+      "进出口商品检验检疫"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "进出口商品的法定检验检疫"
+  },
+  {
+    "word": "安全库存",
+    "aliases": [
+      "安全库村",
+      "safety stock",
+      "安全酷存",
+      "防止断货的预留库存"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "为防止断货而储备的缓冲库存"
+  },
+  {
+    "word": "库存周转",
+    "aliases": [
+      "库村周转",
+      "inventory turnover",
+      "裤存周转",
+      "库存周转速度指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "库存从入库到出库的周转效率"
+  },
+  {
+    "word": "快递",
+    "aliases": [
+      "快弟",
+      "express",
+      "快迪",
+      "快递运输服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "快递包裹运输服务"
+  },
+  {
+    "word": "打包",
+    "aliases": [
+      "打报",
+      "packing",
+      "大包",
+      "将商品打包封装的过程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "拣货后对商品进行包装打包的操作"
+  },
+  {
+    "word": "报关",
+    "aliases": [
+      "报官",
+      "customs declaration",
+      "抱关",
+      "向海关申报进出口货物"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "进出口货物的正式海关申报"
+  },
+  {
+    "word": "拣货",
+    "aliases": [
+      "简货",
+      "picking",
+      "检或",
+      "根据订单在仓库中拣选商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "根据订单从货架上拣选商品的操作"
+  },
+  {
+    "word": "损耗",
+    "aliases": [
+      "孙耗",
+      "wastage",
+      "笋耗",
+      "商品仓储和运输中的损耗"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品在流转过程中的损失消耗"
+  },
+  {
+    "word": "整车",
+    "aliases": [
+      "整撤",
+      "FTL",
+      "正车",
+      "整车包车运输服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "整车运输物流服务"
+  },
+  {
+    "word": "次品率",
+    "aliases": [
+      "此品率",
+      "defect rate",
+      "赐品率",
+      "不良品占总量比例的指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "不良品/次品占总产量的比例"
+  },
+  {
+    "word": "海外仓",
+    "aliases": [
+      "海外苍",
+      "overseas warehouse",
+      "海外抢",
+      "在海外设立的仓储设施"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "建立在海外的仓储和配送设施"
+  },
+  {
+    "word": "海运",
+    "aliases": [
+      "海云",
+      "ocean freight",
+      "还运",
+      "海上国际运输方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过海路进行的国际货运"
+  },
+  {
+    "word": "清关",
+    "aliases": [
+      "青关",
+      "customs clearance",
+      "轻关",
+      "进口货物清关报关"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "进口货物的海关清关流程"
+  },
+  {
+    "word": "物流",
+    "aliases": [
+      "勿流",
+      "logistics",
+      "物瘤",
+      "商品物流配送"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品从仓库到消费者的运输过程"
+  },
+  {
+    "word": "物流成本",
+    "aliases": [
+      "勿流成本",
+      "logistics cost",
+      "物瘤成本",
+      "仓储配送环节的总成本"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "物流仓储配送全环节的成本"
+  },
+  {
+    "word": "盘点",
+    "aliases": [
+      "盘店",
+      "inventory count",
+      "盘典",
+      "仓库库存盘点清查"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "定期对仓库库存进行清点"
+  },
+  {
+    "word": "空运",
+    "aliases": [
+      "空云",
+      "air freight",
+      "控运",
+      "航空快件运输"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过航空进行的快递货运"
+  },
+  {
+    "word": "签收",
+    "aliases": [
+      "千收",
+      "sign for",
+      "前收",
+      "收件人确认收到包裹"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "买家确认签收包裹的操作"
+  },
+  {
+    "word": "经济批量",
+    "aliases": [
+      "经济批亮",
+      "EOQ",
+      "经济皮量",
+      "最优订货数量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "综合考虑成本的最优订货量"
+  },
+  {
+    "word": "缺货",
+    "aliases": [
+      "却货",
+      "out of stock",
+      "瘸货",
+      "商品库存不足缺货状态"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品库存耗尽无法供应"
+  },
+  {
+    "word": "缺货率",
+    "aliases": [
+      "却或率",
+      "stock-out rate",
+      "缺火率",
+      "缺货发生的比例频率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "商品缺货发生的频率指标"
+  },
+  {
+    "word": "补货",
+    "aliases": [
+      "不货",
+      "replenishment",
+      "不或",
+      "补充库存的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "库存不足时及时补货的流程"
+  },
+  {
+    "word": "质检",
+    "aliases": [
+      "质检",
+      "quality check",
+      "只检",
+      "对商品进行质量检验"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对入库商品进行质量检查的流程"
+  },
+  {
+    "word": "退货入库",
+    "aliases": [
+      "推货如库",
+      "return inbound",
+      "退或入库",
+      "退货商品返回仓库的流程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "退货商品重新进入仓库的流程"
+  },
+  {
+    "word": "配送",
+    "aliases": [
+      "配制",
+      "delivery",
+      "赔送",
+      "商品最后配送环节"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品运送到消费者手中的最后一环"
+  },
+  {
+    "word": "配送时效",
+    "aliases": [
+      "配制时销",
+      "delivery time",
+      "赔送时效",
+      "从下单到送达的时间"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "从下单到客户手中所花费的时间"
+  },
+  {
+    "word": "采购",
+    "aliases": [
+      "踩购",
+      "purchasing",
+      "才购",
+      "商品采购进货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "从供应商采购商品的流程"
+  },
+  {
+    "word": "陆运",
+    "aliases": [
+      "路运",
+      "land freight",
+      "六运",
+      "陆路运输方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过陆路进行的货物运输"
+  },
+  {
+    "word": "零售商",
+    "aliases": [
+      "另售商",
+      "retailer",
+      "令售商",
+      "直接面对消费者的零售商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "最终向消费者售卖商品的商家"
+  },
+  {
+    "word": "零担",
+    "aliases": [
+      "另单",
+      "LTL",
+      "令担",
+      "零担货运物流方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "供应链管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "零担物流/不够整车的小批量货运"
+  },
+  {
+    "word": "AIGC",
+    "aliases": [
+      "A I G C",
+      "AI生成内容",
+      "人工智能生成",
+      "ai内容"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "内容",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "AI生成内容",
+    "category": "专业层"
+  },
+  {
+    "word": "PGC",
+    "aliases": [
+      "P G C",
+      "professional generated content",
+      "专业内容",
+      "机构内容"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "内容",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "专业生产内容",
+    "category": "专业层"
+  },
+  {
+    "word": "UGC",
+    "aliases": [
+      "U G C",
+      "user generated content",
+      "用户生成内容",
+      "原创内容"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "内容",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "用户生成内容",
+    "category": "专业层"
+  },
+  {
+    "word": "一般贸易",
+    "aliases": [
+      "一般帽易",
+      "general trade",
+      "一般冒易",
+      "常规进口"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过正规报关渠道的一般贸易进口"
+  },
+  {
+    "word": "专卖店",
+    "aliases": [
+      "砖卖店",
+      "exclusive store",
+      "专注店",
+      "品牌专卖"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "单一品牌专卖零售店"
+  },
+  {
+    "word": "专营店",
+    "aliases": [
+      "专营店",
+      "specialty store",
+      "砖营店",
+      "品牌特许店"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "获得品牌授权的专卖店"
+  },
+  {
+    "word": "个护",
+    "aliases": [
+      "各护",
+      "personal care",
+      "哥护",
+      "个人护理用品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "个人护理用品品类"
+  },
+  {
+    "word": "乐器",
+    "aliases": [
+      "乐气",
+      "musical instrument",
+      "月器",
+      "乐器品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "音乐器材品类"
+  },
+  {
+    "word": "五金工具",
+    "aliases": [
+      "五今工具",
+      "hardware",
+      "五斤工具",
+      "五金和工具品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "五金材料和工具品类"
+  },
+  {
+    "word": "保健食品",
+    "aliases": [
+      "保建食品",
+      "health supplement",
+      "宝健食品",
+      "保健品品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "保健食品/膳食补充剂品类"
+  },
+  {
+    "word": "保税仓",
+    "aliases": [
+      "保水仓",
+      "bonded warehouse",
+      "宝税仓",
+      "保税区仓库"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "海关监管的保税仓储区域"
+  },
+  {
+    "word": "内衣",
+    "aliases": [
+      "内一",
+      "underwear",
+      "那衣",
+      "内衣裤和睡衣品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "内衣/睡衣/家居服品类"
+  },
+  {
+    "word": "医疗器械",
+    "aliases": [
+      "一疗器械",
+      "medical device",
+      "意疗器械",
+      "家用医疗器械品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "家用医疗器械和康复用品品类"
+  },
+  {
+    "word": "厨具",
+    "aliases": [
+      "厨巨",
+      "kitchenware",
+      "除具",
+      "厨房用具品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "厨具和厨房用品品类"
+  },
+  {
+    "word": "品牌",
+    "aliases": [
+      "品排",
+      "brand",
+      "平牌",
+      "品牌商标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "商品品牌商标"
+  },
+  {
+    "word": "品类",
+    "aliases": [
+      "品类",
+      "category",
+      "品累",
+      "商品类目"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品分类类目体系"
+  },
+  {
+    "word": "图书",
+    "aliases": [
+      "涂书",
+      "books",
+      "图叔",
+      "图书音像"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "图书音像品类"
+  },
+  {
+    "word": "奢侈品",
+    "aliases": [
+      "奢耻品",
+      "luxury",
+      "奢痴品",
+      "高端品牌"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "高价高端奢侈品品类"
+  },
+  {
+    "word": "奶粉",
+    "aliases": [
+      "乃粉",
+      "milk powder",
+      "奶分",
+      "婴幼儿奶粉品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "婴幼儿配方奶粉品类"
+  },
+  {
+    "word": "宠物",
+    "aliases": [
+      "宠勿",
+      "pet",
+      "充物",
+      "宠物用品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "宠物食品和用品品类"
+  },
+  {
+    "word": "宠物粮",
+    "aliases": [
+      "充物粮",
+      "pet food",
+      "宠勿粮",
+      "宠物主粮品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "猫粮狗粮等宠物食品品类"
+  },
+  {
+    "word": "家具",
+    "aliases": [
+      "家俱",
+      "furniture",
+      "佳具",
+      "家用家具品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "各类家用家具品类"
+  },
+  {
+    "word": "家居",
+    "aliases": [
+      "家俱",
+      "home furnishing",
+      "家住",
+      "家居用品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "家居生活用品品类"
+  },
+  {
+    "word": "家电",
+    "aliases": [
+      "家店",
+      "home appliance",
+      "佳电",
+      "家用电器"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "家用电器品类"
+  },
+  {
+    "word": "家纺",
+    "aliases": [
+      "家房",
+      "home textile",
+      "家放",
+      "床上用品家纺品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "床上用品和家用纺织品类"
+  },
+  {
+    "word": "店铺",
+    "aliases": [
+      "店卜",
+      "store",
+      "电铺",
+      "商铺"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "电商平台上的商家店铺"
+  },
+  {
+    "word": "建材",
+    "aliases": [
+      "见材",
+      "building material",
+      "建才",
+      "装修建材品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "装修和建筑材料品类"
+  },
+  {
+    "word": "户外",
+    "aliases": [
+      "户歪",
+      "outdoor",
+      "互外",
+      "户外装备"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "户外运动装备品类"
+  },
+  {
+    "word": "数码",
+    "aliases": [
+      "数马",
+      "digital",
+      "数骂",
+      "数码电子产品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "3C数码电子品类"
+  },
+  {
+    "word": "文具",
+    "aliases": [
+      "文具",
+      "stationery",
+      "文拒",
+      "文具用品品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "办公文具和学习用品品类"
+  },
+  {
+    "word": "旗舰店",
+    "aliases": [
+      "旗建店",
+      "flagship store",
+      "其见店",
+      "品牌官方直营店"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "品牌官方开设的直营店铺"
+  },
+  {
+    "word": "日化",
+    "aliases": [
+      "日话",
+      "daily chemical",
+      "日花",
+      "日用品化工"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "日用洗护化工品类"
+  },
+  {
+    "word": "服装",
+    "aliases": [
+      "负装",
+      "clothing",
+      "富装",
+      "服饰类目"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "服装鞋帽类商品"
+  },
+  {
+    "word": "母婴",
+    "aliases": [
+      "母因",
+      "maternal baby",
+      "母英",
+      "孕婴童用品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "母婴用品品类"
+  },
+  {
+    "word": "汽车用品",
+    "aliases": [
+      "气车用品",
+      "auto parts",
+      "骑车用品",
+      "车品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "汽车后市场用品"
+  },
+  {
+    "word": "汽车配件",
+    "aliases": [
+      "气车配件",
+      "auto parts",
+      "七车配件",
+      "汽车零配件品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "汽车零配件和改装用品品类"
+  },
+  {
+    "word": "海外直邮",
+    "aliases": [
+      "海外直由",
+      "direct mail",
+      "海外直油",
+      "海外直发"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "从海外直接邮寄到国内的物流方式"
+  },
+  {
+    "word": "灯饰",
+    "aliases": [
+      "登饰",
+      "lighting",
+      "等饰",
+      "灯具照明品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "灯具和照明设备品类"
+  },
+  {
+    "word": "玩具",
+    "aliases": [
+      "玩巨",
+      "toys",
+      "顽具",
+      "儿童玩具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "玩具模型品类"
+  },
+  {
+    "word": "珠宝",
+    "aliases": [
+      "猪宝",
+      "jewelry",
+      "珠保",
+      "珠宝首饰"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "珠宝首饰品类"
+  },
+  {
+    "word": "生鲜",
+    "aliases": [
+      "生仙",
+      "fresh food",
+      "升鲜",
+      "生鲜蔬果"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "生鲜农产品品类"
+  },
+  {
+    "word": "礼品",
+    "aliases": [
+      "李品",
+      "gifts",
+      "理品",
+      "礼品礼盒"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "礼品送礼品类"
+  },
+  {
+    "word": "竞品",
+    "aliases": [
+      "竟品",
+      "competitor",
+      "进品",
+      "竞争对手产品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "市场上的竞争产品"
+  },
+  {
+    "word": "童装",
+    "aliases": [
+      "同装",
+      "childrenswear",
+      "同庄",
+      "儿童服装品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "儿童服装服饰品类"
+  },
+  {
+    "word": "箱包",
+    "aliases": [
+      "箱报",
+      "luggage",
+      "相包",
+      "箱包和背包品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "行李箱/背包等包袋品类"
+  },
+  {
+    "word": "粮油调味",
+    "aliases": [
+      "粮由调味",
+      "grocery",
+      "良油调味",
+      "油盐酱醋等调味品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "粮油米面和调味品品类"
+  },
+  {
+    "word": "纸尿裤",
+    "aliases": [
+      "只尿库",
+      "diaper",
+      "指尿裤",
+      "婴幼儿纸尿裤品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "婴幼儿纸尿裤/拉拉裤品类"
+  },
+  {
+    "word": "美妆",
+    "aliases": [
+      "每妆",
+      "beauty",
+      "枚妆",
+      "美妆护肤"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "美妆护肤品品类"
+  },
+  {
+    "word": "自营",
+    "aliases": [
+      "自赢",
+      "self-operated",
+      "自萤",
+      "自营商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "平台自采自销的运营模式"
+  },
+  {
+    "word": "茶叶",
+    "aliases": [
+      "查叶",
+      "tea",
+      "茶夜",
+      "茶叶茶饮品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "各类茶叶和茶饮品类"
+  },
+  {
+    "word": "跨境商品",
+    "aliases": [
+      "跨竟商品",
+      "cross-border",
+      "跨进商品",
+      "海外商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "跨境电商进口商品"
+  },
+  {
+    "word": "运动",
+    "aliases": [
+      "运冻",
+      "sports",
+      "运东",
+      "运动户外"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "运动健身用品品类"
+  },
+  {
+    "word": "运动鞋服",
+    "aliases": [
+      "运冻鞋夫",
+      "sportswear",
+      "运东鞋服",
+      "运动服装和运动鞋品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "运动服装和运动鞋品类"
+  },
+  {
+    "word": "配饰",
+    "aliases": [
+      "配事",
+      "accessories",
+      "佩饰",
+      "服装配饰品品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "帽子/围巾/首饰等配饰品"
+  },
+  {
+    "word": "酒水",
+    "aliases": [
+      "九水",
+      "alcohol",
+      "旧水",
+      "酒类饮品品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "白酒/啤酒/红酒等酒类饮品"
+  },
+  {
+    "word": "长尾商品",
+    "aliases": [
+      "长伟商品",
+      "long-tail",
+      "长伪商品",
+      "小众品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "非热门但种类繁多的小众商品"
+  },
+  {
+    "word": "零食",
+    "aliases": [
+      "另食",
+      "snacks",
+      "令食",
+      "休闲零食品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "各类休闲零食食品"
+  },
+  {
+    "word": "食品",
+    "aliases": [
+      "食频",
+      "food",
+      "石品",
+      "食品饮料"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "食品饮料类商品"
+  },
+  {
+    "word": "饮料",
+    "aliases": [
+      "因料",
+      "beverage",
+      "印料",
+      "果汁/茶饮等非酒饮品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "品类管理",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "各类非酒精饮料品类"
+  },
+  {
+    "word": "变现",
+    "aliases": [
+      "便现",
+      "monetization",
+      "变现能力",
+      "商业变现"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "商业",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "将流量转化为收入",
+    "category": "专业层"
+  },
+  {
+    "word": "400电话",
+    "aliases": [
+      "四零零电话",
+      "400 hotline",
+      "400点话",
+      "全国统一客服热线电话"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "全国统一的企业客服服务热线"
+  },
+  {
+    "word": "七天无理由",
+    "aliases": [
+      "七天无理邮",
+      "7-day return",
+      "七天无理由",
+      "七天内无条件退货的服务承诺"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "购买后七日内无条件退货的消费者保障"
+  },
+  {
+    "word": "上门取件",
+    "aliases": [
+      "上们取件",
+      "pickup service",
+      "上们去件",
+      "快递上门取退货件的服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "退货时快递人员上门取件的服务"
+  },
+  {
+    "word": "上门安装",
+    "aliases": [
+      "上们安装",
+      "home installation",
+      "上门按装",
+      "上门提供安装的服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "购买后提供上门安装服务的承诺"
+  },
+  {
+    "word": "中评",
+    "aliases": [
+      "重评",
+      "neutral review",
+      "忠评",
+      "客户给予的中性评价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "客户对商品或服务的中性评价"
+  },
+  {
+    "word": "买家秀",
+    "aliases": [
+      "买家绣",
+      "buyer show",
+      "卖家秀",
+      "买家发布的上身效果展示"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "买家发布的商品实拍图片/视频展示"
+  },
+  {
+    "word": "人工客服",
+    "aliases": [
+      "人功客服",
+      "human CS",
+      "人工克服",
+      "真人操作的人工客服"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "由真人操作的人工在线客服"
+  },
+  {
+    "word": "仅退款",
+    "aliases": [
+      "近退款",
+      "refund only",
+      "仅推款",
+      "只退款不退货的模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客户不退货仅退款的售后方式"
+  },
+  {
+    "word": "以旧换新",
+    "aliases": [
+      "已旧换新",
+      "trade-in",
+      "易旧换新",
+      "旧商品折价换购新商品的服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "用旧产品折价购买新产品的服务模式"
+  },
+  {
+    "word": "保修",
+    "aliases": [
+      "报修",
+      "warranty",
+      "宝修",
+      "商品保修期内免费维修服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "在保修期内提供免费维修的服务"
+  },
+  {
+    "word": "假一赔十",
+    "aliases": [
+      "假一陪十",
+      "authenticity guarantee",
+      "贾一赔十",
+      "发现假货赔十倍金额的承诺"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商家对商品真假的赔付承诺"
+  },
+  {
+    "word": "包退包换",
+    "aliases": [
+      "报推报换",
+      "return guarantee",
+      "报退报换",
+      "承诺无条件退换货的售后服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商家承诺的无条件退换货服务"
+  },
+  {
+    "word": "响应时长",
+    "aliases": [
+      "响英时尝",
+      "response time",
+      "响映时长",
+      "客服回复速度指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客服对客户消息的响应速度"
+  },
+  {
+    "word": "售中",
+    "aliases": [
+      "受中",
+      "in-sales",
+      "兽中",
+      "购买过程中的客户服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "商品购买过程中的服务"
+  },
+  {
+    "word": "售前",
+    "aliases": [
+      "受前",
+      "pre-sales",
+      "兽前",
+      "购买前的咨询和引导服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品售出前的客户咨询"
+  },
+  {
+    "word": "售后",
+    "aliases": [
+      "受后",
+      "after-sales",
+      "兽后",
+      "商品售出后的客户服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品售出后的售后服务"
+  },
+  {
+    "word": "售后工单",
+    "aliases": [
+      "受后工单",
+      "after-sales ticket",
+      "兽后工单",
+      "售后服务跟进的工作单"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "处理和跟踪售后问题的工单系统"
+  },
+  {
+    "word": "在线客服",
+    "aliases": [
+      "在线克夫",
+      "online CS",
+      "在线克服",
+      "在线即时客服系统"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "通过在线聊天工具提供的客户服务"
+  },
+  {
+    "word": "好评",
+    "aliases": [
+      "嚎评",
+      "positive review",
+      "毫评",
+      "客户给予的好评评价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "客户对商品或服务满意的评价"
+  },
+  {
+    "word": "客服",
+    "aliases": [
+      "克夫",
+      "customer service",
+      "克服",
+      "在线客户服务人员"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "在线客户服务人员"
+  },
+  {
+    "word": "客服接待量",
+    "aliases": [
+      "克夫接待量",
+      "CS workload",
+      "克服接待量",
+      "客服每日处理的会话数量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "客服人员每天处理的客户会话数量"
+  },
+  {
+    "word": "客诉",
+    "aliases": [
+      "客诉",
+      "customer complaint",
+      "课诉",
+      "客户投诉处理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客户投诉和问题处理"
+  },
+  {
+    "word": "客诉处理率",
+    "aliases": [
+      "课诉处理率",
+      "complaint rate",
+      "客书处理率",
+      "客户投诉处理完成的比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "客户投诉案件处理完成的比例"
+  },
+  {
+    "word": "差评",
+    "aliases": [
+      "茶评",
+      "negative review",
+      "查评",
+      "客户给予的差评评价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "客户对商品或服务不满意的评价"
+  },
+  {
+    "word": "投诉率",
+    "aliases": [
+      "头诉率",
+      "complaint rate",
+      "投述率",
+      "客户投诉比例指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "收到的客户投诉占总单数的比例"
+  },
+  {
+    "word": "换货",
+    "aliases": [
+      "换或",
+      "exchange",
+      "患货",
+      "更换同款或其他商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客户要求更换商品的处理流程"
+  },
+  {
+    "word": "服务质量",
+    "aliases": [
+      "夫务质量",
+      "service quality",
+      "符务质量",
+      "客服服务品质指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客户服务的质量评估指标"
+  },
+  {
+    "word": "机器人客服",
+    "aliases": [
+      "计器人客服",
+      "chatbot",
+      "几气人客服",
+      "AI自动应答智能客服"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过AI技术自动回答客户问题的系统"
+  },
+  {
+    "word": "极速退款",
+    "aliases": [
+      "急速退款",
+      "instant refund",
+      "几速退款",
+      "符合条件立即退款的保障服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "信用良好的买家可享受快速退款"
+  },
+  {
+    "word": "满意度",
+    "aliases": [
+      "满易度",
+      "satisfaction",
+      "满意渡",
+      "客户对服务的满意程度"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "客户满意度评分指标"
+  },
+  {
+    "word": "破损包赔",
+    "aliases": [
+      "破孙包赔",
+      "damage guarantee",
+      "破损包赔",
+      "商品破损可申请赔付"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "收到破损商品可获得赔偿的保障服务"
+  },
+  {
+    "word": "自动回复",
+    "aliases": [
+      "自动辉复",
+      "auto reply",
+      "自动灰复",
+      "客服自动回复功能"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "系统自动回复客户常见问题的功能"
+  },
+  {
+    "word": "评价有礼",
+    "aliases": [
+      "评架有礼",
+      "review reward",
+      "评家有礼",
+      "写评价获得奖励的活动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "写评价即可领取奖励的促销活动"
+  },
+  {
+    "word": "评价管理",
+    "aliases": [
+      "评架管理",
+      "review management",
+      "平介管理",
+      "管理商品评价的系统"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对客户评价进行回复和管理的流程"
+  },
+  {
+    "word": "运费险",
+    "aliases": [
+      "运废险",
+      "shipping insurance",
+      "运肺险",
+      "退货运费保险"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "为退货运费投保的保险产品"
+  },
+  {
+    "word": "追评",
+    "aliases": [
+      "坠评",
+      "additional review",
+      "缀评",
+      "在已有评价基础上追加评价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "客户在首次评价后再次追加评价"
+  },
+  {
+    "word": "退换货流程",
+    "aliases": [
+      "退换或流程",
+      "return process",
+      "退换或留程",
+      "退货和换货的标准处理流程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "退货和换货的标准操作流程"
+  },
+  {
+    "word": "退款",
+    "aliases": [
+      "推款",
+      "refund",
+      "退宽",
+      "退还客户支付的款项"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "因退货等原因退款给客户"
+  },
+  {
+    "word": "退款时效",
+    "aliases": [
+      "推款时效",
+      "refund time",
+      "退宽时效",
+      "退款到账的时间指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "买家提交退款后到收到款项的时间"
+  },
+  {
+    "word": "退款退货",
+    "aliases": [
+      "推款退货",
+      "return and refund",
+      "退宽退或",
+      "退货并退款"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客户退回商品后退款的流程"
+  },
+  {
+    "word": "退货",
+    "aliases": [
+      "推货",
+      "return",
+      "退或",
+      "客户退回已购买的商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "客户申请退货退款的流程"
+  },
+  {
+    "word": "闪电退款",
+    "aliases": [
+      "闪点退款",
+      "flash refund",
+      "闪店退款",
+      "极短时间内完成退款的体验"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "极速处理退款到账的服务"
+  },
+  {
+    "word": "问大家",
+    "aliases": [
+      "问大家",
+      "Q&A",
+      "问大佳",
+      "买家互助问答功能"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "客服售后",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "买家之间互相问答的功能板块"
+  },
+  {
+    "word": "仓库管理员",
+    "aliases": [
+      "苍库管理员",
+      "warehouse keeper",
+      "仓处管理员",
+      "仓库出入库管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "负责仓库日常管理人员"
+  },
+  {
+    "word": "优化师",
+    "aliases": [
+      "尤化师",
+      "optimizer",
+      "油化师",
+      "广告优化优化师"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "负责广告效果优化的专业人员"
+  },
+  {
+    "word": "同步一下进度",
+    "aliases": [
+      "铜步一下进度",
+      "sync progress",
+      "通步一下",
+      "同步项目进展情况的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "汇报和同步项目进度的职场说法"
+  },
+  {
+    "word": "同频一下",
+    "aliases": [
+      "同频以虾",
+      "sync up",
+      "铜频一下",
+      "沟通对齐信息的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "同步信息和沟通对齐的职场说法"
+  },
+  {
+    "word": "商品运营",
+    "aliases": [
+      "伤品运营",
+      "product operator",
+      "商品运因",
+      "商品选品和管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "负责商品选品和优化的岗位"
+  },
+  {
+    "word": "复盘活动",
+    "aliases": [
+      "复般活动",
+      "campaign review",
+      "付盘活动",
+      "活动结束后的总结回顾"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "活动完成后进行的数据复盘和总结"
+  },
+  {
+    "word": "客服专员",
+    "aliases": [
+      "克夫专员",
+      "CS specialist",
+      "克服专员",
+      "客户服务执行人员"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "负责客户服务的基础岗位"
+  },
+  {
+    "word": "客服主管",
+    "aliases": [
+      "克夫主管",
+      "CS supervisor",
+      "克服主管",
+      "客户服务团队主管"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "客服团队的负责人"
+  },
+  {
+    "word": "对齐一下策略",
+    "aliases": [
+      "对起一下策落",
+      "align strategy",
+      "对奇策略",
+      "统一策略方向的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "统一和确认运营策略的职场说法"
+  },
+  {
+    "word": "投放专员",
+    "aliases": [
+      "头放专员",
+      "ad specialist",
+      "投方专员",
+      "广告投放执行人员"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "负责付费广告投放的岗位"
+  },
+  {
+    "word": "拉一下数据",
+    "aliases": [
+      "啦一下数据",
+      "pull the data",
+      "拉以下数据",
+      "请提取数据分析的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "请求同事提供数据支持的职场说法"
+  },
+  {
+    "word": "拿到结果",
+    "aliases": [
+      "拿岛结果",
+      "deliver result",
+      "那到结果",
+      "强调最终要有成果产出的说法"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "强调最终产出成果的职场用语"
+  },
+  {
+    "word": "推进项目",
+    "aliases": [
+      "推金项目",
+      "push project",
+      "推劲项目",
+      "推动项目前进的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "推动项目进展的职场说法"
+  },
+  {
+    "word": "数据运营",
+    "aliases": [
+      "数据运因",
+      "data operator",
+      "数据运招",
+      "数据分析和报告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "负责数据分析工作的运营岗位"
+  },
+  {
+    "word": "电商运营",
+    "aliases": [
+      "电商运因",
+      "ecommerce operator",
+      "店商运营",
+      "电商平台运营工作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "电商平台店铺的运营岗位"
+  },
+  {
+    "word": "直播运营",
+    "aliases": [
+      "直拨运营",
+      "live operator",
+      "直拔运营",
+      "直播账号运营管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "负责直播账号运营的岗位"
+  },
+  {
+    "word": "过一下方案",
+    "aliases": [
+      "过一下方按",
+      "review plan",
+      "锅一下方案",
+      "请审阅方案并讨论的办公用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "office_expr",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "请求同事审核和讨论方案的职场说法"
+  },
+  {
+    "word": "运营专员",
+    "aliases": [
+      "运因专员",
+      "operations specialist",
+      "运赢专员",
+      "运营执行人员"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "电商运营的基础执行岗位"
+  },
+  {
+    "word": "运营经理",
+    "aliases": [
+      "运因经理",
+      "operations manager",
+      "运赢经理",
+      "运营团队负责人"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "电商运营部门的经理岗位"
+  },
+  {
+    "word": "选品专员",
+    "aliases": [
+      "选频专员",
+      "product specialist",
+      "宣品专员",
+      "商品选品分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "岗位办公",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "position",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "负责商品选品的专业人员"
+  },
+  {
+    "word": "信息流",
+    "aliases": [
+      "信息瘤",
+      "feed流",
+      "信息流广告",
+      "feed广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "信息流广告投放",
+    "category": "专业层"
+  },
+  {
+    "word": "投流",
+    "aliases": [
+      "投瘤",
+      "广告投放",
+      "ad placement",
+      "投流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "付费广告投放",
+    "category": "专业层"
+  },
+  {
+    "word": "千川",
+    "aliases": [
+      "千穿",
+      "巨量千川",
+      "抖音电商广告",
+      "千川投放"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "巨量千川电商广告平台",
+    "category": "专业层"
+  },
+  {
+    "word": "巨量引擎",
+    "aliases": [
+      "巨量引檠",
+      "Ocean Engine",
+      "字节广告",
+      "巨量广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "字节跳动广告投放平台",
+    "category": "专业层"
+  },
+  {
+    "word": "直通车",
+    "aliases": [
+      "只通车",
+      "直通撤",
+      "淘宝直通车",
+      "直通车广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告平台",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "淘宝付费推广工具",
+    "category": "专业层"
+  },
+  {
+    "word": "阿里妈妈",
+    "aliases": [
+      "阿里妈妈",
+      "Alimama",
+      "淘宝广告",
+      "直通车"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "广告平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴广告营销平台",
+    "category": "专业层"
+  },
+  {
+    "word": "千人千面",
+    "aliases": [
+      "千人前面",
+      "个性化推荐",
+      "算法推荐",
+      "智能推荐"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "推荐算法",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "个性化展示",
+    "category": "专业层"
+  },
+  {
+    "word": "下单率",
+    "aliases": [
+      "下单绿",
+      "order rate",
+      "下丹率",
+      "从访问到下单的转化比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户从访问到成功下单的转化比例"
+  },
+  {
+    "word": "京东商智",
+    "aliases": [
+      "惊东商志",
+      "JD data",
+      "京动商智",
+      "京东数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "京东商家数据分析平台"
+  },
+  {
+    "word": "件单价",
+    "aliases": [
+      "建单价",
+      "price per item",
+      "见单价",
+      "每件商品的平均价格"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "每件商品的平均销售价格"
+  },
+  {
+    "word": "关键词排名",
+    "aliases": [
+      "关建词排明",
+      "keyword ranking",
+      "关键此排名",
+      "商品关键词的搜索排名位置"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品在搜索结果中的关键词排名位置"
+  },
+  {
+    "word": "加购率",
+    "aliases": [
+      "加购绿",
+      "cart rate",
+      "家购率",
+      "将商品加入购物车的比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "访问商品后将其加入购物车的用户比例"
+  },
+  {
+    "word": "千瓜数据",
+    "aliases": [
+      "千挂数据",
+      "qiangua",
+      "千瓜",
+      "小红书数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.6,
+    "description": "小红书内容数据分析工具"
+  },
+  {
+    "word": "友望数据",
+    "aliases": [
+      "有望数据",
+      "youwang",
+      "友旺数据",
+      "自媒体数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.55,
+    "description": "微信自媒体数据监测工具"
+  },
+  {
+    "word": "复购分析",
+    "aliases": [
+      "复够分析",
+      "repurchase analysis",
+      "负购分析",
+      "用户重复购买行为分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "分析用户重复购买率的数据"
+  },
+  {
+    "word": "多多参谋",
+    "aliases": [
+      "多多参摸",
+      "PDD data",
+      "多多参某",
+      "拼多多数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "拼多多电商数据分析工具"
+  },
+  {
+    "word": "客件数",
+    "aliases": [
+      "客建数",
+      "items per order",
+      "客见数",
+      "每笔订单购买的商品数量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "每笔订单中顾客购买的商品件数"
+  },
+  {
+    "word": "市场分析",
+    "aliases": [
+      "市长分析",
+      "market analysis",
+      "事场分析",
+      "行业市场调研分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对行业市场情况的分析研究"
+  },
+  {
+    "word": "店铺诊断",
+    "aliases": [
+      "店卜诊断",
+      "store diagnosis",
+      "电铺诊断",
+      "店铺问题分析诊断"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "对店铺运营问题进行排查诊断"
+  },
+  {
+    "word": "投入产出比",
+    "aliases": [
+      "头如产出比",
+      "ROI",
+      "投入产初比",
+      "投入金额和产出金额的比值"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "营销投入金额与产出销售额的比率"
+  },
+  {
+    "word": "抖查查",
+    "aliases": [
+      "斗查查",
+      "douchacha",
+      "豆查查",
+      "抖音数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "抖音数据监测分析平台"
+  },
+  {
+    "word": "搜索词分析",
+    "aliases": [
+      "收索词分西",
+      "search term analysis",
+      "收所词分析",
+      "用户搜索关键词的数据分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对用户搜索关键词的数据进行分析"
+  },
+  {
+    "word": "支付转化率",
+    "aliases": [
+      "只付转花率",
+      "payment conversion",
+      "支付转换率",
+      "从下单到完成支付的比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "提交订单后完成支付的用户比例"
+  },
+  {
+    "word": "收藏率",
+    "aliases": [
+      "收藏率",
+      "favorite rate",
+      "收藏绿",
+      "收藏商品/店铺的用户比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "访问后将商品或店铺收藏的用户比例"
+  },
+  {
+    "word": "数据分析",
+    "aliases": [
+      "数据分西",
+      "data analysis",
+      "数据分希",
+      "电商运营数据分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "对电商运营数据的分析工作"
+  },
+  {
+    "word": "数据罗盘",
+    "aliases": [
+      "数据罗盘",
+      "data compass",
+      "数据落盘",
+      "电商数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "电商数据分析和监测工具"
+  },
+  {
+    "word": "新视",
+    "aliases": [
+      "心事",
+      "xinshi",
+      "新适",
+      "短视频数据平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.6,
+    "description": "短视频数据分析和运营工具"
+  },
+  {
+    "word": "流量价值",
+    "aliases": [
+      "流亮价值",
+      "traffic value",
+      "刘亮价值",
+      "单位流量所产生的销售额"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "每单位流量带来的销售额价值"
+  },
+  {
+    "word": "流量分析",
+    "aliases": [
+      "流亮分析",
+      "traffic analysis",
+      "刘量分析",
+      "店铺流量来源分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "分析店铺流量来源和质量"
+  },
+  {
+    "word": "流量地图",
+    "aliases": [
+      "流亮地涂",
+      "traffic map",
+      "刘亮地图",
+      "流量来源的可视化分析图"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "展示所有流量来源渠道和路径的数据工具"
+  },
+  {
+    "word": "火烧云",
+    "aliases": [
+      "火稍云",
+      "huoshaoyun",
+      "火少云",
+      "电商数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.55,
+    "description": "电商数据分析和监控工具"
+  },
+  {
+    "word": "灰豚数据",
+    "aliases": [
+      "飞豚数据",
+      "huitun",
+      "灰吞数据",
+      "直播数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.55,
+    "description": "直播电商数据监测分析工具"
+  },
+  {
+    "word": "点击图",
+    "aliases": [
+      "点击涂",
+      "click map",
+      "点几图",
+      "用户点击位置的分析图"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "展示页面各位置点击率的分析图"
+  },
+  {
+    "word": "热力图",
+    "aliases": [
+      "热力涂",
+      "heatmap",
+      "惹力图",
+      "用户点击行为的热点可视化图"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "展示用户点击分布热点的可视化分析图"
+  },
+  {
+    "word": "留存分析",
+    "aliases": [
+      "留村分析",
+      "retention analysis",
+      "留寸分析",
+      "用户留存情况分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "分析用户留存和流失的数据"
+  },
+  {
+    "word": "竞品分析",
+    "aliases": [
+      "竟瓶分析",
+      "competitor analysis",
+      "进品分西",
+      "竞争产品分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对竞争对手产品的分析研究"
+  },
+  {
+    "word": "考古加",
+    "aliases": [
+      "考股加",
+      "kaogujia",
+      "老虎加",
+      "内容数据分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.55,
+    "description": "内容电商数据分析平台"
+  },
+  {
+    "word": "蝉妈妈",
+    "aliases": [
+      "蚕妈妈",
+      "Chanmama",
+      "禅妈妈",
+      "抖音电商数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "抖音电商数据分析平台"
+  },
+  {
+    "word": "行业报告",
+    "aliases": [
+      "行业报搞",
+      "industry report",
+      "航业报告",
+      "电商行业研究报告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "电商行业的数据分析报告"
+  },
+  {
+    "word": "访问时长",
+    "aliases": [
+      "访文时长",
+      "visit duration",
+      "房问时长",
+      "用户单次访问停留的时间"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "用户在店铺/页面的平均停留时间"
+  },
+  {
+    "word": "访问深度",
+    "aliases": [
+      "访文深度",
+      "visit depth",
+      "房问深渡",
+      "用户单次访问浏览的页面数量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "用户一次访问中浏览的页面数量"
+  },
+  {
+    "word": "跳失率",
+    "aliases": [
+      "跳时率",
+      "bounce rate",
+      "跳十率",
+      "用户进入后立即离开的比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "进入页面未做任何操作就离开的比例"
+  },
+  {
+    "word": "转化分析",
+    "aliases": [
+      "转花分析",
+      "conversion analysis",
+      "转换分析",
+      "成交转化分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "分析用户从浏览到成交的转化率"
+  },
+  {
+    "word": "连带率",
+    "aliases": [
+      "年带率",
+      "bundle rate",
+      "连待率",
+      "每单购买的商品件数"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "每笔订单中包含的商品数量指标"
+  },
+  {
+    "word": "飞瓜数据",
+    "aliases": [
+      "飞挂数据",
+      "Feigua",
+      "飞爪数据",
+      "短视频数据工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "数据工具",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "短视频和直播数据分析工具"
+  },
+  {
+    "word": "ARPU",
+    "aliases": [
+      "A R P U",
+      "average revenue per user",
+      "每用户平均收入",
+      "arpu值"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "每用户平均收入",
+    "category": "专业层"
+  },
+  {
+    "word": "CAC",
+    "aliases": [
+      "C A C",
+      "customer acquisition cost",
+      "获客成本",
+      "用户获取成本"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "用户获取成本",
+    "category": "专业层"
+  },
+  {
+    "word": "GMV",
+    "aliases": [
+      "G M V",
+      "gross merchandise volume",
+      "商品交易总额",
+      "总成交额"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.9,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "商品交易总额",
+    "category": "专业层"
+  },
+  {
+    "word": "LTV",
+    "aliases": [
+      "L T V",
+      "life time value",
+      "用户生命周期价值",
+      "用户价值"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "用户生命周期价值",
+    "category": "专业层"
+  },
+  {
+    "word": "ROI",
+    "aliases": [
+      "R O I",
+      "return on investment",
+      "投资回报率",
+      "投产比"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.9,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "投资回报率",
+    "category": "专业层"
+  },
+  {
+    "word": "复购率",
+    "aliases": [
+      "复够率",
+      "repurchase rate",
+      "复购",
+      "回头率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "重复购买比例",
+    "category": "专业层"
+  },
+  {
+    "word": "客单价",
+    "aliases": [
+      "客单加",
+      "average order value",
+      "客单",
+      "AOV"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "每单平均交易金额",
+    "category": "专业层"
+  },
+  {
+    "word": "日活",
+    "aliases": [
+      "日或",
+      "DAU",
+      "daily active users",
+      "dau指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "日活跃用户数",
+    "category": "专业层"
+  },
+  {
+    "word": "月活",
+    "aliases": [
+      "月或",
+      "MAU",
+      "monthly active users",
+      "mau指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "月活跃用户数",
+    "category": "专业层"
+  },
+  {
+    "word": "留存率",
+    "aliases": [
+      "留村率",
+      "retention rate",
+      "留寸",
+      "留存"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户留存比例",
+    "category": "专业层"
+  },
+  {
+    "word": "转化率",
+    "aliases": [
+      "转花率",
+      "conversion rate",
+      "转换率",
+      "成交率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.9,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "用户转化比例",
+    "category": "专业层"
+  },
+  {
+    "word": "退货率",
+    "aliases": [
+      "退货绿",
+      "return rate",
+      "退换率",
+      "退款率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "核心指标",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品退货比例",
+    "category": "专业层"
+  },
+  {
+    "word": "SEM",
+    "aliases": [
+      "S E M",
+      "search engine marketing",
+      "搜索引擎营销",
+      "竞价排名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "流量",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "搜索引擎营销",
+    "category": "专业层"
+  },
+  {
+    "word": "SEO",
+    "aliases": [
+      "S E O",
+      "search engine optimization",
+      "搜索引擎优化",
+      "关键词排名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "流量",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "搜索引擎优化",
+    "category": "专业层"
+  },
+  {
+    "word": "公域",
+    "aliases": [
+      "公与",
+      "public domain",
+      "公与流量",
+      "公海"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "流量",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "平台公共流量池",
+    "category": "专业层"
+  },
+  {
+    "word": "引流",
+    "aliases": [
+      "引瘤",
+      "traffic generation",
+      "引留",
+      "导流"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "流量",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "引导流量进入",
+    "category": "专业层"
+  },
+  {
+    "word": "用户画像",
+    "aliases": [
+      "用户画象",
+      "user persona",
+      "消费者画像",
+      "客户画像"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户分析",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户特征标签体系",
+    "category": "专业层"
+  },
+  {
+    "word": "促活",
+    "aliases": [
+      "促或",
+      "activation",
+      "促火",
+      "活跃用户"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "促进用户活跃",
+    "category": "专业层"
+  },
+  {
+    "word": "拉新",
+    "aliases": [
+      "拉欣",
+      "user acquisition",
+      "获新",
+      "新用户"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "获取新用户",
+    "category": "专业层"
+  },
+  {
+    "word": "社群运营",
+    "aliases": [
+      "社裙运营",
+      "community management",
+      "社qun",
+      "群运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "社交群组管理与运营",
+    "category": "专业层"
+  },
+  {
+    "word": "私信",
+    "aliases": [
+      "私新",
+      "private message",
+      "DM",
+      "si信"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户私聊消息",
+    "category": "专业层"
+  },
+  {
+    "word": "私域",
+    "aliases": [
+      "思域",
+      "private domain",
+      "私域流量",
+      "私与"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "自有用户池运营",
+    "category": "专业层"
+  },
+  {
+    "word": "私域流量",
+    "aliases": [
+      "私域流亮",
+      "private traffic",
+      "私域池",
+      "自有流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "企业自主可控的用户流量",
+    "category": "专业层"
+  },
+  {
+    "word": "裂变",
+    "aliases": [
+      "列变",
+      "viral",
+      "裂变营销",
+      "用户裂变"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "用户运营",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户社交裂变增长",
+    "category": "专业层"
+  },
+  {
+    "word": "1688",
+    "aliases": [
+      "一六八八",
+      "ali 1688",
+      "阿里批发",
+      "阿里巴巴中文站"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "阿里巴巴国内B2B批发平台"
+  },
+  {
+    "word": "BigCommerce",
+    "aliases": [
+      "必格考莫斯",
+      "bigcommerce",
+      "建站平台",
+      "SaaS建站"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.5,
+    "description": "云端电商建站平台"
+  },
+  {
+    "word": "DTC品牌",
+    "aliases": [
+      "D T C品牌",
+      "direct to consumer",
+      "直达消费者",
+      "白牌直营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "直接面向消费者的品牌模式"
+  },
+  {
+    "word": "Lazada",
+    "aliases": [
+      "拉咋达",
+      "lazada电商",
+      "东南亚电商",
+      "阿里海外"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "东南亚电商平台"
+  },
+  {
+    "word": "Magento",
+    "aliases": [
+      "马跟偷",
+      "magento电商",
+      "开源电商系统",
+      "企业建站"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "企业级开源电商系统"
+  },
+  {
+    "word": "Shein",
+    "aliases": [
+      "社因",
+      "shein",
+      "希音",
+      "快时尚跨境电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "中国全球化快时尚电商品牌"
+  },
+  {
+    "word": "Shopee",
+    "aliases": [
+      "烧皮",
+      "shopee电商",
+      "虾皮",
+      "东南亚电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "东南亚与台湾电商平台"
+  },
+  {
+    "word": "Shopify",
+    "aliases": [
+      "烧皮法",
+      "shopify建站",
+      "自建站",
+      "独立站系统"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "全球领先的自建站SaaS平台"
+  },
+  {
+    "word": "Temu",
+    "aliases": [
+      "太木",
+      "temu",
+      "特目",
+      "拼多多海外电商平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "拼多多海外跨境电商平台"
+  },
+  {
+    "word": "TikTok Shop",
+    "aliases": [
+      "提克托克shop",
+      "tiktok shop",
+      "抖音海外小店",
+      "海外直播电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "TikTok海外电商闭环功能"
+  },
+  {
+    "word": "Wish",
+    "aliases": [
+      "威时",
+      "wish电商",
+      "移动电商",
+      "北美折扣"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.6,
+    "description": "北美移动端折扣电商平台"
+  },
+  {
+    "word": "WooCommerce",
+    "aliases": [
+      "乌考莫斯",
+      "woocommerce插件",
+      "WordPress电商",
+      "WP电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.6,
+    "description": "WordPress电商插件"
+  },
+  {
+    "word": "eBay",
+    "aliases": [
+      "一贝",
+      "e bay",
+      "E湾",
+      "竞拍电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "全球在线拍卖购物平台"
+  },
+  {
+    "word": "中国制造网",
+    "aliases": [
+      "中国制造网",
+      "made-in-china",
+      "中国制噪",
+      "B2B外贸平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "中国制造企业B2B外贸平台"
+  },
+  {
+    "word": "亚马逊",
+    "aliases": [
+      "雅马寻",
+      "amazon",
+      "阿妈寻",
+      "亚马逊商城"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "全球最大跨境B2C电商平台"
+  },
+  {
+    "word": "京东",
+    "aliases": [
+      "惊东",
+      "JD",
+      "jingdong",
+      "京东商城"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.9,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "京东电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "兰亭集势",
+    "aliases": [
+      "兰亭集事",
+      "lightinthebox",
+      "蓝亭集势",
+      "跨境服装电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.55,
+    "description": "中国跨境快时尚电商平台"
+  },
+  {
+    "word": "兴盛优选",
+    "aliases": [
+      "兴胜优选",
+      "社区团购",
+      "兴剩优选",
+      "社区生鲜电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "社区生鲜团购电商平台"
+  },
+  {
+    "word": "唯品会",
+    "aliases": [
+      "为品会",
+      "vipshop",
+      "微品会",
+      "唯品惠"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "品牌特卖电商平台"
+  },
+  {
+    "word": "多多买菜",
+    "aliases": [
+      "多多买才",
+      "PDD grocery",
+      "多夺买菜",
+      "拼多多社区团购"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "拼多多社区生鲜团购平台"
+  },
+  {
+    "word": "天猫",
+    "aliases": [
+      "天描",
+      "Tmall",
+      "天茂",
+      "tmall商城"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.9,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "阿里巴巴品牌电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "小红书电商",
+    "aliases": [
+      "小红书电商",
+      "xiaohongshu",
+      "小红书商城",
+      "种草电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "小红书社区电商平台"
+  },
+  {
+    "word": "微信小店",
+    "aliases": [
+      "威信小店",
+      "wechat shop",
+      "微信小电",
+      "腾讯电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "微信生态电商平台"
+  },
+  {
+    "word": "快手电商",
+    "aliases": [
+      "快守电商",
+      "kuaishou电商",
+      "快手小店",
+      "快商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "快手短视频电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "抖音电商",
+    "aliases": [
+      "斗音电商",
+      "Douyin电商",
+      "抖店",
+      "抖音小店"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "抖音短视频电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "拼多多",
+    "aliases": [
+      "拼多夺",
+      "pinduoduo",
+      "PDD",
+      "拼少少"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "社交电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "敦煌网",
+    "aliases": [
+      "吨煌网",
+      "dhgate",
+      "吨皇网",
+      "跨境B2B平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.6,
+    "description": "中国跨境B2B电商平台"
+  },
+  {
+    "word": "淘宝",
+    "aliases": [
+      "桃宝",
+      "taobao",
+      "掏宝",
+      "taobao电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "weight": 0.9,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.95,
+    "description": "阿里巴巴电商平台",
+    "category": "专业层"
+  },
+  {
+    "word": "独立站",
+    "aliases": [
+      "独力站",
+      "DTC site",
+      "独利站",
+      "品牌官网"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "品牌自主独立电商网站"
+  },
+  {
+    "word": "环球资源",
+    "aliases": [
+      "还球资源",
+      "global sources",
+      "环丘资源",
+      "B2B采购平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.6,
+    "description": "全球B2B贸易采购平台"
+  },
+  {
+    "word": "美团优选",
+    "aliases": [
+      "没团优选",
+      "meituan优选",
+      "美坛优选",
+      "美团社区团购"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "美团旗下社区生鲜团购平台"
+  },
+  {
+    "word": "美团电商",
+    "aliases": [
+      "没团电商",
+      "meituan",
+      "美团商城",
+      "美坛电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "美团旗下电商业务"
+  },
+  {
+    "word": "自建站",
+    "aliases": [
+      "自建占",
+      "self-built site",
+      "自见站",
+      "独立站点"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "品牌自主搭建的电商网站"
+  },
+  {
+    "word": "苏宁易购",
+    "aliases": [
+      "苏宁移购",
+      "suning",
+      "苏宁易够",
+      "苏拧易购"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "苏宁电器旗下电商平台"
+  },
+  {
+    "word": "视频号带货",
+    "aliases": [
+      "视屏号带货",
+      "wechat video",
+      "视频号带火",
+      "视频电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "视频号直播带货功能"
+  },
+  {
+    "word": "速卖通",
+    "aliases": [
+      "速迈通",
+      "aliexpress",
+      "诉卖通",
+      "阿里跨境"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴旗下跨境B2C平台"
+  },
+  {
+    "word": "阿里国际站",
+    "aliases": [
+      "阿里国际占",
+      "alibaba.com",
+      "阿里国际",
+      "国际站"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "阿里巴巴国际B2B贸易平台"
+  },
+  {
+    "word": "阿里巴巴",
+    "aliases": [
+      "阿里爸爸",
+      "alibaba",
+      "阿里巴吧",
+      "阿里巴巴国际站"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商平台",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "全球B2B电商平台"
+  },
+  {
+    "word": "内容电商",
+    "aliases": [
+      "内容店商",
+      "content commerce",
+      "内容带货",
+      "内容变现"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商模式",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "内容驱动电商销售",
+    "category": "专业层"
+  },
+  {
+    "word": "社交电商",
+    "aliases": [
+      "社叫电商",
+      "social commerce",
+      "社交购物",
+      "社区电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商模式",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "社交平台电商模式",
+    "category": "专业层"
+  },
+  {
+    "word": "跨境电商",
+    "aliases": [
+      "跨竟电商",
+      "cross-border ecommerce",
+      "跨贸",
+      "海淘"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商模式",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "跨境电子商务",
+    "category": "专业层"
+  },
+  {
+    "word": "SPU",
+    "aliases": [
+      "S P U",
+      "standard product unit",
+      "标准产品单位",
+      "商品标准单元"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "标准化产品单位"
+  },
+  {
+    "word": "上下架",
+    "aliases": [
+      "上下家",
+      "listing management",
+      "上下佳",
+      "商品上架下架"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品的上下架管理操作"
+  },
+  {
+    "word": "主图",
+    "aliases": [
+      "主涂",
+      "main image",
+      "煮图",
+      "商品主图"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品展示的主要图片"
+  },
+  {
+    "word": "主图视频",
+    "aliases": [
+      "主图视屏",
+      "main video",
+      "煮图视屏",
+      "商品主图位置的展示视频"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "代替商品主图的短视频展示"
+  },
+  {
+    "word": "买一赠一",
+    "aliases": [
+      "买一正一",
+      "BOGO",
+      "埋一赠一",
+      "购买一件赠送一件的促销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "买一件送一件的促销活动"
+  },
+  {
+    "word": "买家评价",
+    "aliases": [
+      "买假评价",
+      "buyer review",
+      "买家平介",
+      "已购买用户的评价反馈"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "买家的评价内容对后续转化的影响"
+  },
+  {
+    "word": "价格策略",
+    "aliases": [
+      "价格测略",
+      "pricing strategy",
+      "价刻策略",
+      "定价方法"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "method",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品定价的策略和方法"
+  },
+  {
+    "word": "优惠券",
+    "aliases": [
+      "优会券",
+      "coupon",
+      "忧惠券",
+      "优惠卷"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "可抵扣金额的电子优惠券"
+  },
+  {
+    "word": "分销",
+    "aliases": [
+      "分消",
+      "distribution",
+      "纷销",
+      "发展下级销售渠道"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "招募分销商代理销售的模式"
+  },
+  {
+    "word": "利润款",
+    "aliases": [
+      "利闰款",
+      "profit product",
+      "利论款",
+      "高利润商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主要创造利润的高毛利商品"
+  },
+  {
+    "word": "包邮",
+    "aliases": [
+      "报由",
+      "free shipping",
+      "宝邮",
+      "免运费/包邮的物流服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商家承担运费的免费配送服务"
+  },
+  {
+    "word": "品牌合作",
+    "aliases": [
+      "品排合作",
+      "brand collaboration",
+      "名牌合作",
+      "品牌联名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "品牌与品牌的联合推广"
+  },
+  {
+    "word": "商品券",
+    "aliases": [
+      "伤品券",
+      "product coupon",
+      "商品倦",
+      "特定商品的优惠券"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "限定购买指定商品的优惠券"
+  },
+  {
+    "word": "商品卖点",
+    "aliases": [
+      "伤品迈点",
+      "selling point",
+      "商品买点",
+      "商品的独特卖点提炼"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品最具吸引力的特点描述"
+  },
+  {
+    "word": "图文带货",
+    "aliases": [
+      "涂文带火",
+      "image text commerce",
+      "图文带火",
+      "笔记带货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过图片文字内容推荐商品"
+  },
+  {
+    "word": "场景图",
+    "aliases": [
+      "厂景图",
+      "lifestyle image",
+      "长景图",
+      "展示使用场景的氛围图片"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "展示商品使用场景的图片"
+  },
+  {
+    "word": "好评返现",
+    "aliases": [
+      "好屏返现",
+      "review rebate",
+      "好平返现",
+      "给好评退还部分现金的促销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "给予写好评的买家现金返还奖励"
+  },
+  {
+    "word": "定金",
+    "aliases": [
+      "订金",
+      "deposit",
+      "定今",
+      "预订金"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "预售时预付的订金"
+  },
+  {
+    "word": "宝贝描述",
+    "aliases": [
+      "宝被描述",
+      "product description",
+      "宝背描述",
+      "商品详情页的描述内容"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品详情页中关于产品的文字描述"
+  },
+  {
+    "word": "对比图",
+    "aliases": [
+      "对必图",
+      "comparison chart",
+      "对比涂",
+      "与竞品对比展示的图片"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "与同类竞品对比展示差异的图片"
+  },
+  {
+    "word": "尺寸图",
+    "aliases": [
+      "吃寸图",
+      "size chart",
+      "齿寸图",
+      "标注具体尺寸规格的图片"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "标注商品具体尺寸的说明图"
+  },
+  {
+    "word": "尾款",
+    "aliases": [
+      "伟款",
+      "balance payment",
+      "伪款",
+      "预售尾款支付"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "预售的剩余应付款项"
+  },
+  {
+    "word": "平台券",
+    "aliases": [
+      "平太券",
+      "platform coupon",
+      "平抬券",
+      "平台官方发放的优惠券"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "由电商平台官方发放的优惠券"
+  },
+  {
+    "word": "库存管理",
+    "aliases": [
+      "库村管理",
+      "inventory management",
+      "裤存管理",
+      "库存把控"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品库存的进销存管理"
+  },
+  {
+    "word": "店铺券",
+    "aliases": [
+      "店卜券",
+      "store coupon",
+      "电铺券",
+      "店铺级别的优惠券"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "由店铺发放的优惠券"
+  },
+  {
+    "word": "店铺粉丝",
+    "aliases": [
+      "店卜分丝",
+      "store follower",
+      "店铺分思",
+      "关注店铺的用户粉丝"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "关注店铺成为粉丝的用户群体"
+  },
+  {
+    "word": "店铺自播",
+    "aliases": [
+      "店卜自拨",
+      "store live",
+      "店铺直拨",
+      "店铺直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "品牌商家自己进行的直播带货"
+  },
+  {
+    "word": "引流款",
+    "aliases": [
+      "引留款",
+      "traffic product",
+      "引流宽",
+      "低价引流品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "低利润但能吸引流量的商品"
+  },
+  {
+    "word": "折扣",
+    "aliases": [
+      "哲扣",
+      "discount",
+      "者扣",
+      "打折优惠"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品直接降价打折销售"
+  },
+  {
+    "word": "拼团",
+    "aliases": [
+      "拼坛",
+      "group buying",
+      "拼图",
+      "多人拼单"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "多人一起购买享团购价"
+  },
+  {
+    "word": "新品上新",
+    "aliases": [
+      "新平上心",
+      "new arrival",
+      "心品上新",
+      "店铺上架新品的操作和推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "店铺上架新产品的过程和营销活动"
+  },
+  {
+    "word": "晒图有礼",
+    "aliases": [
+      "赛图有理",
+      "photo reward",
+      "赛兔有礼",
+      "晒图片评价获得奖励"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "买家晒出商品实拍图可获奖励的活动"
+  },
+  {
+    "word": "标题优化",
+    "aliases": [
+      "标提优化",
+      "title optimization",
+      "标体优化",
+      "标题SEO"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "优化商品标题提升搜索权重"
+  },
+  {
+    "word": "活动款",
+    "aliases": [
+      "或动款",
+      "promotion product",
+      "火动款",
+      "促销专用品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "专门用于活动促销的商品"
+  },
+  {
+    "word": "淘客",
+    "aliases": [
+      "逃客",
+      "taobao affiliate",
+      "掏客",
+      "淘宝联盟推广者"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "淘宝客推广赚取佣金"
+  },
+  {
+    "word": "清仓处理",
+    "aliases": [
+      "轻仓处理",
+      "clearance sale",
+      "青仓处理",
+      "清理库存降价的促销处理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对库存商品进行降价清仓处理"
+  },
+  {
+    "word": "清货款",
+    "aliases": [
+      "轻货款",
+      "clearance",
+      "请货款",
+      "清仓处理品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "降价清仓处理的库存商品"
+  },
+  {
+    "word": "满减",
+    "aliases": [
+      "满检",
+      "spend and save",
+      "满碱",
+      "满额立减"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "消费满一定金额减免的促销方式"
+  },
+  {
+    "word": "满赠",
+    "aliases": [
+      "满正",
+      "gift with purchase",
+      "满挣",
+      "消费满金额赠送礼品的活动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "满额赠送礼品/样品的促销方式"
+  },
+  {
+    "word": "爆款",
+    "aliases": [
+      "报款",
+      "hot product",
+      "宝款",
+      "热销商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "销量极高的人气热门商品"
+  },
+  {
+    "word": "直播带货",
+    "aliases": [
+      "直拨带火",
+      "live commerce",
+      "直拔带火",
+      "直播卖货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "通过直播形式销售商品"
+  },
+  {
+    "word": "短视频带货",
+    "aliases": [
+      "段视频带火",
+      "short video commerce",
+      "短视屏带火",
+      "视频卖货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过短视频内容引导购买"
+  },
+  {
+    "word": "砍价",
+    "aliases": [
+      "砍假",
+      "bargain",
+      "刊价",
+      "好友帮忙砍价得优惠"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "邀请好友帮助砍价降低价格"
+  },
+  {
+    "word": "秒杀",
+    "aliases": [
+      "渺杀",
+      "flash sale",
+      "妙杀",
+      "限时限量抢购"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "限时超低价抢购活动"
+  },
+  {
+    "word": "第2件半价",
+    "aliases": [
+      "第二件半价",
+      "2nd half price",
+      "第二见半价",
+      "买第二件商品半价的促销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "第二件商品半价的促销玩法"
+  },
+  {
+    "word": "粉丝专享价",
+    "aliases": [
+      "分丝专想价",
+      "fan exclusive",
+      "分丝专享",
+      "仅限粉丝购买的优惠价格"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "专为店铺粉丝提供的特别优惠价格"
+  },
+  {
+    "word": "红包",
+    "aliases": [
+      "红报",
+      "red packet",
+      "洪包",
+      "现金抵扣红包"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "电商平台发放的现金红包"
+  },
+  {
+    "word": "细节图",
+    "aliases": [
+      "细截图",
+      "detail image",
+      "细介图",
+      "展示商品细节的放大图片"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "展示产品材质和做工细节的图片"
+  },
+  {
+    "word": "视频评价",
+    "aliases": [
+      "视屏评价",
+      "video review",
+      "试屏评价",
+      "以视频形式发布的买家评价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "买家发布的视频形式的评价内容"
+  },
+  {
+    "word": "详情页",
+    "aliases": [
+      "想情页",
+      "detail page",
+      "详情夜",
+      "商品详情"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "商品详细信息展示页面"
+  },
+  {
+    "word": "详情页优化",
+    "aliases": [
+      "想情页优化",
+      "detail optimization",
+      "详情夜优化",
+      "优化商品详情页的转化率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "对详情页内容进行优化提升转化"
+  },
+  {
+    "word": "跨店满减",
+    "aliases": [
+      "跨店满减",
+      "cross-store discount",
+      "夸店满减",
+      "跨店累计消费满额立减活动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "平台级跨店铺的满减优惠活动"
+  },
+  {
+    "word": "达人合作",
+    "aliases": [
+      "打人合作",
+      "KOL collaboration",
+      "达人盒作",
+      "网红达人推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "与网红达人商业合作推广"
+  },
+  {
+    "word": "达人矩阵",
+    "aliases": [
+      "打人巨阵",
+      "KOL matrix",
+      "达人据阵",
+      "达人资源池"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "由多位达人组成的推广矩阵"
+  },
+  {
+    "word": "问大家功能",
+    "aliases": [
+      "问大家功弄",
+      "Q&A feature",
+      "问大家工能",
+      "买家互助问答的功能模块"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "让买家和已购用户互相问答的功能"
+  },
+  {
+    "word": "限时折扣",
+    "aliases": [
+      "现实则扣",
+      "flash discount",
+      "线时折扣",
+      "限时降价促销活动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "限时打折的促销策略"
+  },
+  {
+    "word": "限时购",
+    "aliases": [
+      "现实购",
+      "time-limited sale",
+      "线时购",
+      "限时特卖"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "短时间内的限时特价销售"
+  },
+  {
+    "word": "预售",
+    "aliases": [
+      "玉售",
+      "pre-sale",
+      "遇售",
+      "提前预订销售"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商运营",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品未到货前提前销售"
+  },
+  {
+    "word": "DSR",
+    "aliases": [
+      "D S R",
+      "detail seller rating",
+      "卖家服务评分",
+      "店铺动态评分"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "淘宝/天猫店铺卖家服务评分体系"
+  },
+  {
+    "word": "七天螺旋",
+    "aliases": [
+      "七天罗旋",
+      "7-day spiral",
+      "七添螺旋",
+      "七天周期螺旋递增刷量方法"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过一周递增刷单提升权重的操作手法"
+  },
+  {
+    "word": "上首页",
+    "aliases": [
+      "上手页",
+      "top ranking",
+      "上手页",
+      "商品排到搜索结果的首页"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品关键词搜索排名进入第一页"
+  },
+  {
+    "word": "下拉词",
+    "aliases": [
+      "下辣词",
+      "suggest keyword",
+      "下蜡词",
+      "搜索框下拉推荐的关键词"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "平台搜索框下拉提示的关键热词"
+  },
+  {
+    "word": "京东超市",
+    "aliases": [
+      "京动超市",
+      "JD supermarket",
+      "惊东超市",
+      "京东自营线上超市"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "京东自营的线上超市服务"
+  },
+  {
+    "word": "人找货",
+    "aliases": [
+      "认找或",
+      "people to product",
+      "人找火",
+      "用户主动搜索寻找商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "用户通过搜索和浏览主动寻找商品的模式"
+  },
+  {
+    "word": "人群标签",
+    "aliases": [
+      "人裙标千",
+      "audience tag",
+      "人群标前",
+      "用户的人群属性标签"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "描述用户特征和偏好的人群标签"
+  },
+  {
+    "word": "人群标签模型",
+    "aliases": [
+      "人裙标千摸型",
+      "audience tag model",
+      "人群标千模型",
+      "用户标签和商品匹配的算法模型"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "用于用户和商品匹配的标签算法模型"
+  },
+  {
+    "word": "人货匹配",
+    "aliases": [
+      "认或匹配",
+      "product-audience match",
+      "人火匹配",
+      "商品和目标用户精准匹配"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "商品与目标消费人群的精准匹配"
+  },
+  {
+    "word": "人货场",
+    "aliases": [
+      "人或厂",
+      "people product place",
+      "认识场",
+      "零售三要素的统称"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "零售核心三要素：用户/商品/场景"
+  },
+  {
+    "word": "付费流量",
+    "aliases": [
+      "服费流量",
+      "paid traffic",
+      "附费流量",
+      "通过付费广告获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过付费广告投放获得的商业流量"
+  },
+  {
+    "word": "信任电商",
+    "aliases": [
+      "信任店商",
+      "trust ecommerce",
+      "信认电商",
+      "基于信任关系建立的电商"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "基于用户信任和口碑传播的电商模式"
+  },
+  {
+    "word": "免费流量",
+    "aliases": [
+      "免飞流量",
+      "free traffic",
+      "棉费流量",
+      "不花钱自然获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过自然搜索/推荐等免费渠道获得的流量"
+  },
+  {
+    "word": "全域营销",
+    "aliases": [
+      "全与营销",
+      "omni marketing",
+      "全遇营销",
+      "覆盖全渠道的整合营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "覆盖线上线下全渠道的营销策略"
+  },
+  {
+    "word": "公域流量",
+    "aliases": [
+      "公与流亮",
+      "public traffic",
+      "公欲流量",
+      "平台公共分配的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "平台公共流量池中分配的流量"
+  },
+  {
+    "word": "关键词上首页",
+    "aliases": [
+      "关建词上手页",
+      "keyword top",
+      "关键此上首页",
+      "核心关键词排到搜索结果首页"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "让核心关键词的搜索排名进入首页"
+  },
+  {
+    "word": "兴趣电商",
+    "aliases": [
+      "兴去电商",
+      "interest ecommerce",
+      "兴取电商",
+      "基于内容兴趣激发的电商模式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "基于用户兴趣推荐内容的电商模式"
+  },
+  {
+    "word": "内容流量",
+    "aliases": [
+      "内熔流亮",
+      "content traffic",
+      "内荣流亮",
+      "通过内容推广获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过内容营销/达人内容获得的流量"
+  },
+  {
+    "word": "刷信誉",
+    "aliases": [
+      "刷信玉",
+      "reputation farming",
+      "刷性誉",
+      "通过虚假交易提升店铺信誉度"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过虚假交易提高店铺信用等级的行为"
+  },
+  {
+    "word": "刷单",
+    "aliases": [
+      "刷丹",
+      "fake order",
+      "刷担",
+      "虚假下单制造销量假象"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "通过虚假交易提升销量排名的违规行为"
+  },
+  {
+    "word": "刷流量",
+    "aliases": [
+      "刷流亮",
+      "traffic bot",
+      "刷瘤亮",
+      "使用工具刷虚假流量数据"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "使用机器工具刷虚假流量"
+  },
+  {
+    "word": "刷转化",
+    "aliases": [
+      "刷转化",
+      "conversion bot",
+      "刷转花",
+      "刷虚假成交量提升转化率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过虚假订单提升商品的转化率数据"
+  },
+  {
+    "word": "割韭菜",
+    "aliases": [
+      "哥酒菜",
+      "harvesting",
+      "割酒菜",
+      "利用用户购买欲望获取利润"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过营销手段从用户身上获取高额利润"
+  },
+  {
+    "word": "动销率",
+    "aliases": [
+      "动销绿",
+      "sell-through rate",
+      "动小率",
+      "有销售的商品占比指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "有销售记录的商品占全店商品的比例"
+  },
+  {
+    "word": "卡首页",
+    "aliases": [
+      "卡手页",
+      "hold top page",
+      "咔首页",
+      "维持商品在搜索结果首页的排名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "稳定保持商品在搜索首页的排名位置"
+  },
+  {
+    "word": "品效合一",
+    "aliases": [
+      "品笑合一",
+      "brand effect",
+      "品校合一",
+      "品牌曝光和效果转化统筹一体"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "品牌广告和效果广告的统一策略"
+  },
+  {
+    "word": "品质退款率",
+    "aliases": [
+      "品直退款率",
+      "quality return rate",
+      "品质退宽率",
+      "因品质问题退款的比率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "因产品质量问题导致的退款比例"
+  },
+  {
+    "word": "品销合一",
+    "aliases": [
+      "品销合一",
+      "brand and sales",
+      "品小合一",
+      "品牌推广和销售转化相结合"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "品牌推广和效果营销相结合的运营策略"
+  },
+  {
+    "word": "坑产",
+    "aliases": [
+      "坑惨",
+      "slot GMV",
+      "坑残",
+      "该展示位置带来的销售额"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "资源位的产出销售额指标"
+  },
+  {
+    "word": "坑位",
+    "aliases": [
+      "坑位",
+      "slot",
+      "吭位",
+      "平台上的固定展示位置"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "平台限定的展示位置/资源位"
+  },
+  {
+    "word": "坑位产出",
+    "aliases": [
+      "坑位惨出",
+      "slot output",
+      "坑位初出",
+      "资源位能产生的销售额产出"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "每个展示资源位带来的销售额产出"
+  },
+  {
+    "word": "处罚",
+    "aliases": [
+      "出发",
+      "penalty",
+      "楚罚",
+      "平台对违规商家的处罚措施"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "电商平台对违规行为的处罚"
+  },
+  {
+    "word": "天猫超市",
+    "aliases": [
+      "天描超事",
+      "tmall supermarket",
+      "天茂超市",
+      "天猫自营线上超市"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "天猫自营的线上超市服务"
+  },
+  {
+    "word": "客诉率",
+    "aliases": [
+      "课诉率",
+      "complaint rate",
+      "客书率",
+      "客户投诉的比率指标"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "成交订单中产生客户投诉的比例"
+  },
+  {
+    "word": "对接小二",
+    "aliases": [
+      "对接小尔",
+      "liaise with manager",
+      "对届小二",
+      "与平台运营人员沟通对接"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "与电商平台官方运营人员对接工作"
+  },
+  {
+    "word": "封店",
+    "aliases": [
+      "风店",
+      "store ban",
+      "丰店",
+      "店铺被平台永久封禁"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "店铺因严重违规被平台封禁"
+  },
+  {
+    "word": "小二",
+    "aliases": [
+      "小尔",
+      "platform manager",
+      "小2",
+      "平台官方运营管理人员"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "对平台官方运营人员的统称"
+  },
+  {
+    "word": "小时达",
+    "aliases": [
+      "小时答",
+      "hour delivery",
+      "小时打",
+      "下单后一小时送达的服务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "service",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "用户下单后一小时配送到家的服务"
+  },
+  {
+    "word": "差评率",
+    "aliases": [
+      "茶评率",
+      "negative rate",
+      "查评率",
+      "差评占总评价的比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "所有评价中差评所占的比例"
+  },
+  {
+    "word": "店播",
+    "aliases": [
+      "店拨",
+      "store live",
+      "店薄",
+      "品牌商家自己进行的直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "品牌店铺自播的简称"
+  },
+  {
+    "word": "打标",
+    "aliases": [
+      "打标千",
+      "tagging",
+      "打表",
+      "给商品或用户打上标签"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "给店铺/商品/用户打上标签的操作"
+  },
+  {
+    "word": "扣分",
+    "aliases": [
+      "口分",
+      "deduct points",
+      "寇分",
+      "违规后被平台扣除信用分"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "违规后平台对店铺进行扣分处罚"
+  },
+  {
+    "word": "推荐流量",
+    "aliases": [
+      "推渐流亮",
+      "recommended traffic",
+      "腿渐流亮",
+      "通过平台推荐获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "平台通过算法推荐给用户带来的流量"
+  },
+  {
+    "word": "搜索权重",
+    "aliases": [
+      "收索权重",
+      "search weight",
+      "收所权重",
+      "影响商品搜索排名的权重分"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "决定搜索结果排序的核心权重指标"
+  },
+  {
+    "word": "搜索流量",
+    "aliases": [
+      "收索流亮",
+      "search traffic",
+      "收所流亮",
+      "通过搜索进入店铺的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户通过主动搜索关键词进入的流量"
+  },
+  {
+    "word": "擦边",
+    "aliases": [
+      "查边",
+      "rule-breaking",
+      "茶边",
+      "打擦边球的违规操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "利用规则漏洞进行打擦边球的操作"
+  },
+  {
+    "word": "权重",
+    "aliases": [
+      "全重",
+      "weight",
+      "拳重",
+      "店铺/商品的搜索排名权重"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "影响搜索排名的综合评分权重"
+  },
+  {
+    "word": "权重模型",
+    "aliases": [
+      "全重摸型",
+      "weight model",
+      "拳重模型",
+      "平台搜索排名的权重计算模型"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "平台计算搜索排名的权重算法模型"
+  },
+  {
+    "word": "标签",
+    "aliases": [
+      "标千",
+      "tag",
+      "标迁",
+      "商品和用户的人群标签"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "电商系统中用于人群匹配的标签"
+  },
+  {
+    "word": "洗标签",
+    "aliases": [
+      "洗标千",
+      "reset tag",
+      "习标签",
+      "修正被打乱的人群标签"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过运营手段修正不准确的人群标签"
+  },
+  {
+    "word": "活动流量",
+    "aliases": [
+      "或动流亮",
+      "campaign traffic",
+      "火动流亮",
+      "通过参加平台活动获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过参加平台营销活动带来的流量"
+  },
+  {
+    "word": "流量作弊",
+    "aliases": [
+      "流亮作弊",
+      "traffic fraud",
+      "刘亮作弊",
+      "通过非正常手段获取流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过刷量等非正常手段获取虚假流量"
+  },
+  {
+    "word": "流量闭环",
+    "aliases": [
+      "流亮闭换",
+      "traffic loop",
+      "流亮必环",
+      "流量在站内形成转化闭环"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "流量在平台内完成从看到买的完整闭环"
+  },
+  {
+    "word": "淘抢购",
+    "aliases": [
+      "逃抢购",
+      "taobao flash",
+      "掏强购",
+      "淘宝官方限时抢购活动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "淘宝平台限时限量抢购促销活动"
+  },
+  {
+    "word": "淘金币",
+    "aliases": [
+      "逃金币",
+      "taobao coin",
+      "掏金币",
+      "淘宝官方通用积分货币"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "淘宝官方发放的用户积分货币"
+  },
+  {
+    "word": "滞销率",
+    "aliases": [
+      "制销率",
+      "dead stock rate",
+      "志销率",
+      "长期无销售的商品占比"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "长期没有销售的商品占总库存的比例"
+  },
+  {
+    "word": "灰产",
+    "aliases": [
+      "飞产",
+      "gray industry",
+      "辉产",
+      "灰色产业/边缘擦边业务"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "灰色产业/处于监管边缘的业态"
+  },
+  {
+    "word": "物流差评率",
+    "aliases": [
+      "勿流茶评率",
+      "logistics negative",
+      "物瘤差评率",
+      "因物流问题导致的差评比例"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "因物流配送问题产生的差评比例"
+  },
+  {
+    "word": "猜你喜欢",
+    "aliases": [
+      "猜你喜环",
+      "recommendation feed",
+      "猜你西欢",
+      "平台基于算法的个性化商品推荐"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "平台首页个性化商品推荐的信息流"
+  },
+  {
+    "word": "申诉",
+    "aliases": [
+      "申术",
+      "appeal",
+      "申速",
+      "对处罚结果提出申诉"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商家对平台处罚提出申诉的行为"
+  },
+  {
+    "word": "白搜",
+    "aliases": [
+      "白收",
+      "white hat search",
+      "百搜",
+      "正规合法地提升搜索排名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "通过正规手段优化搜索排名的策略"
+  },
+  {
+    "word": "直播流量",
+    "aliases": [
+      "直拨流亮",
+      "live traffic",
+      "直拔流亮",
+      "通过直播入口获得的流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过直播间/直播入口获得的流量"
+  },
+  {
+    "word": "空包",
+    "aliases": [
+      "空报",
+      "empty package",
+      "控包",
+      "发出空包裹的虚假发货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "只发空快递单号不发实物的违规操作"
+  },
+  {
+    "word": "站内流量",
+    "aliases": [
+      "占内流亮",
+      "on-site traffic",
+      "站内刘亮",
+      "平台内部的流量来源"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "在电商平台内部来源的流量"
+  },
+  {
+    "word": "站外流量",
+    "aliases": [
+      "占外流亮",
+      "off-site traffic",
+      "站外刘亮",
+      "平台外部的引流流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "从平台外部导入的流量"
+  },
+  {
+    "word": "红海词",
+    "aliases": [
+      "红海瓷",
+      "red sea keyword",
+      "红海此",
+      "竞争激烈的热门大词"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "竞争非常激烈的大流量关键词"
+  },
+  {
+    "word": "聚划算",
+    "aliases": [
+      "具划算",
+      "juhuasuan",
+      "聚话算",
+      "阿里巴巴团购促销平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴集团团购促销平台"
+  },
+  {
+    "word": "自然流量",
+    "aliases": [
+      "自燃流量",
+      "organic traffic",
+      "自染流量",
+      "不需付费的自然搜索结果流量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "不通过付费推广的自然搜索和推荐流量"
+  },
+  {
+    "word": "蓝海词",
+    "aliases": [
+      "蓝海瓷",
+      "blue sea keyword",
+      "蓝海此",
+      "竞争较小的高转化词"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "竞争度低但转化率高的潜力关键词"
+  },
+  {
+    "word": "虚假交易",
+    "aliases": [
+      "需假交意",
+      "fake transaction",
+      "需假交一",
+      "以虚假目的进行的交易行为"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "并无真实交易目的的虚假买卖行为"
+  },
+  {
+    "word": "虚假发货",
+    "aliases": [
+      "需假发货",
+      "fake shipment",
+      "需假发或",
+      "未实际发货但标记已发货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "没有实际发货但标记已发货的违规行为"
+  },
+  {
+    "word": "螺旋起号",
+    "aliases": [
+      "罗旋起号",
+      "spiral boosting",
+      "裸旋起号",
+      "通过递增销量快速提升权重的方法"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过阶梯式递增销量来快速拉权重的玩法"
+  },
+  {
+    "word": "补单",
+    "aliases": [
+      "不单",
+      "supplement order",
+      "卜单",
+      "补充刷单维持转化率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "为维持转化率而进行的补充刷单"
+  },
+  {
+    "word": "货找人",
+    "aliases": [
+      "或找人",
+      "product to people",
+      "货找认",
+      "通过推荐让商品找到目标用户"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过算法推荐让商品匹配到潜在用户的模式"
+  },
+  {
+    "word": "资源位",
+    "aliases": [
+      "资原为",
+      "resource slot",
+      "资原喂",
+      "平台上的重点展示位置"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "平台分配的重点曝光展示位置"
+  },
+  {
+    "word": "转化漏斗",
+    "aliases": [
+      "转花漏斗",
+      "conversion funnel",
+      "转换漏斗",
+      "用户从浏览到购买的转化模型"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "描述用户各环节转化的分析模型"
+  },
+  {
+    "word": "转化率优化",
+    "aliases": [
+      "转花率优化",
+      "CRO",
+      "转花率油化",
+      "优化提升商品转化率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过优化页面和策略提升购买转化率"
+  },
+  {
+    "word": "达播",
+    "aliases": [
+      "达拨",
+      "KOL live",
+      "打播",
+      "达人主播进行的直播带货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "达人主播带货的直播形式"
+  },
+  {
+    "word": "违规",
+    "aliases": [
+      "为规",
+      "violation",
+      "伟规",
+      "违反平台规则的行为"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "违反电商平台运营规则的行为"
+  },
+  {
+    "word": "钻展",
+    "aliases": [
+      "占展",
+      "drill展",
+      "砖展",
+      "淘宝钻石展位展示广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "淘宝天猫钻石展位展示广告工具"
+  },
+  {
+    "word": "降权",
+    "aliases": [
+      "将权",
+      "penalty",
+      "讲权",
+      "店铺因违规被降低搜索权重"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "店铺因违规导致搜索权重被降低"
+  },
+  {
+    "word": "隐形降权",
+    "aliases": [
+      "隐刑降权",
+      "hidden penalty",
+      "隐型降权",
+      "被偷偷降低权重不易察觉"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "被平台隐性降低搜索权重的情况"
+  },
+  {
+    "word": "黑五类",
+    "aliases": [
+      "黑五累",
+      "black five",
+      "嘿五类",
+      "保健品/医疗器械等特殊品类"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "对保健品/医美/器械等高利润品的俗称"
+  },
+  {
+    "word": "黑搜",
+    "aliases": [
+      "黑收",
+      "black hat search",
+      "嘿搜",
+      "通过违规手段提升搜索排名"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "电商黑话",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过非正规手段提升搜索排名的操作"
+  },
+  {
+    "word": "上链接",
+    "aliases": [
+      "上连届",
+      "add link",
+      "上廉接",
+      "在直播间上架商品购买链接"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "在直播间挂上商品购买链接的操作"
+  },
+  {
+    "word": "下播",
+    "aliases": [
+      "下拨",
+      "end live",
+      "夏播",
+      "结束当前直播的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主播结束此次直播"
+  },
+  {
+    "word": "下链接",
+    "aliases": [
+      "下连届",
+      "remove link",
+      "下廉接",
+      "将商品购买链接从直播间下架"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "将商品链接从直播间移除的操作"
+  },
+  {
+    "word": "中控",
+    "aliases": [
+      "众控",
+      "console operator",
+      "终控",
+      "直播后台操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "操作直播后台系统的工作人员"
+  },
+  {
+    "word": "主播",
+    "aliases": [
+      "主拨",
+      "streamer",
+      "住播",
+      "直播主持"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.9,
+    "description": "直播带货的主持人"
+  },
+  {
+    "word": "主播话术",
+    "aliases": [
+      "主拨话术",
+      "host script",
+      "住拨话术",
+      "主播的直播讲解技巧和用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主播在直播中使用的讲解和引导话术"
+  },
+  {
+    "word": "助播",
+    "aliases": [
+      "住拨",
+      "co-host",
+      "助播",
+      "直播助理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "辅助主播带货的助理"
+  },
+  {
+    "word": "吃播",
+    "aliases": [
+      "吃拨",
+      "mukbang",
+      "痴播",
+      "直播吃东西展示食品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "genre",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "以吃东西为主要内容的直播形式"
+  },
+  {
+    "word": "售罄",
+    "aliases": [
+      "受庆",
+      "sold out",
+      "受请",
+      "商品库存已全部售完"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "商品全部卖完的状态"
+  },
+  {
+    "word": "场控",
+    "aliases": [
+      "厂控",
+      "stage controller",
+      "长控",
+      "直播现场控制"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "控制直播流程和节奏的工作人员"
+  },
+  {
+    "word": "娱乐播",
+    "aliases": [
+      "于乐播",
+      "entertainment",
+      "娱了播",
+      "才艺娱乐直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "genre",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "才艺展示和娱乐直播内容"
+  },
+  {
+    "word": "小时榜",
+    "aliases": [
+      "小时榜",
+      "hourly rank",
+      "小识榜",
+      "每小时更新的实时排名榜单"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "平台按小时刷新的热度和打赏榜单"
+  },
+  {
+    "word": "小黄车",
+    "aliases": [
+      "小黄撤",
+      "shopping cart",
+      "小皇车",
+      "抖音商品购物车"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "抖音直播间的商品购物车图标"
+  },
+  {
+    "word": "屏蔽",
+    "aliases": [
+      "平蔽",
+      "block",
+      "评蔽",
+      "屏蔽不当评论"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "屏蔽或隐藏不合适的评论内容"
+  },
+  {
+    "word": "带货榜",
+    "aliases": [
+      "带火榜",
+      "sales rank",
+      "带或榜",
+      "主播带货销售额的排名榜单"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "根据带货销售额排名的榜单"
+  },
+  {
+    "word": "带货话术",
+    "aliases": [
+      "带火花术",
+      "sales script",
+      "带货话述",
+      "商品讲解话术"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "直播中引导成交的话术技巧"
+  },
+  {
+    "word": "库存显示",
+    "aliases": [
+      "裤存显示",
+      "stock display",
+      "库村显示",
+      "展示商品的实时库存数量"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "直播界面中显示的实时库存数据"
+  },
+  {
+    "word": "库存紧张",
+    "aliases": [
+      "裤存紧张",
+      "low stock",
+      "库村紧张",
+      "库存数量少制造的紧迫感"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "提示库存不多来催促下单的策略"
+  },
+  {
+    "word": "延长发货",
+    "aliases": [
+      "延长发或",
+      "delay shipping",
+      "盐长发或",
+      "延长商品发货时间的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.7,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "对预售商品的发货时间进行延长"
+  },
+  {
+    "word": "开播",
+    "aliases": [
+      "开拨",
+      "start live",
+      "凯播",
+      "开始一场直播的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主播开始进行直播"
+  },
+  {
+    "word": "感谢关注",
+    "aliases": [
+      "干谢关主",
+      "thank follow",
+      "干泄关注",
+      "感谢用户关注账号的互动用语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "感谢用户关注直播间/账号的用语"
+  },
+  {
+    "word": "憋单",
+    "aliases": [
+      "鳖单",
+      "hold order",
+      "别单",
+      "延迟上架制造紧迫感"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "故意延迟上架刺激消费的策略"
+  },
+  {
+    "word": "拉流",
+    "aliases": [
+      "拉瘤",
+      "pull stream",
+      "啦流",
+      "将流量引入直播间"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "付费或免费获取直播间流量的操作"
+  },
+  {
+    "word": "挂车",
+    "aliases": [
+      "挂撤",
+      "add to cart",
+      "卦车",
+      "将商品挂到直播间销售"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "主播在直播间添加商品链接"
+  },
+  {
+    "word": "排品",
+    "aliases": [
+      "牌品",
+      "product scheduling",
+      "拍品",
+      "安排商品出场的顺序"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "安排直播商品讲解顺序的流程"
+  },
+  {
+    "word": "控评",
+    "aliases": [
+      "空评",
+      "comment control",
+      "空屏",
+      "管理直播间评论内容"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "对直播间评论进行管理控制"
+  },
+  {
+    "word": "推流",
+    "aliases": [
+      "推瘤",
+      "push stream",
+      "腿流",
+      "平台向用户推送直播间"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "平台算法向用户推荐直播间"
+  },
+  {
+    "word": "改价",
+    "aliases": [
+      "改加",
+      "change price",
+      "该价",
+      "修改商品价格的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "在直播中调整商品价格的操作"
+  },
+  {
+    "word": "放单",
+    "aliases": [
+      "方单",
+      "release order",
+      "芳单",
+      "开始上架商品销售"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "上架商品让用户下单购买"
+  },
+  {
+    "word": "榜单",
+    "aliases": [
+      "绑单",
+      "ranking list",
+      "邦单",
+      "实时排名的榜单"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "直播间打赏/互动等排名的榜单"
+  },
+  {
+    "word": "橱窗",
+    "aliases": [
+      "出窗",
+      "showcase",
+      "橱创",
+      "个人主页商品展示区"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "创作者主页的商品展示橱窗"
+  },
+  {
+    "word": "欢迎语",
+    "aliases": [
+      "欢银语",
+      "welcome message",
+      "换营业",
+      "新用户进入时的自动问候语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "直播欢迎词和自动欢迎语设置"
+  },
+  {
+    "word": "灯牌",
+    "aliases": [
+      "灯排",
+      "fan badge",
+      "等牌",
+      "直播间的粉丝勋章/身份灯牌"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "粉丝加入直播团的专属身份灯牌"
+  },
+  {
+    "word": "留人话术",
+    "aliases": [
+      "刘人话术",
+      "retention script",
+      "瘤人话术",
+      "留存话术"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "让观众留在直播间的话术技巧"
+  },
+  {
+    "word": "直播切片",
+    "aliases": [
+      "直拨且片",
+      "live clip",
+      "直拨切篇",
+      "将直播精彩片段剪辑成短视频"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "将直播中的精彩内容剪辑成二次传播短视频"
+  },
+  {
+    "word": "直播间",
+    "aliases": [
+      "直播见",
+      "live room",
+      "直播室",
+      "直播间带货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "直播带货房间",
+    "category": "专业层"
+  },
+  {
+    "word": "直播间人气",
+    "aliases": [
+      "直拨间人气",
+      "live popularity",
+      "直播人气",
+      "在线人数"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "直播间同时在线观看人数"
+  },
+  {
+    "word": "直播间停留",
+    "aliases": [
+      "直拨间停留",
+      "dwell time",
+      "直播廷留",
+      "观看时长"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "观众在直播间的平均停留时长"
+  },
+  {
+    "word": "直播间灯光",
+    "aliases": [
+      "直拨间灯光",
+      "live lighting",
+      "直拨间灯广",
+      "直播间照明方案和布光"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "直播间灯光布置以确保画面质感"
+  },
+  {
+    "word": "直播间福利",
+    "aliases": [
+      "直拨间福利",
+      "live giveaway",
+      "直播见福利",
+      "直播奖品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "直播间发放给观众的福利奖品"
+  },
+  {
+    "word": "直播间装修",
+    "aliases": [
+      "直拨间装休",
+      "live room design",
+      "直拨间壮修",
+      "对直播间背景和布局进行设计"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "对直播间的视觉和布局进行设计美化"
+  },
+  {
+    "word": "直播间音乐",
+    "aliases": [
+      "直拨间因乐",
+      "live music",
+      "直拨间音乐",
+      "直播间背景音乐的选择"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "直播间播放的背景音乐营造氛围"
+  },
+  {
+    "word": "直播预告",
+    "aliases": [
+      "直拨预告",
+      "live preview",
+      "直拨于告",
+      "提前发布直播时间内容的预告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "提前发布直播时间和内容的通知"
+  },
+  {
+    "word": "直播预热",
+    "aliases": [
+      "直拨预热",
+      "pre-live",
+      "直拨玉热",
+      "直播开始前的预告宣传工作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "在直播开始前进行的预告和预热推广"
+  },
+  {
+    "word": "知识播",
+    "aliases": [
+      "知是播",
+      "knowledge live",
+      "知识拨",
+      "知识分享直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "genre",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "知识科普类直播内容"
+  },
+  {
+    "word": "福袋",
+    "aliases": [
+      "副袋",
+      "lucky bag",
+      "富袋",
+      "直播间随机抽奖礼品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主播发放的随机抽奖礼品袋"
+  },
+  {
+    "word": "秒没",
+    "aliases": [
+      "秒没",
+      "sold out fast",
+      "秒煤",
+      "商品上架后极快被抢光"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "jargon",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "商品上架后瞬间被抢购一空"
+  },
+  {
+    "word": "穿搭播",
+    "aliases": [
+      "穿搭播",
+      "fashion live",
+      "川搭播",
+      "搭配直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "genre",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "穿搭时尚类直播内容"
+  },
+  {
+    "word": "粉丝团",
+    "aliases": [
+      "分丝坛",
+      "fan club",
+      "分丝团",
+      "直播间的粉丝团/粉丝群"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "观众加入成为主播的粉丝团成员"
+  },
+  {
+    "word": "粉丝团等级",
+    "aliases": [
+      "分丝坛等及",
+      "fan level",
+      "分丝团等急",
+      "粉丝团成员的等级体系"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "粉丝团成员根据互动量划分的等级"
+  },
+  {
+    "word": "美妆播",
+    "aliases": [
+      "每妆播",
+      "beauty live",
+      "枚妆播",
+      "化妆直播"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "genre",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "美妆护肤类直播内容"
+  },
+  {
+    "word": "补库存",
+    "aliases": [
+      "不裤存",
+      "restock",
+      "不哭存",
+      "补充商品库存数量的操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "为已售罄的商品补充库存"
+  },
+  {
+    "word": "讲解",
+    "aliases": [
+      "讲结",
+      "product talk",
+      "奖解",
+      "主播介绍商品的过程"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "主播对商品的详细介绍讲解"
+  },
+  {
+    "word": "试用",
+    "aliases": [
+      "失用",
+      "demo",
+      "食用",
+      "主播现场使用展示商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "直播中实际使用展示商品效果"
+  },
+  {
+    "word": "试穿",
+    "aliases": [
+      "失穿",
+      "try on",
+      "是穿",
+      "主播现场试穿展示商品"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "直播中现场试穿服装展示效果"
+  },
+  {
+    "word": "购物车",
+    "aliases": [
+      "购勿车",
+      "shopping cart",
+      "购无车",
+      "商品购买入口"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "用于添加和结算商品的购物车功能"
+  },
+  {
+    "word": "运营",
+    "aliases": [
+      "运因",
+      "operator",
+      "运赢",
+      "直播运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "role",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "直播策划和运营工作人员"
+  },
+  {
+    "word": "逼单",
+    "aliases": [
+      "必单",
+      "urge order",
+      "闭单",
+      "促使用户尽快下单的话术"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "催促观众下单购买的策略话术"
+  },
+  {
+    "word": "逼单话术",
+    "aliases": [
+      "必单话术",
+      "urgency script",
+      "闭单话术",
+      "催单话术"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "直播电商",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "促使用户尽快下单的话术技巧"
+  },
+  {
+    "word": "KOC",
+    "aliases": [
+      "K O C",
+      "key opinion consumer",
+      "关键消费者",
+      "素人种草"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "关键意见消费者",
+    "category": "专业层"
+  },
+  {
+    "word": "场景营销",
+    "aliases": [
+      "场景营销",
+      "scene marketing",
+      "场景化",
+      "场景运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "基于使用场景的营销策略",
+    "category": "专业层"
+  },
+  {
+    "word": "拔草",
+    "aliases": [
+      "八草",
+      "unseeding",
+      "劝退",
+      "避雷"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "打消购买欲望",
+    "category": "专业层"
+  },
+  {
+    "word": "种草",
+    "aliases": [
+      "种操",
+      "seeding",
+      "安利",
+      "推荐"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "内容推荐引导消费",
+    "category": "专业层"
+  },
+  {
+    "word": "达人带货",
+    "aliases": [
+      "达人带火",
+      "KOL带货",
+      "网红带货",
+      "直播带货"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "网红达人销售模式",
+    "category": "专业层"
+  },
+  {
+    "word": "CPA",
+    "aliases": [
+      "C P A",
+      "cost per action",
+      "按行为付费",
+      "转化成本"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "按用户行动付费的广告模式"
+  },
+  {
+    "word": "CPC",
+    "aliases": [
+      "C P C",
+      "cost per click",
+      "按点击付费",
+      "点击成本"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "按点击次数付费的广告模式"
+  },
+  {
+    "word": "CPM",
+    "aliases": [
+      "C P M",
+      "cost per mille",
+      "按千次展示付费",
+      "千次曝光成本"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "按千次曝光付费的广告模式"
+  },
+  {
+    "word": "CPS",
+    "aliases": [
+      "C P S",
+      "cost per sale",
+      "按销售分成",
+      "佣金分成"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "按实际销售额分成付费的模式"
+  },
+  {
+    "word": "DMP",
+    "aliases": [
+      "D M P",
+      "data management platform",
+      "数据管理平台",
+      "人群数据"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "数据管理平台用于人群管理"
+  },
+  {
+    "word": "KOL营销",
+    "aliases": [
+      "K O L营销",
+      "KOL marketing",
+      "KOL营销",
+      "达人营销推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "通过关键意见领袖进行的营销推广"
+  },
+  {
+    "word": "万相台",
+    "aliases": [
+      "万象台",
+      "Wanxiang platform",
+      "万向台",
+      "阿里妈妈推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴全域推广营销平台"
+  },
+  {
+    "word": "事件营销",
+    "aliases": [
+      "事建营销",
+      "event marketing",
+      "事件营销",
+      "通过策划事件获取关注的方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过策划有话题性的事件进行的营销"
+  },
+  {
+    "word": "人群包",
+    "aliases": [
+      "人群包",
+      "audience pack",
+      "人裙包",
+      "定向人群数据包"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "预先定义好的定向人群标签组合"
+  },
+  {
+    "word": "会员营销",
+    "aliases": [
+      "或员营销",
+      "membership marketing",
+      "会员赢销",
+      "通过会员体系进行的精准营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "基于会员体系和积分体系的营销策略"
+  },
+  {
+    "word": "公域引流",
+    "aliases": [
+      "公与引瘤",
+      "public traffic引流",
+      "公与引流",
+      "从公域平台获取流量的策略"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "从平台公域流量池获取用户流量的策略"
+  },
+  {
+    "word": "内容营销",
+    "aliases": [
+      "内熔营销",
+      "content marketing",
+      "内荣营销",
+      "通过优质内容吸引转化的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "以内容价值驱动用户转化的营销策略"
+  },
+  {
+    "word": "出价",
+    "aliases": [
+      "除价",
+      "bid",
+      "初价",
+      "广告竞价出价操作"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "广告投放的出价设定"
+  },
+  {
+    "word": "口碑营销",
+    "aliases": [
+      "口杯营销",
+      "word-of-mouth",
+      "口贝营销",
+      "通过用户口碑传播的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "依靠用户自发口碑传播的营销方式"
+  },
+  {
+    "word": "品牌专区",
+    "aliases": [
+      "品排专区",
+      "brand zone",
+      "瓶牌专区",
+      "品牌搜索专区"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "product",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "搜索结果中的品牌专属展示区域"
+  },
+  {
+    "word": "品牌广告",
+    "aliases": [
+      "品派广告",
+      "brand ad",
+      "平牌广告",
+      "品牌宣传"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "以提升品牌认知为目的的广告"
+  },
+  {
+    "word": "定向",
+    "aliases": [
+      "定相",
+      "targeting",
+      "定像",
+      "广告受众精准定向"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "针对特定人群的广告定向投放"
+  },
+  {
+    "word": "巨量千川",
+    "aliases": [
+      "巨量千穿",
+      "Qianchuan",
+      "举量千川",
+      "抖音电商广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "抖音电商广告投放平台"
+  },
+  {
+    "word": "广点通",
+    "aliases": [
+      "广店通",
+      "Tencent Ads",
+      "广点同",
+      "腾讯广告平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "腾讯社交广告投放平台"
+  },
+  {
+    "word": "引力魔方",
+    "aliases": [
+      "引立魔方",
+      "gravity cube",
+      "引利魔方",
+      "阿里展示广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴信息流展示广告工具"
+  },
+  {
+    "word": "投放",
+    "aliases": [
+      "头放",
+      "delivery",
+      "投方",
+      "广告投放执行"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "广告从设定到展示的投放过程"
+  },
+  {
+    "word": "搜索广告",
+    "aliases": [
+      "收索广告",
+      "search ad",
+      "收所广告",
+      "关键词广告"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "在搜索结果页面投放的广告"
+  },
+  {
+    "word": "效果广告",
+    "aliases": [
+      "效果广告",
+      "performance ad",
+      "校果广告",
+      "效果推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "以实际转化效果计费的广告"
+  },
+  {
+    "word": "数据银行",
+    "aliases": [
+      "数据银行",
+      "data bank",
+      "数据银行",
+      "消费者数据"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "阿里巴巴品牌消费者数据管理平台"
+  },
+  {
+    "word": "热词",
+    "aliases": [
+      "热瓷",
+      "hot keyword",
+      "惹词",
+      "高搜索量热门关键词"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "搜索量较高的热门关键词"
+  },
+  {
+    "word": "生意参谋",
+    "aliases": [
+      "生意参摸",
+      "business advisor",
+      "声音参谋",
+      "淘宝数据分析工具"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "淘宝/天猫官方数据分析工具"
+  },
+  {
+    "word": "直播营销",
+    "aliases": [
+      "直拨营销",
+      "live marketing",
+      "直拔营销",
+      "通过直播形式进行的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "利用直播互动特性进行的营销推广"
+  },
+  {
+    "word": "短信营销",
+    "aliases": [
+      "段信营销",
+      "SMS marketing",
+      "端信营销",
+      "通过短信触达用户的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过短信发送促销信息的营销手段"
+  },
+  {
+    "word": "短视频营销",
+    "aliases": [
+      "段视屏营销",
+      "short video marketing",
+      "段视频营销",
+      "通过短视频内容进行的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "利用短视频内容形式进行的营销推广"
+  },
+  {
+    "word": "社群营销",
+    "aliases": [
+      "社却营销",
+      "community marketing",
+      "社曲营销",
+      "通过社群渠道进行的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过社群/群组进行的精准营销"
+  },
+  {
+    "word": "私域营销",
+    "aliases": [
+      "私与营销",
+      "private domain marketing",
+      "丝域营销",
+      "在自有私域池中的营销策略"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "在品牌私域流量池中进行的精准营销"
+  },
+  {
+    "word": "种草营销",
+    "aliases": [
+      "中草营销",
+      "seeding marketing",
+      "重草营销",
+      "通过推荐培育购买意向的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过内容推荐培育消费者购买意向的营销方式"
+  },
+  {
+    "word": "积分营销",
+    "aliases": [
+      "积分营销",
+      "points marketing",
+      "几份营销",
+      "通过积分激励用户行为的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "利用积分发放和兑换促进用户活跃的营销"
+  },
+  {
+    "word": "竞价",
+    "aliases": [
+      "竟价",
+      "bidding",
+      "进价",
+      "广告位竞价出价"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "process",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "广告位的竞价排名机制"
+  },
+  {
+    "word": "粉丝通",
+    "aliases": [
+      "分丝通",
+      "Weibo Ads",
+      "芬丝通",
+      "微博广告平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "新浪微博广告投放系统"
+  },
+  {
+    "word": "联名营销",
+    "aliases": [
+      "年名营销",
+      "co-branding",
+      "连名营销",
+      "两个品牌联合出品的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "品牌之间推出联名款的合作营销"
+  },
+  {
+    "word": "裂变营销",
+    "aliases": [
+      "列变营销",
+      "viral marketing",
+      "列便营销",
+      "通过用户社交传播的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "利用用户社交关系链实现裂变传播的营销"
+  },
+  {
+    "word": "话题营销",
+    "aliases": [
+      "话题营销",
+      "topic marketing",
+      "话提营销",
+      "通过制造话题引发讨论的营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过制造热门话题引发讨论传播的营销"
+  },
+  {
+    "word": "跨界营销",
+    "aliases": [
+      "跨介营销",
+      "cross marketing",
+      "夸界营销",
+      "不同领域品牌合作营销"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "不同行业/领域品牌之间的联合营销"
+  },
+  {
+    "word": "达摩盘",
+    "aliases": [
+      "达莫盘",
+      "Alibaba DMP",
+      "达蘑盘",
+      "阿里数据平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "阿里巴巴达摩盘数据管理平台"
+  },
+  {
+    "word": "邮件营销",
+    "aliases": [
+      "由件营销",
+      "email marketing",
+      "右件营销",
+      "通过邮件触达用户的营销方式"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "通过电子邮件发送推广信息的营销"
+  },
+  {
+    "word": "长尾词",
+    "aliases": [
+      "长尾词",
+      "long-tail keyword",
+      "长伟词",
+      "搜索量小但精准的词语"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "搜索量低但转化率高的精准关键词"
+  },
+  {
+    "word": "预算",
+    "aliases": [
+      "玉算",
+      "budget",
+      "欲算",
+      "广告投放预算金额"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "广告投放的计划预算"
+  },
+  {
+    "word": "鲁班",
+    "aliases": [
+      "路班",
+      "Luban",
+      "炉班",
+      "抖音商品推广"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "营销推广",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "tool",
+    "language": "zh",
+    "frequency": 0.65,
+    "description": "抖音商品推广广告工具"
+  },
+  {
+    "word": "A/B测试",
+    "aliases": [
+      "AB测试",
+      "A B test",
+      "ab testing",
+      "对比测试"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营方法",
+    "weight": 0.85,
+    "type": "method",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "对比实验方法",
+    "category": "专业层"
+  },
+  {
+    "word": "冷启动",
+    "aliases": [
+      "冷起冻",
+      "cold start",
+      "冷气动",
+      "初期启动"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营方法",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "从零启动项目",
+    "category": "专业层"
+  },
+  {
+    "word": "复盘",
+    "aliases": [
+      "复般",
+      "retrospective",
+      "项目复盘",
+      "总结回顾"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营方法",
+    "weight": 0.8,
+    "type": "method",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "项目总结回顾",
+    "category": "专业层"
+  },
+  {
+    "word": "AARRR模型",
+    "aliases": [
+      "A A R R R摸型",
+      "海盗模型",
+      "aarrr",
+      "用户增长模型"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "用户生命周期海盗增长模型"
+  },
+  {
+    "word": "ARPPU",
+    "aliases": [
+      "A R P P U",
+      "avg rev per paying user",
+      "付费用户均收",
+      "付费人均"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "每付费用户平均收入"
+  },
+  {
+    "word": "CTR",
+    "aliases": [
+      "C T R",
+      "click through rate",
+      "点击率",
+      "点击通过率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "广告/链接的点击率"
+  },
+  {
+    "word": "CVR",
+    "aliases": [
+      "C V R",
+      "conversion rate",
+      "转化率",
+      "成交率"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "用户从点击到成交的转化率"
+  },
+  {
+    "word": "KOC矩阵",
+    "aliases": [
+      "K O C巨阵",
+      "KOC matrix",
+      "KOC据阵",
+      "素人种草矩阵"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "大量素人KOC组成的推广矩阵"
+  },
+  {
+    "word": "PV",
+    "aliases": [
+      "P V",
+      "page view",
+      "页面浏览量",
+      "访问次数"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "页面被浏览的总次数"
+  },
+  {
+    "word": "RFM模型",
+    "aliases": [
+      "R F M摸型",
+      "rfm模型",
+      "客户价值模型",
+      "RFM分析"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "基于最近消费/频率/金额的客户模型"
+  },
+  {
+    "word": "UV",
+    "aliases": [
+      "U V",
+      "unique visitor",
+      "独立访客",
+      "访客数"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "metric",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "独立访客数"
+  },
+  {
+    "word": "企业微信",
+    "aliases": [
+      "起业微信",
+      "enterprise wechat",
+      "企业威心",
+      "企业微信平台"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "腾讯企业级社交管理工具"
+  },
+  {
+    "word": "会员体系",
+    "aliases": [
+      "会员体西",
+      "membership system",
+      "会员体细",
+      "会员等级"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "会员等级和权益体系设计"
+  },
+  {
+    "word": "全渠道运营",
+    "aliases": [
+      "全渠到运营",
+      "omni-channel",
+      "全渠道打里",
+      "全域运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "覆盖所有渠道的综合运营策略"
+  },
+  {
+    "word": "全链路营销",
+    "aliases": [
+      "全连路营销",
+      "full-link marketing",
+      "全联路营销",
+      "全链路追踪"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "覆盖用户全接触点的完整营销链路"
+  },
+  {
+    "word": "公域运营",
+    "aliases": [
+      "公与运营",
+      "public domain operation",
+      "公域打理",
+      "平台运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "在平台公域流量中的运营策略"
+  },
+  {
+    "word": "内容运营",
+    "aliases": [
+      "内溶运营",
+      "content operation",
+      "蜡容运营",
+      "内容策划"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "通过内容吸引和维护用户的运营"
+  },
+  {
+    "word": "分层运营",
+    "aliases": [
+      "分曾运营",
+      "tiered operation",
+      "分乘运营",
+      "按用户分层运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "根据用户价值分层进行差异化运营"
+  },
+  {
+    "word": "召回",
+    "aliases": [
+      "照回",
+      "recall",
+      "招回",
+      "流失唤醒"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "唤醒已流失的用户重新使用"
+  },
+  {
+    "word": "场景化营销",
+    "aliases": [
+      "厂景化营销",
+      "scene marketing",
+      "长景观营销",
+      "场景化运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "基于具体使用场景的营销策略"
+  },
+  {
+    "word": "微信生态",
+    "aliases": [
+      "威信生态",
+      "wechat ecosystem",
+      "微信生太",
+      "微信全域生态"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "以微信为中心的商业生态系统"
+  },
+  {
+    "word": "情感化运营",
+    "aliases": [
+      "请感化运营",
+      "emotional operation",
+      "情干化运营",
+      "情感维系"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过情感共鸣维系用户关系的策略"
+  },
+  {
+    "word": "成长值",
+    "aliases": [
+      "曾长值",
+      "growth value",
+      "成常值",
+      "经验值"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户等级成长的量化数值"
+  },
+  {
+    "word": "数据驱动运营",
+    "aliases": [
+      "数据取动运营",
+      "data-driven",
+      "数据渠动",
+      "数据化运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "以数据分析为基础指导运营决策"
+  },
+  {
+    "word": "智能化运营",
+    "aliases": [
+      "智能画运营",
+      "intelligent operation",
+      "智能花运营",
+      "AI运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "利用AI技术实现自动化智能运营"
+  },
+  {
+    "word": "标签化运营",
+    "aliases": [
+      "标千化运营",
+      "tag-based operation",
+      "标前化运营",
+      "标签管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过用户标签进行精准定向运营"
+  },
+  {
+    "word": "活动运营",
+    "aliases": [
+      "或动运营",
+      "campaign operation",
+      "火动运营",
+      "促销运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "策划执行营销活动的运营工作"
+  },
+  {
+    "word": "活跃度",
+    "aliases": [
+      "或用度",
+      "activity level",
+      "或越度",
+      "用户活跃"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "metric",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户参与和活跃程度的指标"
+  },
+  {
+    "word": "游戏化运营",
+    "aliases": [
+      "游西化运营",
+      "gamification",
+      "游文化运营",
+      "游戏化策略"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过游戏机制提升用户参与的运营策略"
+  },
+  {
+    "word": "漏斗模型",
+    "aliases": [
+      "漏斗模型",
+      "funnel model",
+      "露斗摸型",
+      "转化漏斗"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户各环节转化的漏斗分析模型"
+  },
+  {
+    "word": "用户分层",
+    "aliases": [
+      "用户分曾",
+      "user tiering",
+      "用户分乘",
+      "客户分层"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "根据价值和行为对用户分层管理"
+  },
+  {
+    "word": "用户旅程",
+    "aliases": [
+      "用户旅呈",
+      "user journey",
+      "用户旅城",
+      "用户使用路径"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "用户从了解到购买的全过程路径"
+  },
+  {
+    "word": "用户生命周期",
+    "aliases": [
+      "用户生明周期",
+      "user lifecycle",
+      "用户生民周期",
+      "用户全周期"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "用户从接触到流失的完整时间周期"
+  },
+  {
+    "word": "用户运营",
+    "aliases": [
+      "用户运因",
+      "user operation",
+      "客户运营",
+      "会员运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "管理和维护用户关系的运营"
+  },
+  {
+    "word": "社群裂变",
+    "aliases": [
+      "社却列变",
+      "community fission",
+      "社却列变",
+      "社群用户裂变增长"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "technique",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "通过社群关系链实现用户裂变增长"
+  },
+  {
+    "word": "私域流量池",
+    "aliases": [
+      "私与流亮迟",
+      "private traffic pool",
+      "丝域流量池",
+      "私域用户池"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "品牌自主可控的用户流量池"
+  },
+  {
+    "word": "私域运营",
+    "aliases": [
+      "私与运营",
+      "private domain operation",
+      "私与运营",
+      "私域管理"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "自有用户池的精细化运营"
+  },
+  {
+    "word": "积分体系",
+    "aliases": [
+      "积分体西",
+      "points system",
+      "积分提细",
+      "积分商城"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "通过积分激励用户行为的管理体系"
+  },
+  {
+    "word": "等级体系",
+    "aliases": [
+      "等急体系",
+      "tier system",
+      "等级体细",
+      "等级制度"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.75,
+    "description": "用户等级划分和权益分配体系"
+  },
+  {
+    "word": "精细化运营",
+    "aliases": [
+      "精心化运营",
+      "precision operation",
+      "精细化运因",
+      "细分化运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.8,
+    "description": "针对不同用户做差异化运营"
+  },
+  {
+    "word": "自动化运营",
+    "aliases": [
+      "自动画运营",
+      "automated operation",
+      "自冻化运营",
+      "自动运营"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "通过自动化工具执行运营任务的策略"
+  },
+  {
+    "word": "触点营销",
+    "aliases": [
+      "处点营销",
+      "touchpoint",
+      "畜点营销",
+      "用户接触点策略"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.7,
+    "description": "在用户触点进行精准营销的策略"
+  },
+  {
+    "word": "转化",
+    "aliases": [
+      "转载",
+      "conversion",
+      "转画",
+      "成交转化"
+    ],
+    "industry": "电商/运营",
+    "sub_industry": "运营策略",
+    "category": "专业层",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "zh",
+    "frequency": 0.85,
+    "description": "用户完成购买等目标行为的转化"
+  }
+]
