@@ -26,6 +26,48 @@ from backend.database import lexicon_db
 logger = logging.getLogger("voice-input.industry-lexicon")
 
 
+# ─── LLM 上下文感知纠错提示词 ──────────────────────────────────
+
+_LLM_CORRECTION_PROMPT = """你是一个语音识别纠错专家。用户说话经过 ASR 语音识别后，可能存在同音/近音误识别。你需要根据**上下文语义**判断是否需要纠正。
+
+## 输入
+原始文本: "{text}"
+{industry_context}
+
+## 纠错规则
+1. **读音相同但词义不同的词**不要纠正。例如：
+   - "苹果很好吃" → 不要改（说的是水果）
+   - "苹果发布了新手机" → 不要改（说的是公司，不是水果）
+   - "克劳德" 在 AI 语境下 → "Claude"（专业名词）
+   - "克劳德" 在普通语境下 → 不要改（可能是外国人名）
+
+2. **英文技术术语**的常见误识别要纠正：
+   - "拍 touch" → "PyTorch"
+   - "lang chain" → "LangChain"
+   - "RAG" 保持大写
+   - "咧哥西" → "RAG 技术"
+
+3. **只纠正明显是 ASR 误识别的专业词汇**，不要随意改普通词
+
+4. **注意上下文**：
+   - 如果在讨论 AI/技术话题 → 优先纠正技术术语
+   - 如果在讨论日常生活 → 不要过度纠正
+
+## 输出格式（只返回 JSON，不要其他文字）
+```json
+{{
+  "corrected": "纠正后的完整文本",
+  "corrections": [
+    {{
+      "original": "原文中被替换的部分",
+      "corrected": "纠正后的词",
+      "reason": "纠正原因"
+    }}
+  ]
+}}
+```"""
+
+
 class IndustryLexiconSystem:
     """行业专业词库系统 — 核心入口"""
 
@@ -126,9 +168,14 @@ class IndustryLexiconSystem:
         ASR 文本纠错 — 基于行业词库 + 用户修正映射
 
         流程:
-          1. 用户积累的误识别映射（最高优先级）
-          2. 行业词库的 aliases 映射
+          1. 用户积累的误识别映射（最高优先级，整词匹配）
+          2. 行业词库的 aliases 映射（整词匹配）
           3. 模糊匹配建议
+
+        改进 v3:
+          - 子串匹配改为整词/分词边界匹配，杜绝 "framework"→"framework" 误改
+          - 英文短词（≤2字母）仅作整词匹配，不子串搜索
+          - 中文短词（≤1字）不参与匹配
 
         目标: < 100ms
         """
@@ -139,11 +186,10 @@ class IndustryLexiconSystem:
         corrected = text
         lower_text = text.lower()
 
-        # Step 1: 用户修正映射
+        # Step 1: 用户修正映射（最高优先级，整词匹配）
         user_map = self._get_user_correction_map(user_id)
         for wrong, correct in user_map.items():
-            if wrong in lower_text:
-                # 保持原文大小写
+            if self._is_word_boundary_match(lower_text, wrong):
                 idx = lower_text.find(wrong)
                 actual_wrong = text[idx:idx + len(wrong)]
                 if actual_wrong in corrected:
@@ -155,10 +201,12 @@ class IndustryLexiconSystem:
                         "confidence": 0.95
                     })
 
-        # Step 2: 行业词库 aliases 映射
+        # Step 2: 行业词库 aliases 映射（整词匹配）
         alias_map = self._get_alias_map()
         for wrong, correct in alias_map.items():
-            if wrong in lower_text and correct not in corrected:
+            if correct in corrected:
+                continue  # 已经纠正过了
+            if self._is_word_boundary_match(lower_text, wrong):
                 idx = lower_text.find(wrong)
                 actual_wrong = text[idx:idx + len(wrong)]
                 if actual_wrong in corrected:
@@ -176,6 +224,114 @@ class IndustryLexiconSystem:
             "corrections": corrections,
             "correction_count": len(corrections)
         }
+
+    def correct_text_llm(self, text: str, user_id: str = "default") -> dict:
+        """
+        ASR 文本纠错 — LLM 增强版（上下文感知）
+
+        用大模型判断：哪些"读音相近"的词应该被替换，
+        避免"克劳德→Claude"、"lang chain→LangChain"等误判。
+
+        回退: 当 LLM 不可用时自动降级为 correct_text()
+        """
+        if not text:
+            return {"original": text, "corrected": text, "corrections": []}
+
+        try:
+            from backend.config import settings
+            if not settings.LLM_ENABLED or not settings.ANTHROPIC_API_KEY:
+                return self.correct_text(text, user_id)
+
+            import anthropic
+
+            # 收集上下文: 当前活跃行业的词条
+            industry_context = ""
+            if self._active_industries:
+                industry_context = "当前行业: " + ", ".join(self._active_industries)
+
+            prompt = _LLM_CORRECTION_PROMPT.format(
+                text=text,
+                industry_context=industry_context,
+            )
+
+            client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+            response = client.messages.create(
+                model=settings.ANTHROPIC_MODEL,
+                max_tokens=1024,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            content = response.content[0].text.strip()
+
+            # 解析 JSON 结果
+            import re
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if not json_match:
+                return self._fallback_correction(text, user_id)
+
+            result = json.loads(json_match.group())
+            return {
+                "original": text,
+                "corrected": result.get("corrected", text),
+                "corrections": result.get("corrections", []),
+                "correction_count": len(result.get("corrections", [])),
+                "mode": "llm",
+            }
+        except Exception as e:
+            logger.warning(f"LLM 纠错失败，降级到规则纠错: {e}")
+            return self.correct_text(text, user_id)
+
+    def _fallback_correction(self, text: str, user_id: str) -> dict:
+        """LLM 解析失败时的降级处理"""
+        return self.correct_text(text, user_id)
+
+    # ─── 整词匹配 ────────────────────────────────────────────────
+
+    def _is_word_boundary_match(self, lower_text: str, wrong: str) -> bool:
+        """
+        判断 wrong 是否在 lower_text 中以"完整词"形式出现。
+
+        规则:
+          - 英文短词（≤2字母）: 必须 \b 边界匹配，完全匹配
+          - 英文长词（≥3字母）: 要求 \b 边界或后跟非字母
+          - 中文词（≥2字）: 用 jieba 分词后检查是否完整 token
+          - 中文短词（1字）: 不匹配（避免单字误伤）
+        """
+        if not wrong or len(wrong) < 1:
+            return False
+
+        # 中文短词（单字）不参与匹配
+        if re.match(r'^[一-鿿]$', wrong):
+            return False
+
+        # 中文词（2字以上）: 用 jieba 分词确认
+        if re.match(r'^[一-鿿\w]{2,}$', wrong):
+            try:
+                import jieba
+                tokens = jieba.lcut(lower_text)
+                return wrong in tokens
+            except ImportError:
+                # jieba 不可用时，检查是否被中文/标点包围
+                pattern = re.compile(
+                    rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
+                    rf'|^{re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
+                    rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}$'
+                )
+                return bool(pattern.search(lower_text))
+
+        # 英文/数字词
+        if re.match(r'^[a-z0-9]+$', wrong):
+            if len(wrong) <= 2:
+                # 短词（如 "ai"）: 必须 \b 严格边界
+                return bool(re.search(rf'\b{re.escape(wrong)}\b', lower_text))
+            else:
+                # 长词: 宽松边界（允许 -_ 等连接符）
+                return bool(re.search(
+                    rf'(?:^|[\s,.;:!?\'"\(\)\[\]{{}}]){re.escape(wrong)}(?:$|[\s,.;:!?\'"\(\)\[\]{{}}])',
+                    lower_text
+                ))
+
+        # 混合词（如 "lang chain"）: 直接子串搜索 + 前后边界
+        return wrong in lower_text
 
     # ─── RAG 检索 ────────────────────────────────────────────────
 
