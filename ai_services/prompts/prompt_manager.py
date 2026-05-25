@@ -90,13 +90,15 @@ class PromptManager:
             raise ValueError(f"Prompt template '{name}' not found")
         return template.render(**kwargs)
 
-    async def execute(self, name: str, use_cache: bool = True, **kwargs) -> str:
+    async def execute(self, name: str, use_cache: bool = True,
+                      profile_context: str = "", **kwargs) -> str:
         """
         执行 Prompt（直接调 LLM）
 
         Args:
             name: 模板名称
             use_cache: 是否使用缓存
+            profile_context: 用户偏好上下文（非空时附加到 system prompt 前缀）
             **kwargs: 模板变量
 
         Returns:
@@ -117,6 +119,10 @@ class PromptManager:
 
         # 渲染 Prompt
         system, user = template.render(**kwargs)
+
+        # 注入用户偏好上下文
+        if profile_context:
+            system = profile_context + "\n\n" + system
 
         # 使用的模型：优先用外部配置（如 DeepSeek/OpenAI），否则用模板默认
         model = self.model_name or template.model
@@ -165,7 +171,10 @@ class PromptManager:
         """注册内置默认模板"""
         from .office_prompts import get_office_templates
         from .creation_prompts import get_creation_templates
+        from .chat_prompts import get_chat_templates
         for t in get_office_templates():
             self.register(t)
         for t in get_creation_templates():
+            self.register(t)
+        for t in get_chat_templates():
             self.register(t)
