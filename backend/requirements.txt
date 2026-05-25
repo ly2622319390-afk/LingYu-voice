@@ -6,6 +6,10 @@ aiofiles==23.2.1
 pydantic-settings==2.1.0
 websockets>=12.0
 
+# 编辑分析引擎
+jieba>=0.42.1
+pypinyin>=0.49.0
+
 # AI 服务 (按需安装)
 anthropic>=0.39.0          # 大模型 Claude
 openai>=1.12.0             # 大模型 (DeepSeek/OpenAI)
