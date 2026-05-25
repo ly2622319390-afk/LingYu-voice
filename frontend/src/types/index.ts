@@ -44,25 +44,10 @@ export interface CorrectionLog {
   timestamp: string;
 }
 
-export interface EmojiItem {
-  id: number;
-  emoji: string;
-  emotion_tags: string;
-  scene_tags: string;
-  usage_priority: number;
-}
-
 export interface OfficeResult {
   style: string;
   description: string;
   text: string;
-}
-
-export interface ChatResult {
-  origin: string;
-  emotion: string;
-  emoji_suggestions: { label: string; emojis: string }[];
-  all_emojis: { emoji: string; desc: string }[];
 }
 
 export interface CreationResult {
@@ -122,4 +107,66 @@ export interface HotwordEntry {
   text: string;
   weight: number;
   source: string;
+}
+
+// ─── 编辑分析 ───
+
+export interface EditChange {
+  type: 'replace' | 'insert' | 'delete';
+  original_word: string;
+  edited_word: string;
+  position: number;
+  classification: string;  // asr_fix | style_change | content_add | content_delete | punctuation
+}
+
+export interface EditAnalysis {
+  has_changes: boolean;
+  changes: EditChange[];
+  classifications: Record<string, number>;
+  learn_actions: { learned: boolean; action: string; word?: string; original?: string; edited?: string }[];
+  edit_type: string;
+}
+
+// ─── 创作工作区 ───
+
+export type CreationMode = 'novel' | 'project';
+
+export interface CreationExtraction {
+  [key: string]: any;
+}
+
+export interface CreationRound {
+  round_number: number;
+  raw_input: string;
+  organized_output: string;
+  extraction: CreationExtraction;
+  tips: string[];
+  innovations: string[];
+  improvements: string[];
+  user_copied_organized: boolean;
+  user_copied_raw: boolean;
+  created_at: string;
+}
+
+export interface CreationSession {
+  session_id: string;
+  mode: CreationMode;
+  status: 'active' | 'finished';
+  rounds: CreationRound[];
+  accumulated_context: string;
+  created_at: string;
+  finished_at: string | null;
+}
+
+export interface SubmitInputResponse {
+  round_number: number;
+  raw_input: string;
+  organized_output: string;
+  extraction: CreationExtraction;
+  tips: string[];
+  innovations: string[];
+  improvements: string[];
+  user_copied_organized: boolean;
+  user_copied_raw: boolean;
+  created_at: string;
 }

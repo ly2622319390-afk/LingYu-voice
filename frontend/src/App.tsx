@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { SceneType } from './types'
+import { SceneType, EditAnalysis } from './types'
 import { useSpeechRecognition } from './hooks/useSpeechRecognition'
 import { useAudioCapture } from './hooks/useAudioCapture'
 import { useElectronIPC } from './hooks/useElectronIPC'
@@ -11,7 +11,8 @@ import OptimizedView from './components/OptimizedView'
 import LexiconIndustryManager from './components/LexiconIndustryManager'
 import HistoryView from './components/HistoryView'
 import CompactOverlay from './components/CompactOverlay'
-import { industryApi } from './services/api'
+import CreationWorkspace from './components/CreationWorkspace'
+import { industryApi, editsApi } from './services/api'
 
 type PageView = 'main' | 'lexicon' | 'history'
 type AppMode = 'web' | 'overlay' | 'full'
@@ -47,6 +48,17 @@ export default function App() {
   const [industrySelected, setIndustrySelected] = useState<string[]>([])
   const [industryHotwords, setIndustryHotwords] = useState(0)
 
+  // ─── 编辑追踪状态 ───
+  const [editedTranscript, setEditedTranscript] = useState('')
+  const [editAnalysis, setEditAnalysis] = useState<EditAnalysis | null>(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+
+  // 新录音时重置编辑状态
+  useEffect(() => {
+    setEditedTranscript(transcript)
+    setEditAnalysis(null)
+  }, [transcript])
+
   const handleTranscriptChange = (newTranscript: string) => {
     resetTranscript()
     const words = newTranscript.split(/[\s，。、；：]+/).filter(w => w.length > 1)
@@ -60,6 +72,31 @@ export default function App() {
       }))
     setUncertainWords(uncertain)
     setOptimizedResult(null)
+  }
+
+  const handleEditComplete = (edited: string) => {
+    setEditedTranscript(edited)
+  }
+
+  const handleAcceptVersion = async (versionText: string) => {
+    // 编辑分析：对比原文和编辑后的文本
+    if (editedTranscript !== transcript) {
+      setIsAnalyzing(true)
+      try {
+        const analysis = await editsApi.analyze(transcript, editedTranscript, scene)
+        setEditAnalysis(analysis)
+        console.log('编辑分析结果:', analysis)
+      } catch (err) {
+        console.error('编辑分析失败:', err)
+      }
+      setIsAnalyzing(false)
+    }
+    // 复制到剪贴板
+    try {
+      await navigator.clipboard.writeText(versionText)
+    } catch {
+      // ignore
+    }
   }
 
   // 完整窗口加载行业词库状态
@@ -123,13 +160,31 @@ export default function App() {
               interimTranscript={interimTranscript}
               uncertainWords={uncertainWords}
               onReplaceWord={(oldWord, newWord) => {
-                setTranscript((prev: string) => prev.replace(oldWord, newWord))
+                const newText = editedTranscript.replace(oldWord, newWord)
+                setEditedTranscript(newText)
                 setUncertainWords(prev => prev.filter(w => w.word !== oldWord))
               }}
+              onEditComplete={handleEditComplete}
             />
+            {editAnalysis && editAnalysis.has_changes && (
+              <div className="card">
+                <div className="card-title">📊 编辑分析</div>
+                <div style={{ fontSize: 12, padding: '4px 0' }}>
+                  <div>类型: {editAnalysis.edit_type}</div>
+                  <div style={{ display: 'flex', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
+                    {Object.entries(editAnalysis.classifications).map(([type, count]) => (
+                      <span key={type} className="edit-badge">{type}: {count}</span>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: 4, color: '#999' }}>
+                    已自动学习 {editAnalysis.learn_actions.filter(a => a.learned).length} 项改进
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="right-panel">
-            {appMode === 'full' && (
+            {appMode === 'full' && scene !== '创作' && (
               <div className="industry-status-card">
                 <div className="status-header">
                   <span className="status-title">行业词库</span>
@@ -158,12 +213,26 @@ export default function App() {
                 )}
               </div>
             )}
-            <OptimizedView
-              scene={scene}
-              text={transcript}
-              result={optimizedResult}
-              onOptimize={setOptimizedResult}
-            />
+            {scene === '创作' ? (
+              <CreationWorkspace
+                transcript={editedTranscript}
+                onClearTranscript={() => {
+                  resetTranscript()
+                  setOptimizedResult(null)
+                  setUncertainWords([])
+                }}
+              />
+            ) : (
+              <OptimizedView
+                scene={scene}
+                text={editedTranscript}
+                originalText={transcript}
+                result={optimizedResult}
+                onOptimize={setOptimizedResult}
+                onAcceptVersion={handleAcceptVersion}
+                isAnalyzing={isAnalyzing}
+              />
+            )}
           </div>
         </main>
       )}
