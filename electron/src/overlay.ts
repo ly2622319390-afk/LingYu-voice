@@ -165,8 +165,6 @@ export class OverlayManager {
       },
     });
 
-    this.fullAppWindow.webContents.openDevTools();
-
     this.fullAppWindow.loadURL('http://localhost:3000?mode=full');
 
     this.fullAppWindow.webContents.on('did-finish-load', () => {
