@@ -67,6 +67,15 @@ class PromptManager:
         """注册 Prompt 模板"""
         self._templates[template.name] = template
 
+    @property
+    def model_name(self) -> str:
+        """当前生效的模型名称（可被 _init_llm 覆盖）"""
+        return getattr(self, '_model_name', "")
+
+    @model_name.setter
+    def model_name(self, val: str):
+        self._model_name = val
+
     def get(self, name: str) -> Optional[PromptTemplate]:
         return self._templates.get(name)
 
@@ -109,8 +118,11 @@ class PromptManager:
         # 渲染 Prompt
         system, user = template.render(**kwargs)
 
+        # 使用的模型：优先用外部配置（如 DeepSeek/OpenAI），否则用模板默认
+        model = self.model_name or template.model
+
         # 调用 LLM
-        response = await self._call_llm(system, user, template.model)
+        response = await self._call_llm(system, user, model)
 
         # 写入缓存
         if cache_key:
@@ -119,9 +131,14 @@ class PromptManager:
         return response
 
     async def _call_llm(self, system: str, user: str, model: str) -> str:
-        """调用大模型"""
-        if hasattr(self.llm, 'messages'):
-            # OpenAI 兼容
+        """调用大模型
+
+        支持的客户端:
+          - OpenAI / DeepSeek (OpenAI SDK): 有 client.chat
+          - Anthropic SDK: 有 client.messages
+        """
+        if hasattr(self.llm, 'chat'):
+            # OpenAI 兼容 (包括 DeepSeek)
             response = self.llm.chat.completions.create(
                 model=model,
                 messages=[
@@ -130,7 +147,7 @@ class PromptManager:
                 ]
             )
             return response.choices[0].message.content
-        elif hasattr(self.llm, 'beta') or hasattr(self.llm, 'messages'):
+        elif hasattr(self.llm, 'messages'):
             # Anthropic SDK
             response = self.llm.messages.create(
                 model=model,
@@ -139,7 +156,7 @@ class PromptManager:
             )
             return response.content[0].text
         else:
-            raise RuntimeError("Unsupported LLM client")
+            raise RuntimeError(f"不支持的大模型客户端: {type(self.llm).__name__}")
 
     def clear_cache(self):
         self._cache.clear()

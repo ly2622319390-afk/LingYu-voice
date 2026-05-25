@@ -7,7 +7,7 @@ pydantic-settings==2.1.0
 websockets>=12.0
 
 # AI 服务 (按需安装)
-# anthropic==0.39.0        # 大模型 Claude
-# openai==1.12.0           # 大模型 GPT
+anthropic>=0.39.0          # 大模型 Claude
+openai>=1.12.0             # 大模型 (DeepSeek/OpenAI)
 # funasr==1.0.0            # ASR 语音识别 (中文最佳, 本地部署)
 # sentence-transformers    # Embedding / RAG
