@@ -104,7 +104,8 @@ export default function CompactOverlay({
   const [cards, setCards] = useState<CardItem[]>([]);
   const [loadingCards, setLoadingCards] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const prevListening = useRef(isListening);
+  const [workingText, setWorkingText] = useState('');  // 用户编辑后的文本
+  const lastOptimizedRef = useRef('');
 
   // ─── 创作模式状态 ───
   const [creationSessionId, setCreationSessionId] = useState<string | null>(null);
@@ -113,10 +114,14 @@ export default function CompactOverlay({
   const [creationLoading, setCreationLoading] = useState(false);
   const [creationFinished, setCreationFinished] = useState(false);
   const [creationError, setCreationError] = useState<string | null>(null);
+  const [showOriginalText, setShowOriginalText] = useState(false);
+  const [editingText, setEditingText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
   const prevCreationTranscript = useRef('');
 
-  // 当前状态
-  const state: OverlayState = isListening ? 'recording' : (transcript ? 'result' : 'idle');
+  // 当前状态 — 使用 workingText（用户编辑后的文本）优先
+  const effectiveText = workingText || transcript;
+  const state: OverlayState = isListening ? 'recording' : (effectiveText ? 'result' : 'idle');
 
   // ─── 办公/聊天模式的自动优化 ───
   const doOptimize = useCallback(async (text: string, sceneType: SceneType) => {
@@ -132,15 +137,16 @@ export default function CompactOverlay({
     }
   }, []);
 
-  // 非创作模式：录音停止后自动优化
+  // 非创作模式：录音停止后或文本编辑后自动优化
   useEffect(() => {
     if (scene === '创作') return;
-    const wasListening = prevListening.current;
-    prevListening.current = isListening;
-    if ((wasListening && !isListening && transcript) || (!wasListening && !isListening && transcript)) {
-      doOptimize(transcript, scene);
-    }
-  }, [isListening, transcript, scene, doOptimize]);
+    if (isListening) return;
+    const text = effectiveText;
+    if (!text.trim()) { setCards([]); return; }
+    if (text === lastOptimizedRef.current) return; // 已经优化过相同的文本
+    lastOptimizedRef.current = text;
+    doOptimize(text, scene);
+  }, [isListening, effectiveText, scene, doOptimize]);
 
   // ─── 创作模式逻辑 ───
   const isCreationMode = scene === '创作';
@@ -161,10 +167,7 @@ export default function CompactOverlay({
     try {
       const sid = await createSession(mode);
       setCreationSessionId(sid);
-      // 如果已有转录文本则自动提交
-      if (transcript.trim()) {
-        await handleSubmitCreation(sid, transcript);
-      }
+      // 不自动提交 — 用户录音后手动提交
     } catch (e: any) {
       setCreationError('创建会话失败，请重试');
     } finally {
@@ -178,6 +181,14 @@ export default function CompactOverlay({
     try {
       const result = await submitInput(sid, text);
       setCreationRounds(prev => [...prev, result]);
+      // 追踪编辑行为
+      if (text !== transcript) {
+        fetch('http://127.0.0.1:8000/api/corrections', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ original_word: transcript, corrected_word: text, scene_type: '创作', original_text: transcript, corrected_text: text }),
+        }).catch(() => {});
+      }
+      onReset();
     } catch (e: any) {
       setCreationError('提交失败，请重试');
     } finally {
@@ -186,8 +197,9 @@ export default function CompactOverlay({
   };
 
   const handleContinue = () => {
-    // 清除本轮转录状态，让用户继续录音
+    setWorkingText('');
     onReset();
+    onStart();
   };
 
   const handleFinish = async () => {
@@ -223,13 +235,17 @@ export default function CompactOverlay({
     } catch {}
   };
 
-  // 在场景切换到非创作时重置
+  // 场景切换
   const handleSceneChange = (s: SceneType) => {
     if (s === scene) return;
+    const prev = scene;
     setScene(s);
-    if (s !== '创作') {
-      // 保留创作状态不变（切换回来可恢复）
+
+    // 从办公/聊天切到创作时清空转录
+    if (prev !== '创作' && s === '创作') {
+      onReset();
     }
+
     // 非创作模式且有原文时重新优化
     if (s !== '创作' && transcript) doOptimize(transcript, s);
   };
@@ -243,10 +259,59 @@ export default function CompactOverlay({
     setCreationError(null);
   };
 
+  // ─── 编辑功能 ───
+  useEffect(() => {
+    if (!isEditing) setEditingText(transcript);
+  }, [transcript, isEditing]);
+
+  const handleStartEdit = () => {
+    setEditingText(transcript);
+    setIsEditing(true);
+  };
+
+  const handleConfirmEdit = () => {
+    setIsEditing(false);
+    if (editingText !== transcript) {
+      // 更新显示的文本
+      setWorkingText(editingText);
+      // 触发修正追踪
+      try {
+        fetch('http://127.0.0.1:8000/api/corrections', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ original_text: transcript, corrected_text: editingText, scene_type: scene, original_word: transcript, corrected_word: editingText }),
+        });
+        fetch('http://127.0.0.1:8000/api/analyze-edits', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ original_text: transcript, edited_text: editingText, scene_type: scene }),
+        });
+      } catch {}
+    }
+  };
+
+  // ─── 文本清理函数 ───
+  const cleanDisplayText = (text: string): string => {
+    if (!text) return text;
+    return text
+      .replace(/\n+/g, ' ')                     // 换行 → 空格
+      .replace(/[•└]/g, '')                      // 去掉 •└ 符号
+      .replace(/^\d+\.\s*/gm, '')                // 去掉 "1. " 编号前缀
+      .replace(/[，,]\s*具体来说[^，。]*[，。]?/g, '')  // 去掉 "具体来说..." 生成描述
+      .replace(/[，,]\s*这一点的关键在于[^，。]*[，。]?/g, '')
+      .replace(/[。.]\s*在此基础上[^，。]*[，。]?/g, '')
+      .replace(/[，,]\s*我们需要[^，。]*[，。]?/g, '')
+      .replace(/\s{2,}/g, ' ')                   // 合并多个空格
+      .trim();
+  };
+
   // ─── 主文字区内容 ───
   const mainText = isListening
     ? (transcript + interimTranscript)
-    : transcript;
+    : effectiveText;
+
+  // 新录音时清除编辑文本
+  useEffect(() => {
+    if (!transcript && !isListening) setWorkingText('');
+  }, [transcript, isListening]);
 
   // ─── 渲染创作模式 ───
   const renderCreationView = () => {
@@ -348,45 +413,153 @@ export default function CompactOverlay({
 
             {/* 整理内容 - 可悬浮展开 */}
             <div style={{ position: 'relative', flex: 1, overflow: 'hidden', marginBottom: 6 }}>
-              <div style={styles.hoverExpandText} title={lastRound.organized_output}>
-                {lastRound.organized_output}
+              <div style={styles.hoverExpandText} title={cleanDisplayText(lastRound.organized_output)}>
+                {cleanDisplayText(lastRound.organized_output)}
               </div>
             </div>
 
-            {/* 建议标签页 */}
+            {/* 建议标签页 — 两列布局 */}
             {lastRound.tips && lastRound.tips.length > 0 && (
               <div style={{ flexShrink: 0 }}>
-                <details style={{ fontSize: 12 }}>
+                <details style={{ fontSize: 12 }} open>
                   <summary style={{ cursor: 'pointer', color: '#667eea', fontSize: 11, marginBottom: 4 }}>
                     💡 创作建议（{lastRound.tips.length + (lastRound.innovations?.length || 0) + (lastRound.improvements?.length || 0)} 条）
                   </summary>
-                  <div style={{ maxHeight: 100, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    {lastRound.tips?.map((t: string, i: number) => (
-                      <div key={`tip-${i}`} style={{ padding: '3px 6px', background: 'rgba(52,152,219,0.1)', borderRadius: 4, borderLeft: '2px solid #3498db', fontSize: 11, lineHeight: 1.4, ...styles.hoverExpandText }} title={t}>💡 {t}</div>
-                    ))}
-                    {lastRound.innovations?.map((t: string, i: number) => (
-                      <div key={`inv-${i}`} style={{ padding: '3px 6px', background: 'rgba(46,204,113,0.1)', borderRadius: 4, borderLeft: '2px solid #2ecc71', fontSize: 11, lineHeight: 1.4, ...styles.hoverExpandText }} title={t}>✨ {t}</div>
-                    ))}
-                    {lastRound.improvements?.map((t: string, i: number) => (
-                      <div key={`imp-${i}`} style={{ padding: '3px 6px', background: 'rgba(230,126,34,0.1)', borderRadius: 4, borderLeft: '2px solid #e67e22', fontSize: 11, lineHeight: 1.4, ...styles.hoverExpandText }} title={t}>🔧 {t}</div>
-                    ))}
+                  <div style={{
+                    maxHeight: 120, overflowY: 'auto',
+                    display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4,
+                  }}>
+                    {[
+                      ...(lastRound.tips || []).map((t: string, i: number) => ({ text: t, type: 'tip', i })),
+                      ...(lastRound.innovations || []).map((t: string, i: number) => ({ text: t, type: 'innovation', i })),
+                      ...(lastRound.improvements || []).map((t: string, i: number) => ({ text: t, type: 'improve', i })),
+                    ].map((item, idx) => {
+                      const colorMap: Record<string, string> = { tip: '#3498db', innovation: '#2ecc71', improve: '#e67e22' };
+                      const bgMap: Record<string, string> = { tip: 'rgba(52,152,219,0.1)', innovation: 'rgba(46,204,113,0.1)', improve: 'rgba(230,126,34,0.1)' };
+                      const iconMap: Record<string, string> = { tip: '💡', innovation: '✨', improve: '🔧' };
+                      const color = colorMap[item.type] || '#888';
+                      return (
+                        <div key={idx} style={{
+                          padding: '5px 8px', background: bgMap[item.type] || 'rgba(255,255,255,0.05)',
+                          borderRadius: 6, borderLeft: `3px solid ${color}`,
+                          fontSize: 11, lineHeight: 1.4, overflow: 'hidden',
+                          whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                        }} title={item.text}>
+                          {iconMap[item.type]} {item.text}
+                        </div>
+                      );
+                    })}
                   </div>
                 </details>
               </div>
             )}
           </div>
 
+          {/* 新一轮补充内容 */}
+          {transcript.trim() && (
+            <div style={{ padding: '8px 10px', background: 'rgba(46,204,113,0.08)', borderRadius: 8, border: '1px solid rgba(46,204,113,0.2)', flexShrink: 0 }}>
+              <div style={{ fontSize: 11, color: '#2ecc71', marginBottom: 4 }}>检测到补充内容：</div>
+              {isEditing ? (
+                <textarea
+                  style={{
+                    width: '100%', padding: '6px 8px', borderRadius: 6,
+                    background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(102,126,234,0.4)',
+                    fontSize: 12, lineHeight: 1.4, color: '#f0f0f0',
+                    resize: 'vertical', fontFamily: 'inherit', outline: 'none',
+                    boxSizing: 'border-box', marginBottom: 6, minHeight: 40,
+                  }}
+                  value={editingText}
+                  onChange={e => setEditingText(e.target.value)}
+                  rows={2}
+                />
+              ) : (
+                <div style={{ fontSize: 12, lineHeight: 1.4, color: '#ccc', marginBottom: 6, maxHeight: 40, overflow: 'hidden', textOverflow: 'ellipsis' }} title={transcript}>
+                  {transcript}
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
+                {isEditing ? (
+                  <>
+                    <button className="ov-btn-outline" style={{ ...styles.btnOutline, flex: 1, fontSize: 11, padding: '3px 8px' }}
+                      onClick={() => { setEditingText(transcript); setIsEditing(false) }}>取消</button>
+                    <button className="ov-btn-primary" style={{ ...styles.btnPrimary, flex: 1, fontSize: 11, padding: '3px 8px' }}
+                      onClick={handleConfirmEdit}>✓ 确认编辑</button>
+                  </>
+                ) : (
+                  <button className="ov-btn-outline" style={{ ...styles.btnOutline, fontSize: 11, padding: '3px 8px' }}
+                    onClick={handleStartEdit}>✏️ 编辑</button>
+                )}
+              </div>
+              <button className="ov-btn-primary" style={{ ...styles.btnPrimary, width: '100%' }}
+                onClick={() => creationSessionId && handleSubmitCreation(creationSessionId, isEditing ? editingText : transcript)}>
+                🚀 提交补充内容
+              </button>
+            </div>
+          )}
+
           {/* 操作按钮 */}
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-            <button className="ov-btn-primary" style={{ ...styles.btnPrimary, flex: 1, background: 'rgba(102,126,234,0.2)', color: '#667eea', border: '1px solid rgba(102,126,234,0.3)' }}
-              onClick={handleContinue}>
-              🎤 继续补充
+            <button className="ov-btn-primary" style={{ ...styles.btnPrimary, flex: 1, background: isListening ? 'rgba(231,76,60,0.2)' : 'rgba(102,126,234,0.2)', color: isListening ? '#e74c3c' : '#667eea', border: isListening ? '1px solid rgba(231,76,60,0.3)' : '1px solid rgba(102,126,234,0.3)' }}
+              onClick={isListening ? onStop : handleContinue}>
+              {isListening ? '⏹ 结束录音' : '🎤 继续补充'}
+            </button>
+            <button style={{ ...styles.miniBtn, background: 'rgba(255,255,255,0.1)', color: '#ccc', flex: 0.5 }}
+              onClick={() => setShowOriginalText(true)}
+              title="查看原文">
+              📋 原文
             </button>
             <button className="ov-btn-danger" style={{ ...styles.btnDanger, flex: 1, background: 'rgba(231,76,60,0.15)', color: '#e74c3c', border: '1px solid rgba(231,76,60,0.2)' }}
               onClick={handleFinish}>
               ✓ 结束创作
             </button>
           </div>
+          {isListening && (
+            <div style={{ fontSize: 11, color: '#e74c3c', textAlign: 'center', flexShrink: 0 }}>🔴 录音中，请对着麦克风说话...</div>
+          )}
+
+          {/* 原文弹窗 */}
+          {showOriginalText && (
+            <div style={{
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              background: 'rgba(0,0,0,0.6)', display: 'flex',
+              alignItems: 'center', justifyContent: 'center', zIndex: 2000,
+            }} onClick={() => setShowOriginalText(false)}>
+              <div style={{
+                background: '#1e1e2a', borderRadius: 12, width: '90%',
+                maxWidth: 500, maxHeight: '70vh', display: 'flex',
+                flexDirection: 'column', boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                border: '1px solid rgba(255,255,255,0.1)',
+              }} onClick={e => e.stopPropagation()}>
+                <div style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  fontWeight: 600, fontSize: 14, flexShrink: 0, color: '#eee',
+                }}>
+                  <span>📋 原文查看</span>
+                  <button style={{ background: 'none', border: 'none', color: '#888', fontSize: 18, cursor: 'pointer', padding: '2px 8px' }}
+                    onClick={() => setShowOriginalText(false)}>✕</button>
+                </div>
+                <div style={{ padding: '14px 16px', overflowY: 'auto', flex: 1 }}>
+                  <div style={{ marginBottom: 16 }}>
+                    <div style={{ fontSize: 12, color: '#667eea', fontWeight: 600, marginBottom: 6 }}>全部累积文本</div>
+                    <div style={{ fontSize: 13, lineHeight: 1.6, color: '#ccc', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                      {creationRounds.map((r: any) => r.raw_input).join('\n')}
+                    </div>
+                  </div>
+                  {creationRounds.map((r: any) => (
+                    <div key={r.round_number} style={{ marginBottom: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                      <div style={{ fontSize: 12, color: '#667eea', fontWeight: 600, marginBottom: 6 }}>
+                        第 {r.round_number} 轮原文
+                      </div>
+                      <div style={{ fontSize: 13, lineHeight: 1.6, color: '#ccc', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                        {r.raw_input}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
@@ -398,22 +571,60 @@ export default function CompactOverlay({
           <div style={{ fontSize: 12, color: '#999' }}>
             检测到语音输入，点击提交开始创作：
           </div>
-          <div style={{ ...styles.hoverExpandText, padding: '8px 10px', background: 'rgba(0,0,0,0.2)', borderRadius: 6, fontSize: 13, lineHeight: 1.5 }} title={transcript}>
-            {transcript}
+          {isEditing ? (
+            <textarea
+              style={{
+                flex: 1, padding: '8px 10px', borderRadius: 6,
+                background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(102,126,234,0.4)',
+                fontSize: 13, lineHeight: 1.5, color: '#f0f0f0',
+                resize: 'none', fontFamily: 'inherit', outline: 'none',
+              }}
+              value={editingText}
+              onChange={e => setEditingText(e.target.value)}
+            />
+          ) : (
+            <div style={{ ...styles.hoverExpandText, padding: '8px 10px', background: 'rgba(0,0,0,0.2)', borderRadius: 6, fontSize: 13, lineHeight: 1.5 }} title={transcript}>
+              {transcript}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 6 }}>
+            {isEditing ? (
+              <>
+                <button className="ov-btn-outline" style={{ ...styles.btnOutline, flex: 1, textAlign: 'center' }}
+                  onClick={() => { setEditingText(transcript); setIsEditing(false) }}>取消</button>
+                <button className="ov-btn-primary" style={{ ...styles.btnPrimary, flex: 1, textAlign: 'center' }}
+                  onClick={() => { setIsEditing(false); creationSessionId && handleSubmitCreation(creationSessionId, editingText) }}>
+                  🚀 提交
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="ov-btn-outline" style={{ ...styles.btnOutline, flex: 1, textAlign: 'center' }}
+                  onClick={handleStartEdit}>✏️ 编辑</button>
+                <button className="ov-btn-primary" style={{ ...styles.btnPrimary, flex: 1, textAlign: 'center' }}
+                  onClick={() => creationSessionId && handleSubmitCreation(creationSessionId, transcript)}>
+                  🚀 提交创作灵感
+                </button>
+              </>
+            )}
           </div>
-          <button className="ov-btn-primary" style={{ ...styles.btnPrimary, width: '100%', padding: '10px' }}
-            onClick={() => creationSessionId && handleSubmitCreation(creationSessionId, transcript)}>
-            🚀 提交创作灵感
-          </button>
         </div>
       );
     }
 
     // 状态: 会话已创建，等待录音
     return (
-      <div style={{ textAlign: 'center', padding: 20, color: '#888', fontSize: 12 }}>
-        <div style={{ fontSize: 24, marginBottom: 6 }}>🎤</div>
-        <div>请录制语音后提交创作灵感</div>
+      <div style={{ textAlign: 'center', padding: 20, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+        <div style={{ fontSize: 32 }}>🎤</div>
+        <div style={{ fontSize: 13, color: '#ccc' }}>点击下方按钮开始录音</div>
+        <button
+          className="ov-btn-primary"
+          style={{ ...styles.btnPrimary, padding: '10px 28px', fontSize: 14 }}
+          onClick={isListening ? onStop : onStart}
+        >
+          {isListening ? '⏹ 结束录音' : '🎤 开始录音'}
+        </button>
+        <div style={{ fontSize: 11, color: '#888' }}>录音完成后点击"提交创作灵感"开始分析</div>
       </div>
     );
   };
@@ -492,25 +703,46 @@ export default function CompactOverlay({
       ) : (
         <>
           {/* ─── 主文字区 (非创作) ─── */}
-          <div
-            style={{
-              ...styles.textArea,
-              ...(state === 'result' && cards.length > 0 ? styles.textAreaWithCards : {}),
-            }}
-            title={mainText || undefined}
-          >
-            {state === 'idle' && !mainText && (
-              <span style={styles.placeholder}>
-                {isElectron ? '按 Alt+Q 或点击悬浮球开始语音输入' : '点击开始录音'}
-              </span>
-            )}
-            {mainText && (
-              <span style={styles.mainTextContent}>{mainText}</span>
-            )}
-            {isListening && (
-              <span style={styles.cursor} className="ov-cursor">|</span>
-            )}
-          </div>
+          {isEditing ? (
+            <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <textarea
+                style={{
+                  flex: 1, padding: '10px 12px', borderRadius: 8,
+                  background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(102,126,234,0.4)',
+                  fontSize: 15, lineHeight: 1.6, color: '#f0f0f0',
+                  resize: 'none', fontFamily: 'inherit', outline: 'none',
+                }}
+                value={editingText}
+                onChange={e => setEditingText(e.target.value)}
+              />
+              <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                <button className="ov-btn-outline" style={{ ...styles.btnOutline, padding: '3px 12px', fontSize: 11 }}
+                  onClick={() => { setEditingText(transcript); setIsEditing(false) }}>取消</button>
+                <button className="ov-btn-primary" style={{ ...styles.btnPrimary, padding: '3px 12px', fontSize: 11 }}
+                  onClick={handleConfirmEdit}>✓ 确认编辑</button>
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                ...styles.textArea,
+                ...(state === 'result' && cards.length > 0 ? styles.textAreaWithCards : {}),
+              }}
+              title={mainText || undefined}
+            >
+              {state === 'idle' && !mainText && (
+                <span style={styles.placeholder}>
+                  {isElectron ? '按 Alt+Q 或点击悬浮球开始语音输入' : '点击开始录音'}
+                </span>
+              )}
+              {mainText && (
+                <span style={styles.mainTextContent}>{mainText}</span>
+              )}
+              {isListening && (
+                <span style={styles.cursor} className="ov-cursor">|</span>
+              )}
+            </div>
+          )}
 
           {/* ─── 卡片行 ─── */}
           <div style={styles.cardsRow}>
@@ -542,12 +774,12 @@ export default function CompactOverlay({
                   setCopiedId(card.id);
                   setTimeout(() => setCopiedId(null), 1500);
                 }}
-                title={card.text + (card.description ? `\n\n${card.description}\n\n点击复制到剪贴板，点击目标窗口自动粘贴` : '')}
+                title={cleanDisplayText(card.text) + (card.description ? `\n\n${card.description}\n\n点击复制到剪贴板，点击目标窗口自动粘贴` : '')}
               >
                 <div style={styles.cardLabel} className="ov-card-label">
                   {copiedId === card.id ? '✓ 已复制' : card.label}
                 </div>
-                <div style={styles.cardText} title={card.text}>{card.text}</div>
+                <div style={styles.cardText} title={cleanDisplayText(card.text)}>{cleanDisplayText(card.text)}</div>
               </div>
             ))}
           </div>
@@ -576,6 +808,11 @@ export default function CompactOverlay({
           <div style={styles.footerRight}>
             {state === 'result' && isElectron && (
               <span style={styles.hintAutoPaste}>点击目标窗口自动粘贴</span>
+            )}
+            {state === 'result' && !isEditing && (
+              <button className="ov-btn-outline" style={{ ...styles.btnOutline, fontSize: 11 }} onClick={handleStartEdit}>
+                ✏️ 编辑
+              </button>
             )}
             {state === 'result' && (
               <button
