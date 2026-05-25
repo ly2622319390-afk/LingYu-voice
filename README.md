@@ -1,6 +1,8 @@
 # 灵语 (LingYu) — 智能语音输入法
 
 语音输入法实训项目 — 颖之妙想队
+#DEMO演示视频：
+#【灵语-AI语音识别-七牛云实训demo演示】 https://www.bilibili.com/video/BV1TWGo6ME76/?share_source=copy_web&vd_source=a69773f6e405918d5afbb8c3397a1e1e
 
 **灵语**是一款基于 AI 的智能语音输入法桌面应用。支持 SenseVoice 离线语音识别、DeepSeek 大模型场景化文本润色、行业词库纠错，采用 Electron + Python FastAPI 混合架构，在 Windows 桌面提供流畅的语音转文字体验。
 
