@@ -88,7 +88,10 @@ app.whenReady().then(async () => {
       pendingPaste = false;
       console.log('[App] 浮窗失焦，自动粘贴');
       overlay.hide();
-      delay(80).then(() => textInjector.pasteToTarget());
+      // 捕获当前前台窗口（用户点击的目标），然后粘贴
+      textInjector.captureTargetWindow().finally(() => {
+        delay(80).then(() => textInjector.pasteToTarget());
+      });
     }
   };
 

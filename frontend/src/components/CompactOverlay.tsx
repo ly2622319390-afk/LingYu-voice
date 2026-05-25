@@ -23,24 +23,9 @@ interface CompactOverlayProps {
 
 const SCENE_LIST: SceneType[] = ['办公', '聊天', '创作'];
 
-/** 调用后端优化接口，返回当前场景的卡片列表 */
-async function fetchOptimized(text: string, scene: SceneType): Promise<CardItem[]> {
-  if (!text.trim()) return [];
-  let res: Response;
-  try {
-    res = await fetch('http://127.0.0.1:8000/api/optimize', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, scene_type: scene }),
-    });
-  } catch {
-    return [];
-  }
-  if (!res.ok) return [];
-  const data = await res.json();
-
+/** 解析后端优化响应为卡片列表 */
+function parseOptimizeResponse(data: any, text: string): CardItem[] {
   const cards: CardItem[] = [];
-
   if (data.versions && Array.isArray(data.versions)) {
     for (const v of data.versions) {
       cards.push({ id: v.style, label: v.style, text: v.text, description: v.description });
@@ -50,8 +35,30 @@ async function fetchOptimized(text: string, scene: SceneType): Promise<CardItem[
     if (data.outline) cards.push({ id: 'outline', label: data.outline.style, text: data.outline.text, description: data.outline.description });
     if (data.expanded) cards.push({ id: 'expanded', label: data.expanded.style, text: data.expanded.text, description: data.expanded.description });
   }
-
   return cards;
+}
+
+/** 调用后端优化接口 */
+async function fetchOptimized(text: string, scene: SceneType): Promise<CardItem[]> {
+  if (!text.trim()) return [];
+  let res: Response;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+  try {
+    res = await fetch('http://127.0.0.1:8000/api/optimize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, scene_type: scene }),
+      signal: controller.signal,
+    });
+  } catch {
+    return [];
+  } finally {
+    clearTimeout(timeoutId);
+  }
+  if (!res.ok) return [];
+  const data = await res.json();
+  return parseOptimizeResponse(data, text);
 }
 
 function ensureAtLeastOriginal(cards: CardItem[], text: string): CardItem[] {
@@ -105,7 +112,6 @@ export default function CompactOverlay({
   const [loadingCards, setLoadingCards] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [workingText, setWorkingText] = useState('');  // 用户编辑后的文本
-  const lastOptimizedRef = useRef('');
 
   // ─── 创作模式状态 ───
   const [creationSessionId, setCreationSessionId] = useState<string | null>(null);
@@ -123,13 +129,14 @@ export default function CompactOverlay({
   const effectiveText = workingText || transcript;
   const state: OverlayState = isListening ? 'recording' : (effectiveText ? 'result' : 'idle');
 
-  // ─── 办公/聊天模式的自动优化 ───
+  // ─── 优化 ───
+
   const doOptimize = useCallback(async (text: string, sceneType: SceneType) => {
-    if (!text.trim()) { setCards([]); return; }
+    if (!text.trim()) { setCards([]); setLoadingCards(false); return; }
     setLoadingCards(true);
     try {
-      const result = await fetchOptimized(text, sceneType);
-      setCards(ensureAtLeastOriginal(result, text));
+      const cards = await fetchOptimized(text, sceneType);
+      setCards(ensureAtLeastOriginal(cards, text));
     } catch {
       setCards(ensureAtLeastOriginal([], text));
     } finally {
@@ -137,16 +144,18 @@ export default function CompactOverlay({
     }
   }, []);
 
-  // 非创作模式：录音停止后或文本编辑后自动优化
+  // 用 optimizeKey 替代复杂 ref 逻辑，确保每次 transcript 更新后都能正确触发优化
+  // 当 isListening=true 时 key 为 null，不优化；
+  // isListening 变 false 后或 transcript 更新后 key 变化，自动触发
+  const optimizeKey = isListening ? null : `${scene}:${effectiveText}`;
   useEffect(() => {
     if (scene === '创作') return;
-    if (isListening) return;
+    if (!optimizeKey) return;
     const text = effectiveText;
     if (!text.trim()) { setCards([]); return; }
-    if (text === lastOptimizedRef.current) return; // 已经优化过相同的文本
-    lastOptimizedRef.current = text;
     doOptimize(text, scene);
-  }, [isListening, effectiveText, scene, doOptimize]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optimizeKey]);
 
   // ─── 创作模式逻辑 ───
   const isCreationMode = scene === '创作';
@@ -732,7 +741,7 @@ export default function CompactOverlay({
             >
               {state === 'idle' && !mainText && (
                 <span style={styles.placeholder}>
-                  {isElectron ? '按 Alt+Q 或点击悬浮球开始语音输入' : '点击开始录音'}
+                  点击开始录音
                 </span>
               )}
               {mainText && (
@@ -764,17 +773,17 @@ export default function CompactOverlay({
                   ...styles.card,
                   ...(copiedId === card.id ? styles.cardCopied : {}),
                 }}
-                onClick={() => {
+                onClick={async () => {
                   if (!card.text.trim()) return;
-                  if (isElectron && (window as any).electronAPI?.prepareText) {
-                    (window as any).electronAPI.prepareText(card.text);
-                  } else {
-                    navigator.clipboard.writeText(card.text).catch(() => {});
-                  }
                   setCopiedId(card.id);
+                  if (isElectron && (window as any).electronAPI?.prepareText) {
+                    await (window as any).electronAPI.prepareText(card.text);
+                  } else {
+                    await navigator.clipboard.writeText(card.text).catch(() => {});
+                  }
                   setTimeout(() => setCopiedId(null), 1500);
                 }}
-                title={cleanDisplayText(card.text) + (card.description ? `\n\n${card.description}\n\n点击复制到剪贴板，点击目标窗口自动粘贴` : '')}
+                title={cleanDisplayText(card.text) + (card.description ? `\n\n${card.description}\n\n已复制到剪贴板，点击目标输入框自动粘贴` : '')}
               >
                 <div style={styles.cardLabel} className="ov-card-label">
                   {copiedId === card.id ? '✓ 已复制' : card.label}
@@ -818,17 +827,17 @@ export default function CompactOverlay({
               <button
                 className="ov-btn-primary"
                 style={styles.btnPrimary}
-                onClick={() => {
+                onClick={async () => {
                   if (isElectron && (window as any).electronAPI?.prepareText) {
-                    (window as any).electronAPI.prepareText(transcript);
+                    await (window as any).electronAPI.prepareText(transcript);
                   } else {
-                    navigator.clipboard.writeText(transcript).catch(() => {});
+                    await navigator.clipboard.writeText(transcript).catch(() => {});
                   }
                   setCopiedId('send-original');
                   setTimeout(() => setCopiedId(null), 1500);
                 }}
               >
-                {copiedId === 'send-original' ? '✓ 已复制' : '📋 复制原文'}
+                {copiedId === 'send-original' ? '✓ 已发送' : '📋 发送原文'}
               </button>
             )}
             {state === 'idle' && isElectron && (

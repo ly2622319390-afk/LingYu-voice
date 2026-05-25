@@ -175,6 +175,13 @@ def get_words_by_category(industry: str, category: str) -> list[dict]:
     return [_row_to_dict(r) for r in rows]
 
 
+def get_all_word_names() -> set[str]:
+    """获取数据库中所有词条的名称（去重）"""
+    conn = db_manager.get_connection(DB_NAME)
+    rows = conn.execute("SELECT DISTINCT word FROM industry_words").fetchall()
+    return {r["word"] for r in rows}
+
+
 def get_category_counts(industry: str) -> dict[str, int]:
     """获取某行业各层级的词条数量统计"""
     conn = db_manager.get_connection(DB_NAME)
@@ -286,6 +293,27 @@ def _row_to_dict(row) -> dict:
     if d.get("embedding"):
         d.pop("embedding")  # 不返回二进制数据
     return d
+
+
+# ─── 增量别名更新 ──────────────────────────────────────────────
+
+def patch_word_aliases(word_aliases: dict[str, list[str]]) -> int:
+    """
+    更新指定词条的别名列表（保留已有数据，只覆盖 aliases 字段）
+    word_aliases: { "Claude": ["克劳德", "科劳德", ...], ... }
+    返回更新的行数
+    """
+    conn = db_manager.get_connection(DB_NAME)
+    updated = 0
+    for word, aliases in word_aliases.items():
+        result = conn.execute(
+            "UPDATE industry_words SET aliases=? WHERE word=?",
+            (json.dumps(aliases, ensure_ascii=False), word)
+        )
+        updated += result.rowcount
+    if updated:
+        conn.commit()
+    return updated
 
 
 # ─── 启动时检查：如果表为空则自动导入 ───

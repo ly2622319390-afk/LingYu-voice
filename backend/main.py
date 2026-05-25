@@ -99,13 +99,37 @@ def get_user_profile(user_id: str = "default") -> UserProfile:
 
 
 def _seed_industry_words():
-    """启动时自动导入种子行业词库（仅首次）"""
-    existing = industry_lexicon_db.get_all_industries()
-    if existing:
-        logger.info(f"行业词库已存在: {len(existing)} 个行业，跳过种子导入")
+    """启动时自动导入种子行业词库 + 增量更新别名 + 新增词条"""
+    existing_industries = industry_lexicon_db.get_all_industries()
+    if not existing_industries:
+        count = industry_lexicon_db.add_industry_words(INDUSTRY_WORDS)
+        logger.info(f"行业词库初始化完成: 已导入 {count} 条词条")
+        industry_lexicon._clear_cache()
         return
-    count = industry_lexicon_db.add_industry_words(INDUSTRY_WORDS)
-    logger.info(f"行业词库初始化完成: 已导入 {count} 条词条")
+    logger.info(f"行业词库已存在: {len(existing_industries)} 个行业")
+
+    # 1. 增量导入新词条（种子数据中有但数据库里没有的）
+    existing_words = industry_lexicon_db.get_all_word_names()
+    new_entries = [w for w in INDUSTRY_WORDS if w["word"] not in existing_words]
+    if new_entries:
+        added = industry_lexicon_db.add_industry_words(new_entries)
+        logger.info(f"增量新增 {added} 条词条 (共 {len(new_entries)} 个新词)")
+
+    # 2. 增量更新关键术语的别名
+    UPDATED_ALIASES: dict[str, list[str]] = {}
+    for w in INDUSTRY_WORDS:
+        if w.get("word") in UPDATED_ALIASES:
+            continue
+        aliases = w.get("aliases", [])
+        if len(aliases) >= 5:
+            UPDATED_ALIASES[w["word"]] = aliases
+    if UPDATED_ALIASES:
+        updated = industry_lexicon_db.patch_word_aliases(UPDATED_ALIASES)
+        if updated:
+            logger.info(f"别名更新完成: {updated} 个词条")
+
+    # 3. 清空缓存，让新数据生效
+    industry_lexicon._clear_cache()
 
 
 def _init_llm():
@@ -241,12 +265,15 @@ def _sync_hotwords():
     """从用户词库 + 行业词库同步热词到 HotwordManager"""
     words = lexicon_db.get_all_words()
     hotword_manager.sync_from_lexicon(words)
-    # 从行业词库系统获取热词（如果有活跃行业）
+    # 从行业词库系统获取热词（如果没有已选行业，自动选中互联网/AI）
     active_industries = industry_lexicon.get_selected_industries("default")
-    if active_industries:
-        industry_hotwords = industry_lexicon.get_hotwords("default", force_refresh=True)
-        hotword_manager.sync_from_industry_system(industry_hotwords)
-        logger.info(f"行业热词已同步: {len(industry_hotwords)} 个 ({active_industries})")
+    if not active_industries:
+        industry_lexicon.select_industries("default", ["互联网/AI"])
+        logger.info("首次启动 — 已自动选中「互联网/AI」行业")
+        active_industries = ["互联网/AI"]
+    industry_hotwords = industry_lexicon.get_hotwords("default", force_refresh=True)
+    hotword_manager.sync_from_industry_system(industry_hotwords)
+    logger.info(f"行业热词已同步: {len(industry_hotwords)} 个 ({active_industries})")
 
 
 # ─── 数据模型 ───
@@ -421,17 +448,29 @@ async def asr_websocket(websocket: WebSocket):
                             confidence = result.get("confidence", 0.0)
                             logger.info(f"[WS] transcribe_buffer 返回: text_len={len(text)}, confidence={confidence}, text='{text[:50]}...' " + ("" if len(text) <= 50 else ""))
                             if text:
-                                if settings.LLM_ENABLED:
-                                    corrected = industry_lexicon.correct_text_llm(text)
-                                else:
-                                    corrected = industry_lexicon.correct_text(text)
+                                # 第一步：立即发送 raw final（不等待 LLM 纠错）
                                 await websocket.send_json({
                                     "type": "final",
-                                    "text": corrected["corrected"],
+                                    "text": text,
                                     "confidence": confidence,
-                                    "corrections": corrected["corrections"],
+                                    "corrections": [],
                                 })
-                                logger.info(f"[WS] ✓ 已发送 final 文本 ({len(corrected['corrected'])} 字)")
+                                logger.info(f"[WS] ✓ 已发送 raw final ({len(text)} 字)")
+
+                                # 第二步：LLM 纠错（可能耗时 20s+，不影响前端的转录显示）
+                                if settings.LLM_ENABLED:
+                                    try:
+                                        corrected = industry_lexicon.correct_text_llm(text)
+                                        if corrected["corrected"] != text:
+                                            await websocket.send_json({
+                                                "type": "final",
+                                                "text": corrected["corrected"],
+                                                "confidence": confidence,
+                                                "corrections": corrected["corrections"],
+                                            })
+                                            logger.info(f"[WS] ✓ 已发送 llm corrected final ({len(corrected['corrected'])} 字) 替换 raw")
+                                    except Exception as e:
+                                        logger.warning(f"[WS] LLM 纠错失败，保留 raw 文本: {e}")
                             else:
                                 logger.warning(f"[WS] ✗ transcribe_buffer 返回空文本！音频块数: {audio_chunks_received}")
                         else:
@@ -594,55 +633,51 @@ def delete_history(item_id: int):
 #  6. 场景化优化 (AI 链路)
 # ═══════════════════════════════════════════════
 
+
 @app.post("/api/optimize")
 async def optimize_text(req: OptimizeRequest):
     """
-    场景化文本处理
+    场景化文本处理（直接 LLM 优化）
 
-    按 AI 架构:
-      MVP 模式 → 规则处理 (services/optimization_service.py)
-      LLM 模式 → prompt_manager → LLM 重写 (ai-services/prompts + nlp)
+    使用大模型直接生成优化结果，不经过规则中间阶段。
     """
     profile = get_user_profile()
     profile.record_scene_usage(req.scene_type)
 
+    # 行业词库纠错（对所有模式生效）
+    text = req.text
+    correction = industry_lexicon.correct_text(text)
+    if correction["corrections"]:
+        text = correction["corrected"]
+        logger.info(f"[optimize] 行业词库纠错 {correction['correction_count']} 处: {correction['corrections']}")
+
     # 缓存检查
-    text_hash = hashlib.md5(req.text.encode()).hexdigest()
+    text_hash = hashlib.md5(text.encode()).hexdigest()
     if settings.CACHE_ENABLED:
         cached = cache_manager.get_optimization(text_hash, req.scene_type)
         if cached:
             return cached
 
-    result = None
-    if req.scene_type == "办公":
-        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
-            result = office_polish(req.text)
+    # LLM 优化（直接等待结果）
+    if not settings.MVP_MODE and settings.LLM_ENABLED and prompt_manager.llm:
+        if req.scene_type == "办公":
+            result = await _llm_office_optimize(text)
+        elif req.scene_type == "聊天":
+            result = await _llm_chat_optimize(text)
+        elif req.scene_type == "创作":
+            result = await _llm_creation_process(text)
         else:
-            try:
-                result = await _llm_office_optimize(req.text)
-            except Exception as e:
-                logger.warning(f"LLM 办公优化失败，降级到规则处理: {e}")
-                result = office_polish(req.text)
-    elif req.scene_type == "聊天":
-        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
-            result = chat_recommend(req.text)
-        else:
-            try:
-                result = await _llm_chat_optimize(req.text)
-            except Exception as e:
-                logger.warning(f"LLM 聊天优化失败，降级到规则处理: {e}")
-                result = chat_recommend(req.text)
-    elif req.scene_type == "创作":
-        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
-            result = creation_process(req.text)
-        else:
-            try:
-                result = await _llm_creation_process(req.text)
-            except Exception as e:
-                logger.warning(f"LLM 创作优化失败，降级到规则处理: {e}")
-                result = creation_process(req.text)
+            raise HTTPException(400, f"未知场景: {req.scene_type}")
     else:
-        raise HTTPException(400, f"未知场景: {req.scene_type}")
+        # 降级到规则处理（当 LLM 不可用时）
+        if req.scene_type == "办公":
+            result = office_polish(text)
+        elif req.scene_type == "聊天":
+            result = chat_recommend(text)
+        elif req.scene_type == "创作":
+            result = creation_process(text)
+        else:
+            raise HTTPException(400, f"未知场景: {req.scene_type}")
 
     # 写入缓存
     if settings.CACHE_ENABLED and result:
@@ -1238,4 +1273,5 @@ def health():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True,
+                reload_dirs=[str(PROJECT_ROOT)])

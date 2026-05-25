@@ -7,6 +7,7 @@ Prompt 核心管理器 — AI 架构第 4 项
   - 调用策略（直接调 LLM / 走缓存）
 """
 
+import asyncio
 from typing import Optional, Callable
 import hashlib
 import json
@@ -137,28 +138,30 @@ class PromptManager:
         return response
 
     async def _call_llm(self, system: str, user: str, model: str) -> str:
-        """调用大模型
-
-        支持的客户端:
-          - OpenAI / DeepSeek (OpenAI SDK): 有 client.chat
-          - Anthropic SDK: 有 client.messages
-        """
+        """调用大模型（同步客户端在线程池运行，不阻塞事件循环）"""
+        loop = asyncio.get_event_loop()
         if hasattr(self.llm, 'chat'):
-            # OpenAI 兼容 (包括 DeepSeek)
-            response = self.llm.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user}
-                ]
+            response = await loop.run_in_executor(
+                None,
+                lambda: self.llm.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": user}
+                    ],
+                    timeout=25,
+                ),
             )
             return response.choices[0].message.content
         elif hasattr(self.llm, 'messages'):
-            # Anthropic SDK
-            response = self.llm.messages.create(
-                model=model,
-                system=system,
-                messages=[{"role": "user", "content": user}]
+            response = await loop.run_in_executor(
+                None,
+                lambda: self.llm.messages.create(
+                    model=model,
+                    system=system,
+                    messages=[{"role": "user", "content": user}],
+                    timeout=25,
+                ),
             )
             return response.content[0].text
         else:
