@@ -76,15 +76,15 @@ export const industryApi = {
 
   /** 获取指定行业的所有词条 */
   wordsByIndustry: (industry: string) =>
-    request<{ industry: string; words: any[] }>(`/industry-lexicon/industries/${encodeURIComponent(industry)}`),
+    request<{ industry: string; words: any[] }>(`/industry-lexicon/words?industry=${encodeURIComponent(industry)}`),
 
   /** 获取行业各层级的词条数量 */
   categories: (industry: string) =>
-    request<{ industry: string; categories: Record<string, number> }>(`/industry-lexicon/categories/${encodeURIComponent(industry)}`),
+    request<{ industry: string; categories: Record<string, number> }>(`/industry-lexicon/categories?industry=${encodeURIComponent(industry)}`),
 
   /** 按层级获取词条列表 */
   wordsByCategory: (industry: string, category: string) =>
-    request<{ industry: string; category: string; words: any[] }>(`/industry-lexicon/${encodeURIComponent(industry)}/${encodeURIComponent(category)}`),
+    request<{ industry: string; category: string; words: any[] }>(`/industry-lexicon/words/category?industry=${encodeURIComponent(industry)}&category=${encodeURIComponent(category)}`),
 
   /** 搜索行业词条 */
   search: (keyword: string, industry = '') =>
@@ -140,4 +140,9 @@ export const documentsApi = {
       }),
     }),
   delete: (id: number) => request(`/documents/${id}`, { method: 'DELETE' }),
+  extractTerms: (text: string, docType = '') =>
+    request<{ terms: { term: string; type: string }[]; count: number; mode: string }>('/documents/extract-terms', {
+      method: 'POST',
+      body: JSON.stringify({ text, doc_type: docType }),
+    }),
 };

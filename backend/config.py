@@ -26,14 +26,24 @@ class Settings(BaseSettings):
     DESKTOP_MODE: bool = False      # Electron 桌面端启用
     ASR_WS_ENABLED: bool = True     # 启用 WebSocket ASR 端点
 
-    # 大模型 (Anthropic)
+    # 大模型提供商: "anthropic" | "deepseek" | "openai"
+    LLM_PROVIDER: str = "deepseek"
+
+    # 大模型 (Anthropic Claude)
     ANTHROPIC_API_KEY: Optional[str] = None
-    ANTHROPIC_MODEL: str = "claude-3-sonnet-20241022"
-    LLM_ENABLED: bool = False
+    ANTHROPIC_MODEL: str = "claude-sonnet-4-20250514"
+
+    # 大模型 (DeepSeek — OpenAI 兼容)
+    DEEPSEEK_API_KEY: Optional[str] = None
+    DEEPSEEK_BASE_URL: str = "https://api.deepseek.com"
+    DEEPSEEK_MODEL: str = "deepseek-chat"
 
     # 大模型 (OpenAI)
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_MODEL: str = "gpt-4o-mini"
+
+    # 全局开关
+    LLM_ENABLED: bool = False
 
     # 缓存
     CACHE_ENABLED: bool = True

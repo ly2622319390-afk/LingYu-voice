@@ -62,6 +62,9 @@ def init_db():
     except sqlite3.OperationalError:
         pass
     conn.commit()
+    # 清理旧版 bug 遗留的重复用户行业选择记录
+    _cleanup_duplicate_user_industries(conn)
+    conn.commit()
 
 
 # ─── 行业词条 CRUD ─────────────────────────────────────────────
@@ -103,6 +106,15 @@ def get_industry_words(industry: str) -> list[dict]:
         (industry,)
     ).fetchall()
     return [_row_to_dict(r) for r in rows]
+
+
+def get_all_industry_word_counts() -> dict[str, int]:
+    """获取所有行业的词条数量（单次查询）"""
+    conn = db_manager.get_connection(DB_NAME)
+    rows = conn.execute(
+        "SELECT industry, COUNT(*) as cnt FROM industry_words GROUP BY industry"
+    ).fetchall()
+    return {r["industry"]: r["cnt"] for r in rows}
 
 
 def get_all_industries() -> list[str]:
@@ -197,22 +209,46 @@ def get_alias_map(industries: list[str]) -> dict[str, str]:
 def set_user_industries(user_id: str, industries: list[str]):
     """设置用户选择的行业"""
     conn = db_manager.get_connection(DB_NAME)
-    conn.execute("""
-        INSERT OR REPLACE INTO user_industries (user_id, industries, updated_at)
-        VALUES (?, ?, datetime('now','localtime'))
-    """, (user_id, json.dumps(industries, ensure_ascii=False)))
+    existing = conn.execute(
+        "SELECT id FROM user_industries WHERE user_id=?", (user_id,)
+    ).fetchone()
+    if existing:
+        conn.execute(
+            "UPDATE user_industries SET industries=?, updated_at=datetime('now','localtime') WHERE user_id=?",
+            (json.dumps(industries, ensure_ascii=False), user_id)
+        )
+    else:
+        conn.execute(
+            "INSERT INTO user_industries (user_id, industries, updated_at) VALUES (?, ?, datetime('now','localtime'))",
+            (user_id, json.dumps(industries, ensure_ascii=False))
+        )
     conn.commit()
 
 
 def get_user_industries(user_id: str) -> list[str]:
-    """获取用户选择的行业列表"""
+    """获取用户选择的行业列表（取最新记录）"""
     conn = db_manager.get_connection(DB_NAME)
     row = conn.execute(
-        "SELECT industries FROM user_industries WHERE user_id=?", (user_id,)
+        "SELECT industries FROM user_industries WHERE user_id=? ORDER BY id DESC LIMIT 1", (user_id,)
     ).fetchone()
     if row:
         return json.loads(row["industries"])
     return []
+
+
+def _cleanup_duplicate_user_industries(conn):
+    """清理 user_industries 表中的重复记录，只保留每个 user_id 的最新一条"""
+    import logging
+    logger = logging.getLogger("voice-input.industry-lexicon-db")
+    rows = conn.execute(
+        "SELECT user_id, MAX(id) as max_id FROM user_industries GROUP BY user_id HAVING COUNT(*) > 1"
+    ).fetchall()
+    for r in rows:
+        conn.execute(
+            "DELETE FROM user_industries WHERE user_id=? AND id != ?",
+            (r["user_id"], r["max_id"])
+        )
+        logger.info(f"清理 user_id='{r['user_id']}' 的重复行业选择记录 ({r['max_id']})")
 
 
 # ─── 用户误识别学习 ──────────────────────────────────────────

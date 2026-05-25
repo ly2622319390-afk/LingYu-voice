@@ -1,24 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
-import { LexiconWord, IndustryWord } from '../types'
+import { LexiconWord } from '../types'
 import { lexiconApi, industryApi, documentsApi } from '../services/api'
 
-const INDUSTRIES = [
-  { id: '互联网/AI', icon: '🤖', desc: '编程、算法、大模型' },
-  { id: '金融', icon: '💰', desc: '证券、银行、投资' },
-  { id: '医疗', icon: '🏥', desc: '临床、药学、器械' },
-  { id: '法律', icon: '⚖️', desc: '法规、合同、诉讼' },
-  { id: '教育', icon: '📚', desc: '课程、教学、教研' },
-  { id: '游戏/二次元', icon: '🎮', desc: '策划、美术、运营' },
-  { id: '电商/运营', icon: '🛒', desc: '选品、推广、数据' },
-  { id: '视频/自媒体', icon: '📹', desc: '剪辑、脚本、流量' },
-  { id: '学术/科研', icon: '🔬', desc: '论文、实验、数据' },
-]
+// 模块级缓存：行业词条数量（跨组件挂载持久化）
+let _cachedWordCounts: Record<string, number> | null = null
 
-const WORD_TYPE_LABELS: Record<string, string> = {
-  framework: '框架', tool: '工具', concept: '概念', brand: '品牌',
-  product: '产品', library: '库', model: '模型', protocol: '协议',
-  platform: '平台', standard: '标准',
-}
+const INDUSTRIES = [
+  { id: '互联网/AI', icon: '🤖', desc: '编程、算法、大模型、框架、云计算' },
+  { id: '金融', icon: '💰', desc: '证券、银行、金融科技、投资、保险' },
+  { id: '医疗', icon: '🏥', desc: '临床、药学、器械、公共卫生、生物' },
+  { id: '法律', icon: '⚖️', desc: '法规、合同、诉讼、知识产权、合规' },
+  { id: '教育', icon: '📚', desc: '课程、教学、教研、在线教育、留学' },
+  { id: '游戏/二次元', icon: '🎮', desc: '策划、美术、运营、发行、电竞' },
+  { id: '电商/运营', icon: '🛒', desc: '选品、推广、数据、供应链、直播' },
+  { id: '视频/自媒体', icon: '📹', desc: '剪辑、脚本、流量、平台、MCN' },
+  { id: '学术/科研', icon: '🔬', desc: '论文、实验、数据、期刊、基金' },
+]
 
 type Tab = 'list' | 'add' | 'industry' | 'import'
 
@@ -166,267 +163,159 @@ function LexiconAdd() {
    ════════════════════════════════════════ */
 function IndustryPanel() {
   const [selected, setSelected] = useState<string[]>([])
-  const [pendingSet, setPendingSet] = useState<Set<string>>(new Set())
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState('')
-
-  const [wordsMap, setWordsMap] = useState<Record<string, IndustryWord[]>>({})
-  const [expanded, setExpanded] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [categoryCounts, setCategoryCounts] = useState<Record<string, Record<string, number>>>({})
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [wordCounts, setWordCounts] = useState<Record<string, number>>({})
-
-  const CATEGORY_ORDER = ['专业层', '基础层', '办公层', '黑话层']
-  const CATEGORY_LABELS: Record<string, string> = {
-    '专业层': '专业术语',
-    '基础层': '基础概念',
-    '办公层': '办公表达',
-    '黑话层': '行业黑话',
-  }
 
   useEffect(() => {
     industryApi.selected().then(res => {
-      setSelected(res.industries)
-      setPendingSet(new Set(res.industries))
+      setSelected(res.industries ?? [])
     }).catch(() => {})
-    // 加载所有行业的词条数量
-    Promise.all(INDUSTRIES.map(ind =>
-      industryApi.wordsByIndustry(ind.id).then(res => ({ id: ind.id, count: res.words.length })).catch(() => ({ id: ind.id, count: 0 }))
-    )).then(results => {
-      const counts: Record<string, number> = {}
-      results.forEach(r => { counts[r.id] = r.count })
-      setWordCounts(counts)
-    })
+    // 一次性获取所有行业的词条数量（模块级缓存，切换tab不重复加载）
+    if (_cachedWordCounts) {
+      setWordCounts(_cachedWordCounts)
+    } else {
+      industryApi.industries().then(res => {
+        if (res._debug?.counts) {
+          _cachedWordCounts = res._debug.counts
+          setWordCounts(res._debug.counts)
+        }
+      }).catch(() => {})
+    }
   }, [])
 
-  const toggle = (ind: string) => {
-    setPendingSet(prev => {
-      const next = new Set(prev)
-      if (next.has(ind)) next.delete(ind)
-      else next.add(ind)
-      return next
-    })
-  }
-
-  const handleSave = async () => {
+  const toggleAndSave = async (ind: string) => {
+    const wasSelected = selected.includes(ind)
+    const next = wasSelected
+      ? selected.filter(i => i !== ind)
+      : [...selected, ind]
+    setSelected(next)
     setSaving(true)
-    setMessage('')
-    const list = [...pendingSet]
+    setMessage(null)
     try {
-      const res = await industryApi.select('default', list)
-      setSelected(list)
-      setMessage(`已保存 — ${res.hotwords_loaded} 条行业热词已加载`)
+      const res = await industryApi.select('default', next)
+      setMessage({
+        type: 'success',
+        text: wasSelected
+          ? `已移除「${ind}」`
+          : `已添加「${ind}」— 已加载 ${res.hotwords_loaded} 条热词`,
+      })
     } catch (err: any) {
-      setMessage('保存失败: ' + (err.message || ''))
+      setMessage({ type: 'error', text: '操作失败，请刷新后重试' })
     } finally {
       setSaving(false)
     }
   }
 
-  const loadWords = async (ind: string) => {
-    if (expanded === ind) { setExpanded(''); setSelectedCategory(''); return }
-    setExpanded(ind)
-    // 加载分类统计
-    industryApi.categories(ind).then(res => {
-      setCategoryCounts(prev => ({ ...prev, [ind]: res.categories }))
-    }).catch(() => {})
-    if (!wordsMap[ind]) {
-      try {
-        const res = await industryApi.wordsByIndustry(ind)
-        setWordsMap(prev => ({ ...prev, [ind]: res.words }))
-      } catch (_) {}
-    }
-  }
-
-  const loadCategory = async (ind: string, cat: string) => {
-    setSelectedCategory(cat === selectedCategory ? '' : cat)
-    if (cat !== selectedCategory && (!wordsMap[ind] || !wordsMap[ind].some(w => w.category === cat))) {
-      try {
-        const res = await industryApi.wordsByCategory(ind, cat)
-        // Merge category words into existing map
-        setWordsMap(prev => {
-          const existing = prev[ind] || []
-          const merged = [...existing]
-          for (const w of res.words) {
-            if (!merged.find(m => m.word === w.word)) merged.push(w)
-          }
-          return { ...prev, [ind]: merged }
-        })
-      } catch (_) {}
-    }
-  }
-
-  const selectedIndustries = INDUSTRIES.filter(i => pendingSet.has(i.id))
-  const unselectedIndustries = INDUSTRIES.filter(i => !pendingSet.has(i.id))
+  const selectedIndustries = INDUSTRIES.filter(i => selected.includes(i.id))
+  const unselectedIndustries = INDUSTRIES.filter(i => !selected.includes(i.id))
 
   return (
     <>
-      {/* ─── 行业选择网格 ─── */}
+      {/* ─── 已选行业词库 ─── */}
       <div className="card" style={{ gridColumn: '1/-1' }}>
-        <div className="card-title">选择行业领域</div>
-        <p style={{ fontSize: 13, color: '#888', marginBottom: 16, lineHeight: 1.5 }}>
-          选择您所在的行业，系统将自动加载对应的专业词库，提升行业术语的语音识别准确率
-        </p>
-
-        <div className="industry-grid">
-          {INDUSTRIES.map(({ id, icon, desc }) => {
-            const isSelected = pendingSet.has(id)
-            return (
-              <button
-                key={id}
-                className={`industry-card ${isSelected ? 'selected' : ''}`}
-                onClick={() => toggle(id)}
-              >
-                <span className="ind-icon">{icon}</span>
-                <div style={{ flex: 1, textAlign: 'left' }}>
-                  <div className="ind-name">{id}</div>
-                  <div className="ind-count">{desc}</div>
-                </div>
-                <span className="ind-check">{isSelected ? '✓' : ''}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <button className="lexicon-add-btn" onClick={handleSave} disabled={saving}>
-            {saving ? '保存中...' : '保存选择'}
-          </button>
-          <span style={{ fontSize: 13, color: '#888' }}>
-            已选 {pendingSet.size} 个行业
+        <div className="card-title">
+          已选行业词库
+          <span style={{ fontSize: 12, color: '#999', fontWeight: 400, marginLeft: 8 }}>
+            {selectedIndustries.length > 0 ? `${selectedIndustries.length} 个行业` : '（从下方点击行业添加）'}
           </span>
         </div>
 
-        {message && (
-          <div style={{
-            marginTop: 12, padding: '8px 12px', borderRadius: 6,
-            background: message.includes('失败') ? '#fff0f0' : '#f0fae0',
-            color: message.includes('失败') ? '#c62828' : '#2e7d32', fontSize: 13,
-          }}>
-            {message}
+        {selectedIndustries.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: 24, color: '#bbb', fontSize: 13 }}>
+            还没有选择行业，从下方选择需要加载的专业词库
           </div>
-        )}
-      </div>
-
-      {/* ─── 已选行业词库 ─── */}
-      {selectedIndustries.length > 0 && (
-        <div className="card" style={{ gridColumn: '1/-1' }}>
-          <div className="card-title">
-            已选行业词库
-            <span style={{ fontSize: 12, color: '#999', fontWeight: 400, marginLeft: 8 }}>
-              （点击行业展开查看词条）
-            </span>
-          </div>
-          {selectedIndustries.map(({ id, icon }) => (
-            <div key={id} style={{ borderBottom: '1px solid #f0f0f0' }}>
-              <div
-                style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '12px 8px', cursor: 'pointer', borderRadius: 6, userSelect: 'none',
-                }}
-                onClick={() => loadWords(id)}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 20 }}>{icon}</span>
-                  <div>
-                    <span style={{ fontWeight: 500 }}>{id}</span>
-                    {wordsMap[id] && (
-                      <span style={{ marginLeft: 8, fontSize: 12, color: '#999' }}>
-                        {wordsMap[id].length} 条
-                      </span>
-                    )}
+        ) : (
+          <div className="industry-grid" style={{ marginTop: 8 }}>
+            {selectedIndustries.map(({ id, icon, desc }) => {
+              const wc = wordCounts[id]
+              return (
+                <div key={id} className="industry-card selected" style={{ cursor: 'default' }}>
+                  <span className="ind-icon">{icon}</span>
+                  <div style={{ flex: 1, textAlign: 'left', minWidth: 0 }}>
+                    <div className="ind-name">{id}</div>
+                    <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{desc}</div>
+                    <div style={{ fontSize: 11, color: '#667eea', marginTop: 4 }}>
+                      {wc !== undefined ? `${wc} 个词条` : '加载中...'}
+                    </div>
                   </div>
-                </div>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   <button
                     className="lexicon-del-btn"
-                    style={{ padding: '2px 10px', fontSize: 12, position: 'relative', zIndex: 1 }}
+                    style={{ padding: '4px 10px', fontSize: 12, flexShrink: 0 }}
+                    disabled={saving}
                     onClick={e => {
                       e.stopPropagation()
-                      const next = selected.filter(i => i !== id)
-                      setSelected(next)
-                      setPendingSet(new Set(next))
-                      industryApi.select('default', next).catch(() => {})
+                      toggleAndSave(id)
                     }}
                   >
                     移除
                   </button>
-                  <span style={{
-                    color: '#999', fontSize: 12, transition: 'transform 0.2s',
-                    display: 'inline-block', transform: expanded === id ? 'rotate(180deg)' : '',
-                  }}>
-                    ▼
-                  </span>
                 </div>
-              </div>
-              {expanded === id && (
-                <div style={{ padding: '0 8px 12px' }}>
-                  {categoryCounts[id] && (
-                    <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-                      {CATEGORY_ORDER.map(cat => {
-                        const count = categoryCounts[id]?.[cat] || 0
-                        if (count === 0) return null
-                        return (
-                          <button
-                            key={cat}
-                            onClick={() => loadCategory(id, cat)}
-                            style={{
-                              padding: '4px 12px', borderRadius: 14, border: 'none',
-                              fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
-                              background: selectedCategory === cat ? '#667eea' : '#f0f0f8',
-                              color: selectedCategory === cat ? '#fff' : '#555',
-                            }}
-                          >
-                            {CATEGORY_LABELS[cat] || cat} ({count})
-                          </button>
-                        )
-                      })}
-                    </div>
-                  )}
-                  <WordList
-                    words={(wordsMap[id] || []).filter(w => !selectedCategory || w.category === selectedCategory)}
-                  />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+              )
+            })}
+          </div>
+        )}
+      </div>
 
-      {/* ─── 未选行业预览 ─── */}
+      {/* ─── 未选行业 ─── */}
       {unselectedIndustries.length > 0 && (
         <div className="card" style={{ gridColumn: '1/-1' }}>
           <div className="card-title">
             未选行业
             <span style={{ fontSize: 12, color: '#999', fontWeight: 400, marginLeft: 8 }}>
-              （共 {unselectedIndustries.length} 个行业可添加）
+              （点击右侧按钮添加）
             </span>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {unselectedIndustries.map(({ id, icon, desc }) => (
-              <button
-                key={id}
-                onClick={() => toggle(id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '10px 14px', border: '1px solid #e8e8f0',
-                  borderRadius: 10, background: '#fafafa', cursor: 'pointer',
-                  fontSize: 13, fontFamily: 'inherit', transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#667eea'; (e.currentTarget as HTMLElement).style.background = '#f8f9ff' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e8e8f0'; (e.currentTarget as HTMLElement).style.background = '#fafafa' }}
-              >
-                <span style={{ fontSize: 18 }}>{icon}</span>
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontWeight: 500 }}>{id}</div>
-                  <div style={{ fontSize: 11, color: '#999' }}>
-                    {wordCounts[id] ? `${wordCounts[id]} 条词条` : desc}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {unselectedIndustries.map(({ id, icon }) => {
+              const wc = wordCounts[id]
+              return (
+                <button
+                  key={id}
+                  disabled={saving}
+                  onClick={() => toggleAndSave(id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    padding: '12px 16px', border: '1px solid #e8e8f0',
+                    borderRadius: 10, background: '#fafafa', cursor: saving ? 'not-allowed' : 'pointer',
+                    fontSize: 14, fontFamily: 'inherit', transition: 'all 0.2s',
+                    textAlign: 'left', width: '100%',
+                  }}
+                  onMouseEnter={e => {
+                    if (!saving) { (e.currentTarget as HTMLElement).style.borderColor = '#667eea'; (e.currentTarget as HTMLElement).style.background = '#f8f9ff' }
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = '#e8e8f0'; (e.currentTarget as HTMLElement).style.background = '#fafafa'
+                  }}
+                >
+                  <span style={{ fontSize: 22 }}>{icon}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 500 }}>{id}</div>
+                    <div style={{ fontSize: 12, color: '#999' }}>
+                      {wc !== undefined ? `${wc} 个词条` : '加载中...'}
+                    </div>
                   </div>
-                </div>
-                <span style={{ color: '#667eea', fontSize: 11, marginLeft: 4 }}>+添加</span>
-              </button>
-            ))}
+                  <span style={{
+                    padding: '4px 14px', borderRadius: 8, fontSize: 13,
+                    background: '#667eea', color: '#fff', flexShrink: 0,
+                  }}>
+                    + 添加
+                  </span>
+                </button>
+              )
+            })}
           </div>
+        </div>
+      )}
+
+      {message && (
+        <div style={{
+          gridColumn: '1/-1', padding: '10px 14px', borderRadius: 8,
+          background: message.type === 'error' ? '#fff0f0' : '#f0fae0',
+          color: message.type === 'error' ? '#c62828' : '#2e7d32',
+          fontSize: 13,
+        }}>
+          {message.text}
         </div>
       )}
     </>
@@ -438,9 +327,11 @@ function IndustryPanel() {
    ════════════════════════════════════════ */
 function ImportPanel() {
   const [docType, setDocType] = useState('')
-  const [termsText, setTermsText] = useState('')
+  const [rawText, setRawText] = useState('')
   const [importing, setImporting] = useState(false)
+  const [extracting, setExtracting] = useState(false)
   const [importMsg, setImportMsg] = useState('')
+  const [extractedTerms, setExtractedTerms] = useState<string[]>([])
 
   const [documents, setDocuments] = useState<any[]>([])
 
@@ -453,25 +344,52 @@ function ImportPanel() {
 
   useEffect(() => { loadDocs() }, [loadDocs])
 
-  const handleImport = async () => {
-    if (!termsText.trim()) {
-      setImportMsg('请粘贴术语列表')
+  const handleExtract = async () => {
+    if (!rawText.trim()) {
+      setImportMsg('请粘贴文档内容')
       return
     }
+    setExtracting(true)
+    setImportMsg('')
+    setExtractedTerms([])
+    try {
+      const res = await documentsApi.extractTerms(rawText, docType)
+      if (res.terms.length === 0) {
+        setImportMsg('未识别出专业术语，请尝试输入更多文档内容')
+        return
+      }
+      const terms = res.terms.map(t => t.term)
+      const unique = [...new Set(terms)]
+      setExtractedTerms(unique)
+      setImportMsg(`AI${res.mode === 'llm' ? '大模型' : '规则'}识别出 ${unique.length} 个专业术语，确认后导入词库`)
+    } catch (err: any) {
+      setImportMsg('提取失败: ' + (err.message || ''))
+    } finally {
+      setExtracting(false)
+    }
+  }
+
+  const handleImport = async () => {
+    if (extractedTerms.length === 0) return
     setImporting(true)
     setImportMsg('')
     try {
-      const terms = termsText.split('\n').map(s => s.trim()).filter(Boolean)
       const autoName = `导入文档_${new Date().toLocaleDateString('zh-CN')}`
-      await documentsApi.import(autoName, docType.trim() || '其他', terms)
-      setImportMsg(`成功导入 ${terms.length} 条术语`)
-      setDocType(''); setTermsText('')
+      await documentsApi.import(autoName, docType.trim() || '其他', extractedTerms)
+      setImportMsg(`成功导入 ${extractedTerms.length} 条术语到词库`)
+      setRawText('')
+      setExtractedTerms([])
       loadDocs()
     } catch (err: any) {
       setImportMsg('导入失败: ' + (err.message || ''))
     } finally {
       setImporting(false)
     }
+  }
+
+  const handleCancel = () => {
+    setExtractedTerms([])
+    setImportMsg('')
   }
 
   const handleDeleteDoc = async (id: number) => {
@@ -485,11 +403,10 @@ function ImportPanel() {
 
   return (
     <>
-      {/* ─── 导入表单 ─── */}
       <div className="card" style={{ gridColumn: '1/-1' }}>
         <div className="card-title">导入文档术语</div>
         <p style={{ fontSize: 13, color: '#888', marginBottom: 16, lineHeight: 1.5 }}>
-          从专业文档中提取术语，粘贴到下方即可导入用户词库
+          AI 自动提取文档中的专业名词、技术术语、公司名、人名等，一键导入用户词库
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', gap: 12 }}>
@@ -506,29 +423,74 @@ function ImportPanel() {
               <option value="研究报告">研究报告</option>
               <option value="其他">其他</option>
             </select>
+            <span style={{ fontSize: 12, color: '#999', alignSelf: 'center' }}>
+              选择文档类型有助于 AI 更准确提取
+            </span>
           </div>
           <textarea
             className="lexicon-input"
-            placeholder="每行一个专业术语，例如：&#10;Transformer&#10;RAG&#10;LoRA&#10;向量数据库"
-            value={termsText}
-            onChange={e => setTermsText(e.target.value)}
-            style={{ minHeight: 100, resize: 'vertical', padding: 8 }}
+            placeholder={"粘贴文档内容，AI 将自动提取其中的专业词汇…\n例如：技术文档、项目说明、研究报告等"}
+            value={rawText}
+            onChange={e => setRawText(e.target.value)}
+            style={{ minHeight: 120, resize: 'vertical', padding: 8, fontFamily: 'inherit' }}
           />
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <button className="lexicon-add-btn" onClick={handleImport} disabled={importing}>
-              {importing ? '导入中...' : '导入词条'}
+            <button className="lexicon-add-btn" onClick={handleExtract} disabled={extracting || !rawText.trim()}>
+              {extracting ? 'AI 提取中...' : 'AI 提取术语'}
             </button>
-            {termsText.trim() && (
+            {rawText.trim() && !extracting && (
               <span style={{ fontSize: 12, color: '#888' }}>
-                共 {termsText.split('\n').filter(s => s.trim()).length} 个术语
+                共 {rawText.length} 字
               </span>
             )}
           </div>
+
+          {extractedTerms.length > 0 && (
+            <div style={{
+              border: '1px solid #e0e0e0', borderRadius: 8, padding: 12,
+              background: '#fafbff', marginTop: 4,
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 500, color: '#333' }}>
+                  提取到 {extractedTerms.length} 个专业术语：
+                </span>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    onClick={handleCancel}
+                    style={{
+                      padding: '4px 12px', fontSize: 12, borderRadius: 6,
+                      border: '1px solid #ccc', background: '#fff', cursor: 'pointer',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={handleImport}
+                    disabled={importing}
+                    style={{
+                      padding: '4px 12px', fontSize: 12, borderRadius: 6,
+                      border: 'none', background: '#667eea', color: '#fff',
+                      cursor: importing ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
+                    }}
+                  >
+                    {importing ? '导入中...' : '确认导入词库'}
+                  </button>
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {extractedTerms.map((t, i) => (
+                  <span key={i} className="word-chip">{t}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {importMsg && (
             <div style={{
               padding: '8px 12px', borderRadius: 6,
-              background: importMsg.includes('失败') ? '#fff0f0' : '#f0fae0',
-              color: importMsg.includes('失败') ? '#c62828' : '#2e7d32', fontSize: 13,
+              background: importMsg.includes('失败') || importMsg.includes('未') ? '#fff0f0' : '#f0fae0',
+              color: importMsg.includes('失败') || importMsg.includes('未') ? '#c62828' : '#2e7d32', fontSize: 13,
             }}>
               {importMsg}
             </div>
@@ -536,7 +498,6 @@ function ImportPanel() {
         </div>
       </div>
 
-      {/* ─── 已导入文档列表 ─── */}
       <div className="card" style={{ gridColumn: '1/-1' }}>
         <div className="card-title">
           已导入文档
@@ -578,37 +539,3 @@ function ImportPanel() {
   )
 }
 
-/* ════════════════════════════════════════
-   词条展示（按类型分组）
-   ════════════════════════════════════════ */
-function WordList({ words }: { words: IndustryWord[] }) {
-  const groups: Record<string, IndustryWord[]> = {}
-  for (const w of words) {
-    const t = w.type || 'other'
-    if (!groups[t]) groups[t] = []
-    groups[t].push(w)
-  }
-  const keys = Object.keys(groups).sort((a, b) => (b === 'other' ? -1 : 1))
-
-  if (words.length === 0) {
-    return <div style={{ color: '#bbb', fontSize: 13, padding: 8 }}>暂无词条数据</div>
-  }
-
-  return (
-    <div>
-      {keys.map(key => (
-        <div key={key} className="word-type-group">
-          <div className="word-type-title">
-            {WORD_TYPE_LABELS[key] || key}
-            <span style={{ color: '#bbb', marginLeft: 4 }}>({groups[key].length})</span>
-          </div>
-          <div className="word-type-tags">
-            {groups[key].map(w => (
-              <span key={w.id || w.word} className="word-chip">{w.word}</span>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}

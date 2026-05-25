@@ -31,6 +31,7 @@ logger = logging.getLogger("voice-input")
 from config import settings
 from database.db_manager import db_manager
 from database import lexicon_db, corrections_db, history_db, emoji_db, documents_db
+from services.term_extraction_service import extract_terms
 from database import industry_lexicon_db
 from database.seed_industry_words import INDUSTRY_WORDS
 from services.optimization_service import office_polish, chat_recommend, creation_process
@@ -96,6 +97,69 @@ def _seed_industry_words():
     logger.info(f"行业词库初始化完成: 已导入 {count} 条词条")
 
 
+def _init_llm():
+    """初始化大模型客户端（根据 LLM_PROVIDER 配置选择）"""
+    if not settings.LLM_ENABLED:
+        logger.info("大模型未启用 (LLM_ENABLED=False)，使用规则处理")
+        return
+
+    provider = settings.LLM_PROVIDER
+
+    if provider == "anthropic":
+        if not settings.ANTHROPIC_API_KEY:
+            logger.warning("LLM_PROVIDER=anthropic 但未配置 ANTHROPIC_API_KEY，降级到规则处理")
+            settings.LLM_ENABLED = False
+            return
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+            prompt_manager.llm = client
+            rewrite_engine.llm = client
+            logger.info(f"Anthropic 客户端初始化成功 (model={settings.ANTHROPIC_MODEL})")
+        except Exception as e:
+            logger.warning(f"Anthropic 初始化失败，降级到规则处理: {e}")
+            settings.LLM_ENABLED = False
+
+    elif provider == "deepseek":
+        if not settings.DEEPSEEK_API_KEY:
+            logger.warning("LLM_PROVIDER=deepseek 但未配置 DEEPSEEK_API_KEY，降级到规则处理")
+            settings.LLM_ENABLED = False
+            return
+        try:
+            from openai import OpenAI
+            client = OpenAI(
+                api_key=settings.DEEPSEEK_API_KEY,
+                base_url=settings.DEEPSEEK_BASE_URL,
+            )
+            prompt_manager.llm = client
+            rewrite_engine.llm = client
+            prompt_manager.model_name = settings.DEEPSEEK_MODEL
+            logger.info(f"DeepSeek 客户端初始化成功 (model={settings.DEEPSEEK_MODEL}, base_url={settings.DEEPSEEK_BASE_URL})")
+        except Exception as e:
+            logger.warning(f"DeepSeek 初始化失败，降级到规则处理: {e}")
+            settings.LLM_ENABLED = False
+
+    elif provider == "openai":
+        if not settings.OPENAI_API_KEY:
+            logger.warning("LLM_PROVIDER=openai 但未配置 OPENAI_API_KEY，降级到规则处理")
+            settings.LLM_ENABLED = False
+            return
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=settings.OPENAI_API_KEY)
+            prompt_manager.llm = client
+            rewrite_engine.llm = client
+            prompt_manager.model_name = settings.OPENAI_MODEL
+            logger.info(f"OpenAI 客户端初始化成功 (model={settings.OPENAI_MODEL})")
+        except Exception as e:
+            logger.warning(f"OpenAI 初始化失败，降级到规则处理: {e}")
+            settings.LLM_ENABLED = False
+
+    else:
+        logger.warning(f"未知 LLM_PROVIDER: {provider}，降级到规则处理")
+        settings.LLM_ENABLED = False
+
+
 # ─── 生命周期 ───
 @app.on_event("startup")
 def startup():
@@ -108,8 +172,11 @@ def startup():
     industry_lexicon_db.init_db()
     _seed_industry_words()
 
-    # 注册 Prompt 模板
-    if not settings.MVP_MODE:
+    # 配置大模型
+    _init_llm()
+
+    # 注册 Prompt 模板（LLM 模式需要）
+    if settings.LLM_ENABLED:
         prompt_manager.register_default_templates()
 
     # 同步热词
@@ -310,7 +377,10 @@ async def asr_websocket(websocket: WebSocket):
                             result = await asr_engine.transcribe_buffer()
                             if result.get("text"):
                                 raw_text = result["text"]
-                                corrected = industry_lexicon.correct_text(raw_text)
+                                if settings.LLM_ENABLED:
+                                    corrected = industry_lexicon.correct_text_llm(raw_text)
+                                else:
+                                    corrected = industry_lexicon.correct_text(raw_text)
                                 await websocket.send_json({
                                     "type": "final",
                                     "text": corrected["corrected"],
@@ -410,9 +480,6 @@ def lexicon_rag_query(text: str = Query(...), user_id: str = "default", industry
     return {"text": text, "candidates": candidates, "total": len(candidates)}
 
 
-@app.get("/api/industry-lexicon/{industry}")
-def get_industry_lexicon(industry: str):
-    return lexicon_db.get_industry_words(industry)
 
 
 # ═══════════════════════════════════════════════
@@ -482,7 +549,7 @@ def delete_history(item_id: int):
 # ═══════════════════════════════════════════════
 
 @app.post("/api/optimize")
-def optimize_text(req: OptimizeRequest):
+async def optimize_text(req: OptimizeRequest):
     """
     场景化文本处理
 
@@ -502,17 +569,25 @@ def optimize_text(req: OptimizeRequest):
 
     result = None
     if req.scene_type == "办公":
-        if settings.MVP_MODE or not settings.LLM_ENABLED:
+        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
             result = office_polish(req.text)
         else:
-            result = rewrite_engine._rule_office_rewrite(req.text)
+            try:
+                result = await _llm_office_optimize(req.text)
+            except Exception as e:
+                logger.warning(f"LLM 办公优化失败，降级到规则处理: {e}")
+                result = office_polish(req.text)
     elif req.scene_type == "聊天":
         result = chat_recommend(req.text)
     elif req.scene_type == "创作":
-        if settings.MVP_MODE or not settings.LLM_ENABLED:
+        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
             result = creation_process(req.text)
         else:
-            result = rewrite_engine._rule_creation_process(req.text)
+            try:
+                result = await _llm_creation_process(req.text)
+            except Exception as e:
+                logger.warning(f"LLM 创作优化失败，降级到规则处理: {e}")
+                result = creation_process(req.text)
     else:
         raise HTTPException(400, f"未知场景: {req.scene_type}")
 
@@ -521,6 +596,96 @@ def optimize_text(req: OptimizeRequest):
         cache_manager.set_optimization(text_hash, req.scene_type, result)
 
     return result
+
+
+async def _llm_office_optimize(text: str) -> dict:
+    """
+    使用大模型进行办公场景优化
+
+    1. 通过 prompt_manager 获取并渲染办公场景模板
+    2. 调用大模型
+    3. 解析 markdown 输出为前端期望的 versions 格式
+    """
+    llm_output = await prompt_manager.execute("office_rewrite", text=text)
+    versions = _parse_llm_versions(llm_output)
+    # 确保至少有一个版本
+    if not versions:
+        logger.warning("LLM 输出解析结果为空，使用规则处理结果")
+        return office_polish(text)
+    return {
+        "origin": text,
+        "versions": versions
+    }
+
+
+async def _llm_creation_process(text: str) -> dict:
+    """使用大模型进行创作场景优化"""
+    llm_output = await prompt_manager.execute("creation_process", text=text)
+    # 尝试解析为三个版本
+    versions = _parse_llm_versions(llm_output)
+    if versions:
+        return {
+            "origin": text,
+            "organized": versions[0],
+            "outline": versions[1] if len(versions) > 1 else versions[0],
+            "expanded": versions[2] if len(versions) > 2 else versions[0],
+        }
+    return creation_process(text)
+
+
+def _parse_llm_versions(markdown_text: str) -> list[dict]:
+    """
+    将大模型输出的 markdown 解析为 versions 列表
+
+    输入格式:
+        ### 版本一：正式邮件版
+        **适用场景**：说明文字
+        正文内容...
+
+    输出:
+        [{"style": "正式邮件版", "description": "说明文字", "text": "正文内容"}, ...]
+    """
+    import re
+    versions = []
+
+    # 按 ### 分割版本块
+    blocks = re.split(r'\n###\s+', markdown_text)
+    for block in blocks:
+        if not block.strip():
+            continue
+
+        lines = block.strip().split('\n')
+
+        # 第一行是版本标题: "版本一：正式邮件版" 或 "正式邮件版"
+        title_line = lines[0].strip()
+        # 提取版本名称（去掉 "版本一：" 前缀）
+        style_match = re.match(r'(?:版本[一二三]\s*[：:]?\s*)?(.+)', title_line)
+        style = style_match.group(1).strip() if style_match else title_line
+
+        # 查找 **适用场景** 行
+        desc = ""
+        text_lines = []
+        in_desc = False
+        for line in lines[1:]:
+            stripped = line.strip()
+            if stripped.startswith('**适用场景**') or stripped.startswith('**适用场景：'):
+                desc = stripped.replace('**适用场景**', '').replace('**适用场景：', '').replace('**', '').strip()
+                in_desc = True
+            elif stripped.startswith('**') and '**' in stripped[2:]:
+                # 其他加粗标记，跳过
+                continue
+            else:
+                text_lines.append(line)
+
+        text = '\n'.join(text_lines).strip()
+        if text:
+            versions.append({
+                "style": style,
+                "description": desc or f"适用于{style}场景",
+                "text": text
+            })
+
+    return versions
 
 
 # ═══════════════════════════════════════════════
@@ -651,6 +816,21 @@ def delete_document(doc_id: int):
     return {"status": "deleted"}
 
 
+@app.post("/api/documents/extract-terms")
+def extract_document_terms(data: dict):
+    """AI 自动提取文档中的专业术语"""
+    text = data.get("text", "")
+    doc_type = data.get("doc_type", "")
+    if not text.strip():
+        return {"terms": []}
+    terms = extract_terms(text, doc_type, use_llm=settings.LLM_ENABLED)
+    return {
+        "terms": terms,
+        "count": len(terms),
+        "mode": "llm" if settings.LLM_ENABLED else "rule",
+    }
+
+
 # ═══════════════════════════════════════════════
 #  10. 行业专业词库系统 (Industry Lexicon System)
 # ═══════════════════════════════════════════════
@@ -659,36 +839,25 @@ def delete_document(doc_id: int):
 def list_industries():
     """获取所有可用行业分类"""
     industries = industry_lexicon_db.get_all_industries()
-    # 调试：检查数据库状态
-    import sqlite3
-    try:
-        from database.db_manager import db_manager
-        conn = db_manager.get_connection("lexicon")
-        cur = conn.execute("SELECT COUNT(*) as cnt FROM industry_words")
-        row = cur.fetchone()
-        db_status = {
-            "industry_words_count": row["cnt"] if row else -1,
-        }
-    except Exception as e:
-        db_status = {"error": str(e)}
-    return {"industries": industries, "_debug": db_status}
+    counts = industry_lexicon_db.get_all_industry_word_counts()
+    return {"industries": industries, "_debug": {"counts": counts}}
 
 
-@app.get("/api/industry-lexicon/industries/{industry}")
-def get_industry_words(industry: str):
+@app.get("/api/industry-lexicon/words")
+def get_industry_words(industry: str = Query(...)):
     """获取指定行业的词条"""
     return {"industry": industry, "words": industry_lexicon_db.get_industry_words(industry)}
 
 
-@app.get("/api/industry-lexicon/categories/{industry}")
-def get_industry_categories(industry: str):
+@app.get("/api/industry-lexicon/categories")
+def get_industry_categories(industry: str = Query(...)):
     """获取行业各层级的词条数量统计"""
     counts = industry_lexicon_db.get_category_counts(industry)
     return {"industry": industry, "categories": counts}
 
 
-@app.get("/api/industry-lexicon/{industry}/{category}")
-def get_industry_words_by_category(industry: str, category: str):
+@app.get("/api/industry-lexicon/words/category")
+def get_industry_words_by_category(industry: str = Query(...), category: str = Query(...)):
     """按层级获取行业词条"""
     words = industry_lexicon_db.get_words_by_category(industry, category)
     return {"industry": industry, "category": category, "words": words}
@@ -729,9 +898,12 @@ def import_industry_words(data: IndustryWordImport):
 
 
 @app.post("/api/industry-lexicon/correct")
-def correct_asr_text(text: str = Query(...), user_id: str = "default"):
-    """ASR 文本纠错 — 基于行业词库"""
-    result = industry_lexicon.correct_text(text, user_id)
+def correct_asr_text(text: str = Query(...), user_id: str = "default", use_llm: bool = False):
+    """ASR 文本纠错 — 基于行业词库（use_llm=true 时启用 LLM 上下文感知纠错）"""
+    if use_llm and settings.LLM_ENABLED:
+        result = industry_lexicon.correct_text_llm(text, user_id)
+    else:
+        result = industry_lexicon.correct_text(text, user_id)
     return result
 
 
