@@ -89,7 +89,9 @@ export function useAudioCapture(): AudioCaptureHook {
 
         ws.onclose = (event) => {
           console.warn('[AudioCapture] WebSocket 关闭 code=' + event.code + ' reason=' + event.reason);
-          if (isListeningRef.current) {
+          // 只有当前 WS 仍然是活跃的且正在监听时才重置状态
+          // 避免前一个已关闭的 WS 的 onclose 误停新录音
+          if (ws === wsRef.current && isListeningRef.current) {
             console.log('[AudioCapture] 正在录音时 WS 断开，重置录音状态');
             setIsListening(false);
           }
@@ -210,15 +212,17 @@ export function useAudioCapture(): AudioCaptureHook {
   /**
    * 停止录音
    *
-   * 修复时序问题：旧实现在发送 "stop" 后立即关闭 WebSocket，
-   * 导致服务端的 final 消息可能在关闭后到达，造成文本丢失。
-   *
-   * 新逻辑：
+   * 逻辑：
    *   1. 停止麦克风采集
    *   2. 发送 "stop" 命令给服务端
-   *   3. 服务端回复 "final" + "end"
+   *   3. 服务端回复 "final"（更新 transcript）+ "end"
    *   4. ws.onmessage 在收到 "end" 时自动关闭连接
-   *   5. 5 秒超时保护：如果服务端无响应，强制关闭
+   *   5. 8 秒超时保护：如果服务端无响应，强制关闭（只关闭本次 WS）
+   *
+   * 特别注意：
+   *   超时 setTimeout 中必须用局部变量捕获具体的 WS 实例，
+   *   不能直接使用 wsRef.current，因为重新录音时 wsRef 会被覆盖，
+   *   导致旧超时关闭了新的 WebSocket。
    */
   const stopListening = useCallback(() => {
     // 停止 MediaRecorder
@@ -252,13 +256,14 @@ export function useAudioCapture(): AudioCaptureHook {
     setIsListening(false);
     setUseWebSocket(false);
 
-    // 超时保护：如果服务端 5 秒内没回复 end，强制关闭连接
+    // 超时保护：捕获当前 WS 实例，避免在重新录音后误关新连接
+    // LLM 纠错可能耗时 20s+，所以超时设 60s
+    const wsToClose = wsRef.current;
     setTimeout(() => {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.close();
-        wsRef.current = null;
+      if (wsToClose && wsToClose.readyState === WebSocket.OPEN) {
+        wsToClose.close();
       }
-    }, 5000);
+    }, 60000);
   }, []);
 
   /**

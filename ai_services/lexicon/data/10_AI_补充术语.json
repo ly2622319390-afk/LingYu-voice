@@ -1,0 +1,1976 @@
+[
+  {
+    "word": "GPT-4o",
+    "aliases": [
+      "G P T 四欧",
+      "GPT4o",
+      "GPT四欧",
+      "chat GPT 4o",
+      "四欧模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.95,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "OpenAI 多模态旗舰模型",
+    "category": "专业层"
+  },
+  {
+    "word": "GPT-4.5",
+    "aliases": [
+      "G P T 四五",
+      "GPT4 5",
+      "GPT 4.5",
+      "GPT四点五"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "OpenAI 最新模型",
+    "category": "专业层"
+  },
+  {
+    "word": "GPT-5",
+    "aliases": [
+      "G P T 五",
+      "GPT5",
+      "GPT五",
+      "第五代GPT"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "OpenAI 下一代模型",
+    "category": "专业层"
+  },
+  {
+    "word": "o1",
+    "aliases": [
+      "O一",
+      "O1模型",
+      "欧一",
+      "OpenAI o1",
+      "推理模型o1"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "OpenAI 推理增强模型",
+    "category": "专业层"
+  },
+  {
+    "word": "o3",
+    "aliases": [
+      "O三",
+      "O3模型",
+      "欧三",
+      "OpenAI o3",
+      "推理模型o3"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "OpenAI 最新推理模型",
+    "category": "专业层"
+  },
+  {
+    "word": "4o",
+    "aliases": [
+      "四欧",
+      "4o模型",
+      "fogo",
+      "for欧"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "GPT-4o的简称",
+    "category": "专业层"
+  },
+  {
+    "word": "DeepSeek-V3",
+    "aliases": [
+      "迪普西克V3",
+      "deepseek v3",
+      "deep seek V3",
+      "深度求索V3"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "DeepSeek 大语言模型",
+    "category": "专业层"
+  },
+  {
+    "word": "DeepSeek-R1",
+    "aliases": [
+      "迪普西克R1",
+      "deepseek r1",
+      "deep seek R1",
+      "深度求索R1",
+      "R1推理模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.9,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "DeepSeek 推理增强模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Qwen2.5",
+    "aliases": [
+      "困二点五",
+      "qwen 2 5",
+      "千问2.5",
+      "通义千问2.5"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "阿里通义千问最新版",
+    "category": "专业层"
+  },
+  {
+    "word": "QwQ",
+    "aliases": [
+      "困困",
+      "Q W Q",
+      "千问Q",
+      "阿里推理模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.8,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.6,
+    "description": "阿里推理模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Llama 4",
+    "aliases": [
+      "拉玛四",
+      "llama4",
+      "羊驼4",
+      "Meta Llama 4",
+      "meta开源模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "Meta 最新开源大模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Mistral",
+    "aliases": [
+      "密斯特拉尔",
+      "mistral AI",
+      "m斯特劳",
+      "法国AI模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "Mistral AI 开源模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Grok",
+    "aliases": [
+      "格绕克",
+      "grok AI",
+      "马斯克AI",
+      "xAI模型",
+      "grock"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "xAI 对话助手",
+    "category": "专业层"
+  },
+  {
+    "word": "Gemini 2.5",
+    "aliases": [
+      "杰米奈2 5",
+      "gemini 2 5",
+      "谷歌双子星2.5",
+      "Gemini二点五"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "Google 最新多模态模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Sonnet",
+    "aliases": [
+      "索尼特",
+      "sonnet模型",
+      "Claude Sonnet",
+      "sonnet 4"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.85,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "Claude Sonnet 系列模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Haiku",
+    "aliases": [
+      "海库",
+      "haiku模型",
+      "Claude Haiku",
+      "hiku"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI模型",
+    "weight": 0.8,
+    "type": "model",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "Claude Haiku 系列模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Cursor",
+    "aliases": [
+      "科索",
+      "cursor IDE",
+      "cursor编程",
+      "AI代码编辑器",
+      "科瑟"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.9,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "AI 驱动代码编辑器",
+    "category": "专业层"
+  },
+  {
+    "word": "Windsurf",
+    "aliases": [
+      "温德瑟夫",
+      "windsurf IDE",
+      "windsurf编程",
+      "wind surf",
+      "AI编辑器"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "AI 编程 IDE",
+    "category": "专业层"
+  },
+  {
+    "word": "Copilot",
+    "aliases": [
+      "靠派特",
+      "co pilot",
+      "Github Copilot",
+      "AI编程助手",
+      "靠拍劳特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.9,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "GitHub AI 编程助手",
+    "category": "专业层"
+  },
+  {
+    "word": "vibecoding",
+    "aliases": [
+      "web coding",
+      "vibe coding",
+      "vibe编程",
+      "wide coding",
+      "cloud code",
+      "AI编程",
+      "vive coding",
+      "webcode"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "AI 辅助直觉式编程",
+    "category": "专业层"
+  },
+  {
+    "word": "Bolt.new",
+    "aliases": [
+      "波尔特纽",
+      "bolt new",
+      "bolt点new",
+      "bolt 点 new",
+      "AI全栈工具"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "AI 全栈 Web 应用生成",
+    "category": "专业层"
+  },
+  {
+    "word": "Lovable",
+    "aliases": [
+      "拉乌波",
+      "lovable dev",
+      "AI应用构建",
+      "拉乌伯"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.75,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.5,
+    "description": "AI 全栈应用构建平台",
+    "category": "专业层"
+  },
+  {
+    "word": "Replit Agent",
+    "aliases": [
+      "瑞普利特agent",
+      "replit agent",
+      "replit 智能体",
+      "瑞普里特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.6,
+    "description": "Replit AI 编程智能体",
+    "category": "专业层"
+  },
+  {
+    "word": "v0",
+    "aliases": [
+      "V零",
+      "V0工具",
+      "Vercel v0",
+      "v zero",
+      "V零工具"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "Vercel AI UI 生成工具",
+    "category": "专业层"
+  },
+  {
+    "word": "Devin",
+    "aliases": [
+      "德文",
+      "devin AI",
+      "AI软件工程师",
+      "德温"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "AI 全栈软件工程师",
+    "category": "专业层"
+  },
+  {
+    "word": "Codeium",
+    "aliases": [
+      "扣迪厄姆",
+      "code ium",
+      "AI编程",
+      "扣迪乌姆",
+      "windsurf原名"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI开发工具",
+    "weight": 0.7,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.5,
+    "description": "AI 代码补全工具",
+    "category": "专业层"
+  },
+  {
+    "word": "PyTorch",
+    "aliases": [
+      "拍 touch",
+      "pytouch",
+      "拍他吃",
+      "Python torch",
+      "拍他尺",
+      "拍他曲"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.95,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "Meta 深度学习框架",
+    "category": "专业层"
+  },
+  {
+    "word": "TensorFlow",
+    "aliases": [
+      "探瑟夫劳",
+      "tensor flow",
+      "tenserflow",
+      "探色夫娄",
+      "张量流"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.9,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "Google 机器学习框架",
+    "category": "专业层"
+  },
+  {
+    "word": "JAX",
+    "aliases": [
+      "加克斯",
+      "jax框架",
+      "Google JAX",
+      "贾克斯"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.8,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "Google 高性能数值计算",
+    "category": "专业层"
+  },
+  {
+    "word": "LangChain",
+    "aliases": [
+      "lang chain",
+      "浪链",
+      "浪陈",
+      "langchain框架",
+      "狼陈"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.9,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "LLM 应用开发框架",
+    "category": "专业层"
+  },
+  {
+    "word": "LangGraph",
+    "aliases": [
+      "lang graph",
+      "浪 graph",
+      "langgraf",
+      "浪格拉夫",
+      "lang graph框架"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.8,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "LangChain 多智能体框架",
+    "category": "专业层"
+  },
+  {
+    "word": "LlamaIndex",
+    "aliases": [
+      "拉玛 index",
+      "llama index",
+      "羊驼 index",
+      "拉玛索引",
+      "lang chain索引"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.85,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "LLM 数据索引框架",
+    "category": "专业层"
+  },
+  {
+    "word": "Haystack",
+    "aliases": [
+      "黑斯戴克",
+      "hay stack",
+      "黑斯太克",
+      "AI搜索框架"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.75,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "开源 NLP 框架",
+    "category": "专业层"
+  },
+  {
+    "word": "vLLM",
+    "aliases": [
+      "V L L M",
+      "vllm推理",
+      "V LLM",
+      "高并发推理"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.85,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "高性能 LLM 推理引擎",
+    "category": "专业层"
+  },
+  {
+    "word": "Ollama",
+    "aliases": [
+      "欧拉玛",
+      "ollama模型",
+      "本地大模型",
+      "ollama本地"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.9,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "本地 LLM 运行工具",
+    "category": "专业层"
+  },
+  {
+    "word": "llama.cpp",
+    "aliases": [
+      "拉玛 cpp",
+      "llama cpp",
+      "羊驼 cpp",
+      "拉玛C加加",
+      "C加加推理"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.85,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "C++ 实现的 LLM 推理",
+    "category": "专业层"
+  },
+  {
+    "word": "Gradio",
+    "aliases": [
+      "格瑞迪欧",
+      "grad io",
+      "AI演示",
+      "guadio",
+      "格拉丁欧"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "Hugging Face 演示工具",
+    "category": "专业层"
+  },
+  {
+    "word": "Streamlit",
+    "aliases": [
+      "斯春里特",
+      "stream lit",
+      "数据应用",
+      "streamlight",
+      "斯创里特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI框架",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "Python 数据应用框架",
+    "category": "专业层"
+  },
+  {
+    "word": "ChromaDB",
+    "aliases": [
+      "克罗马DB",
+      "chroma db",
+      "向量数据库chroma",
+      "chrome a DB"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.85,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "开源向量数据库",
+    "category": "专业层"
+  },
+  {
+    "word": "Pinecone",
+    "aliases": [
+      "派因扣恩",
+      "pine cone",
+      "pinecone数据库",
+      "派恩空",
+      "向量数据库pinecone"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.85,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "托管向量数据库",
+    "category": "专业层"
+  },
+  {
+    "word": "Weaviate",
+    "aliases": [
+      "微危提",
+      "weaviate数据库",
+      "维危提",
+      "waviator",
+      "向量搜索"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.8,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "开源向量搜索引擎",
+    "category": "专业层"
+  },
+  {
+    "word": "Milvus",
+    "aliases": [
+      "米尔乌斯",
+      "milvus数据库",
+      "milvos",
+      "milvus向量",
+      "米尔沃斯"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.8,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "开源向量数据库",
+    "category": "专业层"
+  },
+  {
+    "word": "FAISS",
+    "aliases": [
+      "费斯",
+      "faiss向量",
+      "Facebook AI相似度搜索",
+      "fais",
+      "fai SS"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "Meta 向量相似度搜索库",
+    "category": "专业层"
+  },
+  {
+    "word": "pgvector",
+    "aliases": [
+      "P G vector",
+      "pg vector",
+      "p g向量",
+      "PostgreSQL向量",
+      "PG victor"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "向量数据库",
+    "weight": 0.8,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "PostgreSQL 向量扩展",
+    "category": "专业层"
+  },
+  {
+    "word": "RAG",
+    "aliases": [
+      "拉格",
+      "rag",
+      "睿艾格",
+      "RAAG",
+      "瑞艾格",
+      "尔艾吉",
+      "R A G",
+      "检索增强生成"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.95,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "检索增强生成",
+    "category": "专业层"
+  },
+  {
+    "word": "Agent",
+    "aliases": [
+      "诶振特",
+      "agent智能体",
+      "AI agent",
+      "智能体agent",
+      "爱整体",
+      "诶正特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.95,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.9,
+    "description": "AI 智能体",
+    "category": "专业层"
+  },
+  {
+    "word": "Multi-agent",
+    "aliases": [
+      "玛提agent",
+      "multi agent",
+      "多agent",
+      "multi-agent系统",
+      "马尔提诶振特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "多智能体系统",
+    "category": "专业层"
+  },
+  {
+    "word": "Fine-tuning",
+    "aliases": [
+      "发恩提由宁",
+      "fine tuning",
+      "微调",
+      "faintuning",
+      "发恩图宁",
+      "fine tunning"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "模型微调",
+    "category": "专业层"
+  },
+  {
+    "word": "LoRA",
+    "aliases": [
+      "劳拉",
+      "lora微调",
+      "低秩适应",
+      "lora模型",
+      "laura"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "低秩适应微调",
+    "category": "专业层"
+  },
+  {
+    "word": "QLoRA",
+    "aliases": [
+      "Q劳拉",
+      "qlora微调",
+      "Q lora",
+      "量化lora",
+      "库劳拉"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "量化低秩适应微调",
+    "category": "专业层"
+  },
+  {
+    "word": "RLHF",
+    "aliases": [
+      "R L H F",
+      "强化学习人类反馈",
+      "rlhf训练",
+      "人类反馈强化"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "基于人类反馈的强化学习",
+    "category": "专业层"
+  },
+  {
+    "word": "DPO",
+    "aliases": [
+      "D P O",
+      "dpo训练",
+      "直接偏好优化",
+      "迪皮欧"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "直接偏好优化",
+    "category": "专业层"
+  },
+  {
+    "word": "GRPO",
+    "aliases": [
+      "G R P O",
+      "grpo训练",
+      "组相对偏好优化",
+      "giro"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.75,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "组相对策略优化",
+    "category": "专业层"
+  },
+  {
+    "word": "MoE",
+    "aliases": [
+      "M O E",
+      "moe架构",
+      "混合专家",
+      "mix of expert",
+      "莫一"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "混合专家模型架构",
+    "category": "专业层"
+  },
+  {
+    "word": "Quantization",
+    "aliases": [
+      "宽提zation",
+      "quantization量化",
+      "模型量化",
+      "宽提zation",
+      "权提zation"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "模型量化技术",
+    "category": "专业层"
+  },
+  {
+    "word": "Distillation",
+    "aliases": [
+      "迪斯提雷申",
+      "知识蒸馏",
+      "模型蒸馏",
+      "distilation",
+      "迪斯提雷训"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "知识蒸馏技术",
+    "category": "专业层"
+  },
+  {
+    "word": "Hallucination",
+    "aliases": [
+      "哈鲁西内训",
+      "AI幻觉",
+      "hallucination幻觉",
+      "模型幻觉",
+      "哈路西奈训"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "AI 幻觉",
+    "category": "专业层"
+  },
+  {
+    "word": "Alignment",
+    "aliases": [
+      "阿莱门特",
+      "AI对齐",
+      "alignment对齐",
+      "alighnment",
+      "阿赖门特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "AI 对齐",
+    "category": "专业层"
+  },
+  {
+    "word": "Tokenization",
+    "aliases": [
+      "偷肯咋训",
+      "tokenization分词",
+      "tokenization",
+      "偷肯咋审"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "文本分词技术",
+    "category": "专业层"
+  },
+  {
+    "word": "Embedding",
+    "aliases": [
+      "爱姆贝丁",
+      "embedding向量",
+      "词嵌入",
+      "爱mbeding",
+      "embedding嵌入"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "向量嵌入",
+    "category": "专业层"
+  },
+  {
+    "word": "Perplexity",
+    "aliases": [
+      "普普莱克希提",
+      "perplexity AI",
+      "AI搜索",
+      "普赖克斯提",
+      "perplexity搜索"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.85,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "AI 搜索引擎",
+    "category": "专业层"
+  },
+  {
+    "word": "Sora",
+    "aliases": [
+      "索拉",
+      "sora视频",
+      "OpenAI视频生成",
+      "sora模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.85,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "OpenAI 视频生成模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Suno",
+    "aliases": [
+      "苏诺",
+      "suno AI音乐",
+      "AI音乐生成",
+      "suno音乐"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.8,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "AI 音乐生成",
+    "category": "专业层"
+  },
+  {
+    "word": "Midjourney",
+    "aliases": [
+      "米的桌内",
+      "mid journey",
+      "AI绘画",
+      "米德桌内",
+      "米的桌内AI"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.9,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "AI 绘画工具",
+    "category": "专业层"
+  },
+  {
+    "word": "Stable Diffusion",
+    "aliases": [
+      "斯得伯迪夫优慎",
+      "stable diffusion",
+      "SD绘画",
+      "stable difusion",
+      "斯得伯尔迪夫优慎"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.9,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "开源文生图模型",
+    "category": "专业层"
+  },
+  {
+    "word": "Runway",
+    "aliases": [
+      "软威",
+      "runway AI",
+      "runway视频",
+      "润威",
+      "AI视频编辑"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI应用",
+    "weight": 0.8,
+    "type": "product",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "AI 视频生成编辑",
+    "category": "专业层"
+  },
+  {
+    "word": "Hugging Face",
+    "aliases": [
+      "哈金face",
+      "hugging face",
+      "HF模型",
+      "哈金费斯",
+      "AI模型社区"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI平台",
+    "weight": 0.9,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "AI 模型托管平台",
+    "category": "专业层"
+  },
+  {
+    "word": "Replicate",
+    "aliases": [
+      "瑞普里凯特",
+      "replicate AI",
+      "AI模型API",
+      "瑞普利开特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "云端 AI 模型 API",
+    "category": "专业层"
+  },
+  {
+    "word": "Together AI",
+    "aliases": [
+      "图盖得AI",
+      "together AI",
+      "图盖的AI",
+      "AI推理平台"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "去中心化 AI 推理平台",
+    "category": "专业层"
+  },
+  {
+    "word": "OpenRouter",
+    "aliases": [
+      "欧喷绕特",
+      "open router",
+      "AI路由",
+      "欧喷绕特尔",
+      "模型路由"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI平台",
+    "weight": 0.85,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "多模型 API 路由平台",
+    "category": "专业层"
+  },
+  {
+    "word": "Groq",
+    "aliases": [
+      "格绕克",
+      "groq AI",
+      "groq推理",
+      "groq芯片",
+      "grok（注意和Grok区分）"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI平台",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "超快 AI 推理芯片/API",
+    "category": "专业层"
+  },
+  {
+    "word": "LM Studio",
+    "aliases": [
+      "L M 斯丢迪欧",
+      "lm studio",
+      "本地模型",
+      "L M studio",
+      "本地大模型工具"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工具",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "本地 LLM 运行工具",
+    "category": "专业层"
+  },
+  {
+    "word": "Prompt engineering",
+    "aliases": [
+      "普让普特恩只你瑞",
+      "prompt engineering",
+      "提示工程",
+      "prompt工程",
+      "普让普特因镇你"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "提示词工程",
+    "category": "专业层"
+  },
+  {
+    "word": "Chain-of-thought",
+    "aliases": [
+      "陈奥夫所特",
+      "chain of thought",
+      "思维链",
+      "cot推理",
+      "陈奥弗所特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.9,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "思维链推理",
+    "category": "专业层"
+  },
+  {
+    "word": "Few-shot",
+    "aliases": [
+      "飞优少特",
+      "few shot",
+      "少样本学习",
+      "few shot提示"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "少样本提示",
+    "category": "专业层"
+  },
+  {
+    "word": "Zero-shot",
+    "aliases": [
+      "贼肉少特",
+      "zero shot",
+      "零样本学习",
+      "zero shot提示"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "零样本提示",
+    "category": "专业层"
+  },
+  {
+    "word": "Reasoning",
+    "aliases": [
+      "瑞怎宁",
+      "reasoning模型",
+      "推理能力",
+      "瑞森宁",
+      "推理模型"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "AI 推理能力",
+    "category": "专业层"
+  },
+  {
+    "word": "Context window",
+    "aliases": [
+      "康太克斯特window",
+      "context window",
+      "上下文窗口",
+      "康太科斯特window",
+      "上下文长度"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "上下文窗口/长度",
+    "category": "专业层"
+  },
+  {
+    "word": "MCP",
+    "aliases": [
+      "M C P",
+      "model context protocol",
+      "模型上下文协议",
+      "Anthropic MCP",
+      "mcp协议"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.85,
+    "type": "protocol",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "模型上下文协议",
+    "category": "专业层"
+  },
+  {
+    "word": "A2A",
+    "aliases": [
+      "A二A",
+      "A to A",
+      "agent to agent",
+      "智能体通信协议",
+      "谷歌A2A"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.8,
+    "type": "protocol",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "Agent-to-Agent 协议",
+    "category": "专业层"
+  },
+  {
+    "word": "Function Calling",
+    "aliases": [
+      "发克训calling",
+      "function calling",
+      "函数调用",
+      "function call",
+      "fangk训靠林"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "大模型函数调用",
+    "category": "专业层"
+  },
+  {
+    "word": "Tool Use",
+    "aliases": [
+      "图尔右斯",
+      "tool use",
+      "工具使用",
+      "工具调用",
+      "toll use"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI架构",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "大模型工具使用",
+    "category": "专业层"
+  },
+  {
+    "word": "AutoGPT",
+    "aliases": [
+      "奥拓G P T",
+      "auto GPT",
+      "自主AI智能体",
+      "哦头GPT",
+      "autogpt"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.8,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "自主 AI 智能体",
+    "category": "专业层"
+  },
+  {
+    "word": "CrewAI",
+    "aliases": [
+      "克如AI",
+      "crew AI",
+      "多智能体crew",
+      "crewAI框架",
+      "克入AI"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.8,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "多智能体协作框架",
+    "category": "专业层"
+  },
+  {
+    "word": "LangGraph",
+    "aliases": [
+      "浪格拉夫",
+      "lang graph",
+      "langgraph框架",
+      "long graph",
+      "郎格拉夫"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.85,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "LangChain 多智能体框架",
+    "category": "专业层"
+  },
+  {
+    "word": "Dify",
+    "aliases": [
+      "迪发爱",
+      "dify AI",
+      "低代码AI平台",
+      "dify平台",
+      "迪非"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "开源 LLM 应用开发平台",
+    "category": "专业层"
+  },
+  {
+    "word": "Coze",
+    "aliases": [
+      "扣兹",
+      "coze AI",
+      "字节AI平台",
+      "扣子",
+      "coze智能体"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.8,
+    "type": "platform",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "字节跳动 AI Bot 平台",
+    "category": "专业层"
+  },
+  {
+    "word": "FastGPT",
+    "aliases": [
+      "发斯特G P T",
+      "fast GPT",
+      "fastgpt",
+      "快速GPT",
+      "法斯特GPT"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "Agent框架",
+    "weight": 0.75,
+    "type": "framework",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "开源知识库问答框架",
+    "category": "专业层"
+  },
+  {
+    "word": "A100",
+    "aliases": [
+      "A一百",
+      "A1百",
+      "NVIDIA A100",
+      "a100显卡",
+      "a100 GPU"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.85,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "NVIDIA A100 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "H100",
+    "aliases": [
+      "H一百",
+      "H1百",
+      "NVIDIA H100",
+      "h100显卡",
+      "hopper"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.85,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "NVIDIA H100 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "H200",
+    "aliases": [
+      "H两百",
+      "H2百",
+      "NVIDIA H200",
+      "h200显卡",
+      "hopper 200"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.85,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "NVIDIA H200 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "B200",
+    "aliases": [
+      "B两百",
+      "B2百",
+      "NVIDIA B200",
+      "b200显卡",
+      "blackwell"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.85,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "NVIDIA B200 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "GB200",
+    "aliases": [
+      "G B两百",
+      "GB200显卡",
+      "grace blackwell",
+      "NVIDIA GB200"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.8,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "NVIDIA Grace Blackwell",
+    "category": "专业层"
+  },
+  {
+    "word": "CUDA",
+    "aliases": [
+      "酷达",
+      "cuda编程",
+      "NVIDIA cuda",
+      "库达",
+      "酷大"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "NVIDIA GPU 计算平台",
+    "category": "专业层"
+  },
+  {
+    "word": "T4",
+    "aliases": [
+      "T四",
+      "T4 GPU",
+      "nvidia T4",
+      "特斯拉T4"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.8,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.65,
+    "description": "NVIDIA T4 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "V100",
+    "aliases": [
+      "V一百",
+      "V1百",
+      "NVIDIA V100",
+      "v100显卡",
+      "volt"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI硬件",
+    "weight": 0.8,
+    "type": "hardware",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "NVIDIA V100 GPU",
+    "category": "专业层"
+  },
+  {
+    "word": "ONNX",
+    "aliases": [
+      "昂克斯",
+      "onnx格式",
+      "onx",
+      "onnx模型",
+      "欧恩叉"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.8,
+    "type": "format",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "开放神经网络交换格式",
+    "category": "专业层"
+  },
+  {
+    "word": "TensorRT",
+    "aliases": [
+      "探瑟RT",
+      "tensor RT",
+      "tensorrt加速",
+      "探色RT",
+      "NVIDIA推理优化"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "NVIDIA 推理优化引擎",
+    "category": "专业层"
+  },
+  {
+    "word": "Safetensors",
+    "aliases": [
+      "塞夫坦瑟斯",
+      "safe tensors",
+      "安全张量格式",
+      "塞夫探瑟斯"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.75,
+    "type": "format",
+    "language": "en",
+    "frequency": 0.55,
+    "description": "安全张量文件格式",
+    "category": "专业层"
+  },
+  {
+    "word": "GGUF",
+    "aliases": [
+      "G G U F",
+      "gguf格式",
+      "llama.cpp格式",
+      "ggml格式"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.8,
+    "type": "format",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "LLM 量化文件格式",
+    "category": "专业层"
+  },
+  {
+    "word": "Docker",
+    "aliases": [
+      "道克",
+      "docker容器",
+      "docker部署",
+      "刀克",
+      "docker容气"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.9,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.85,
+    "description": "容器化部署工具",
+    "category": "专业层"
+  },
+  {
+    "word": "Kubernetes",
+    "aliases": [
+      "库伯内提斯",
+      "k8s",
+      "kubernetes容器",
+      "库伯奈茨",
+      "库本内提斯"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "容器编排平台",
+    "category": "专业层"
+  },
+  {
+    "word": "Kafka",
+    "aliases": [
+      "卡夫卡",
+      "kafka消息",
+      "消息队列kafka",
+      "kafuka"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.85,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "分布式消息系统",
+    "category": "专业层"
+  },
+  {
+    "word": "PostgreSQL",
+    "aliases": [
+      "珀斯特格雷SQL",
+      "postgres",
+      "pg数据库",
+      "珀斯格雷斯QL",
+      "post gre SQL"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.85,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "开源关系型数据库",
+    "category": "专业层"
+  },
+  {
+    "word": "Redis",
+    "aliases": [
+      "瑞迪斯",
+      "redis缓存",
+      "热迪斯",
+      "reidis",
+      "reddis"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.85,
+    "type": "database",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "内存缓存数据库",
+    "category": "专业层"
+  },
+  {
+    "word": "Nginx",
+    "aliases": [
+      "恩晶科斯",
+      "engine x",
+      "niginx",
+      "恩金克斯",
+      "ngnix"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.8,
+    "type": "tool",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "高性能 Web 服务器",
+    "category": "专业层"
+  },
+  {
+    "word": "WebSocket",
+    "aliases": [
+      "web socket",
+      "websocket协议",
+      "web斯卡特",
+      "web sock it",
+      "瓦布斯卡特"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI工程",
+    "weight": 0.85,
+    "type": "protocol",
+    "language": "en",
+    "frequency": 0.8,
+    "description": "全双工通信协议",
+    "category": "专业层"
+  },
+  {
+    "word": "Tokenizer",
+    "aliases": [
+      "偷肯则",
+      "tokenizer分词",
+      "偷kanizer",
+      "分词器",
+      "偷坑则子"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI技术",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "文本分词器",
+    "category": "专业层"
+  },
+  {
+    "word": "Benchmark",
+    "aliases": [
+      "本地马克",
+      "benchmark基准",
+      "模型评测",
+      "搬吃马克",
+      "评测基准"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.85,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.75,
+    "description": "模型评测基准",
+    "category": "专业层"
+  },
+  {
+    "word": "Latency",
+    "aliases": [
+      "累tency",
+      "推理延迟",
+      "延迟latency",
+      "累疼西",
+      "response time"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "推理延迟",
+    "category": "专业层"
+  },
+  {
+    "word": "Throughput",
+    "aliases": [
+      "斯汝普特",
+      "吞吐量",
+      "through put",
+      "斯入普特",
+      "throughput性能"
+    ],
+    "industry": "互联网/AI",
+    "sub_industry": "AI概念",
+    "weight": 0.8,
+    "type": "concept",
+    "language": "en",
+    "frequency": 0.7,
+    "description": "模型吞吐量",
+    "category": "专业层"
+  }
+]

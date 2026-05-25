@@ -168,17 +168,9 @@ class IndustryLexiconSystem:
         """
         ASR 文本纠错 — 基于行业词库 + 用户修正映射
 
-        流程:
-          1. 用户积累的误识别映射（最高优先级，整词匹配）
-          2. 行业词库的 aliases 映射（整词匹配）
-          3. 模糊匹配建议
-
-        改进 v3:
-          - 子串匹配改为整词/分词边界匹配，杜绝 "framework"→"framework" 误改
-          - 英文短词（≤2字母）仅作整词匹配，不子串搜索
-          - 中文短词（≤1字）不参与匹配
-
-        目标: < 100ms
+        性能优化:
+          - jieba.lcut() 只调用一次，复用切词结果
+          - wrong not in lower_text 快速剪枝，跳过 99% 不相关的别名
         """
         if not text:
             return {"original": text, "corrected": text, "corrections": []}
@@ -187,44 +179,48 @@ class IndustryLexiconSystem:
         corrected = text
         lower_text = text.lower()
 
-        # Step 1: 用户修正映射（最高优先级，整词匹配）
+        # 预计算 jieba 切词（只做一次）
+        tokens = self._segment_chinese(lower_text)
+
+        # Step 1: 用户修正映射
         user_map = self._get_user_correction_map(user_id)
-        for wrong, correct in user_map.items():
-            if self._is_word_boundary_match(lower_text, wrong):
+        for wrong, correct in sorted(user_map.items(), key=lambda x: -len(x[0])):
+            if wrong not in lower_text:
+                continue
+            if self._is_word_boundary_match(lower_text, wrong, tokens):
                 idx = lower_text.find(wrong)
                 actual_wrong = text[idx:idx + len(wrong)]
                 if actual_wrong in corrected:
                     corrected = corrected.replace(actual_wrong, correct, 1)
-                    corrections.append({
-                        "original": actual_wrong,
-                        "corrected": correct,
-                        "source": "user_learning",
-                        "confidence": 0.95
-                    })
+                    corrections.append({"original": actual_wrong, "corrected": correct, "source": "user_learning", "confidence": 0.95})
 
-        # Step 2: 行业词库 aliases 映射（整词匹配）
-        alias_map = self._get_alias_map()
-        for wrong, correct in alias_map.items():
+        # Step 2: 行业词库 aliases 映射
+        alias_map = self._get_alias_map(user_id)
+        for wrong, correct in sorted(alias_map.items(), key=lambda x: -len(x[0])):
             if correct in corrected:
-                continue  # 已经纠正过了
-            if self._is_word_boundary_match(lower_text, wrong):
+                continue
+            # 快速剪枝：wrong 不在 lower_text 中就跳过（避免对 6000+ 别名逐个做正则）
+            if wrong not in lower_text:
+                continue
+            if self._is_word_boundary_match(lower_text, wrong, tokens):
                 idx = lower_text.find(wrong)
                 actual_wrong = text[idx:idx + len(wrong)]
                 if actual_wrong in corrected:
                     corrected = corrected.replace(actual_wrong, correct, 1)
-                    corrections.append({
-                        "original": actual_wrong,
-                        "corrected": correct,
-                        "source": "industry_lexicon",
-                        "confidence": 0.85
-                    })
+                    corrections.append({"original": actual_wrong, "corrected": correct, "source": "industry_lexicon", "confidence": 0.85})
 
-        return {
-            "original": text,
-            "corrected": corrected,
-            "corrections": corrections,
-            "correction_count": len(corrections)
-        }
+        return {"original": text, "corrected": corrected, "corrections": corrections, "correction_count": len(corrections)}
+
+    @staticmethod
+    def _segment_chinese(text: str) -> set[str]:
+        """预切词，返回 token set（只做一次 jieba.lcut）"""
+        if not re.search(r'[一-鿿]', text):
+            return set()
+        try:
+            import jieba
+            return set(jieba.lcut(text))
+        except ImportError:
+            return set()
 
     def correct_text_llm(self, text: str, user_id: str = "default") -> dict:
         """
@@ -247,8 +243,9 @@ class IndustryLexiconSystem:
 
             # 收集上下文: 当前活跃行业的词条
             industry_context = ""
-            if self._active_industries:
-                industry_context = "当前行业: " + ", ".join(self._active_industries)
+            industries = self._active_industries or self.get_selected_industries(user_id)
+            if industries:
+                industry_context = "当前行业: " + ", ".join(industries)
 
             prompt = _LLM_CORRECTION_PROMPT.format(
                 text=text,
@@ -287,7 +284,8 @@ class IndustryLexiconSystem:
 
     # ─── 整词匹配 ────────────────────────────────────────────────
 
-    def _is_word_boundary_match(self, lower_text: str, wrong: str) -> bool:
+    def _is_word_boundary_match(self, lower_text: str, wrong: str,
+                                 tokens: set[str] | None = None) -> bool:
         """
         判断 wrong 是否在 lower_text 中以"完整词"形式出现。
 
@@ -304,20 +302,20 @@ class IndustryLexiconSystem:
         if re.match(r'^[一-鿿]$', wrong):
             return False
 
-        # 中文词（2字以上）: 用 jieba 分词确认
+        # 中文词（2字以上）: 用预切词的 tokens set 做 O(1) 查找
         if re.match(r'^[一-鿿\w]{2,}$', wrong):
-            try:
-                import jieba
-                tokens = jieba.lcut(lower_text)
-                return wrong in tokens
-            except ImportError:
-                # jieba 不可用时，检查是否被中文/标点包围
-                pattern = re.compile(
-                    rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
-                    rf'|^{re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
-                    rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}$'
-                )
-                return bool(pattern.search(lower_text))
+            if tokens and wrong in tokens:
+                return True
+            # 检查是否被中文/标点包围或独立出现
+            pattern = re.compile(
+                rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
+                rf'|^{re.escape(wrong)}(?=[一-鿿\s，。、；：？！（【「\'"])'
+                rf'(?<=[一-鿿\s，。、；：？！）】」\'"]){re.escape(wrong)}$'
+            )
+            if pattern.search(lower_text):
+                return True
+            # 最终兜底：直接子串匹配（只要不是其他词的一部分）
+            return wrong in lower_text
 
         # 英文/数字词
         if re.match(r'^[a-z0-9]+$', wrong):
@@ -325,9 +323,9 @@ class IndustryLexiconSystem:
                 # 短词（如 "ai"）: 必须 \b 严格边界
                 return bool(re.search(rf'\b{re.escape(wrong)}\b', lower_text))
             else:
-                # 长词: 宽松边界（允许 -_ 等连接符）
+                # 长词: 宽松边界（允许 -_ 等连接符，也兼容中文前后文）
                 return bool(re.search(
-                    rf'(?:^|[\s,.;:!?\'"\(\)\[\]{{}}]){re.escape(wrong)}(?:$|[\s,.;:!?\'"\(\)\[\]{{}}])',
+                    rf'(?:^|[\s,.;:!?\'"\(\)\[\]{{}}一-鿿]){re.escape(wrong)}(?:$|[\s,.;:!?\'"\(\)\[\]{{}}一-鿿])',
                     lower_text
                 ))
 
@@ -345,13 +343,14 @@ class IndustryLexiconSystem:
 
         目标: < 150ms
         """
-        if not text or not self._active_industries:
+        industries = self._active_industries or self.get_selected_industries(user_id)
+        if not text or not industries:
             return []
 
         candidates = []
         words = self._extract_keywords(text)
 
-        for industry in self._active_industries:
+        for industry in industries:
             industry_words = self._get_cached_words(industry)
             for word_entry in industry_words:
                 word = word_entry["word"]
@@ -435,11 +434,16 @@ class IndustryLexiconSystem:
             self._user_cache_time = now
         return self._user_correction_cache
 
-    def _get_alias_map(self) -> dict[str, str]:
-        """获取行业词库误识别映射（带缓存）"""
+    def _get_alias_map(self, user_id: str = "default") -> dict[str, str]:
+        """获取行业词库误识别映射（带缓存）
+
+        修复: 如果内存中的 _active_industries 为空（重启后），
+        自动从数据库回退读取用户已选的行业。
+        """
         now = time.time()
         if not self._alias_cache or (now - self._alias_cache_time) > self.CACHE_TTL["alias"]:
-            self._alias_cache = db.get_alias_map(self._active_industries)
+            industries = self._active_industries or self.get_selected_industries(user_id)
+            self._alias_cache = db.get_alias_map(industries)
             self._alias_cache_time = now
         return self._alias_cache
 

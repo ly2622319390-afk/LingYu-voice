@@ -56,6 +56,7 @@ export class TextInjector {
     const source = [
       'using System;',
       'using System.Runtime.InteropServices;',
+      'using System.Text;',
       'using System.Windows.Forms;',
       'class PasteHelper {',
       '  [DllImport("user32.dll")]',
@@ -71,7 +72,8 @@ export class TextInjector {
       '  [DllImport("user32.dll")]',
       '  static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder text, int count);',
       '  static void Main(string[] a) {',
-      '    if (a.Length > 0 && long.TryParse(a[0], out long h)) {',
+      '    long h;',
+      '    if (a.Length > 0 && long.TryParse(a[0], out h)) {',
       '      IntPtr hwnd = new IntPtr(h);',
       '      StringBuilder sb = new StringBuilder(256);',
       '      GetWindowText(hwnd, sb, 256);',

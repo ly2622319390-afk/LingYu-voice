@@ -16,6 +16,8 @@ export class OverlayManager {
   private fullAppWindow: BrowserWindow | null = null;
   /** 窗口失焦回调 — 用于自动粘贴 */
   private onBlurCallback: (() => void) | null = null;
+  /** 页面是否曾经加载成功过 */
+  private pageLoaded = false;
 
   set onBlur(cb: (() => void) | null) {
     this.onBlurCallback = cb;
@@ -74,15 +76,25 @@ export class OverlayManager {
 
     this.window.webContents.on('did-finish-load', () => {
       console.log('[Overlay] ' + '页面加载完成');
+      this.pageLoaded = true;
     });
 
     this.window.webContents.on('did-fail-load', (_event, code, desc, url2) => {
       console.log('[Overlay] ' + '加载失败! code=' + code + ' desc=' + desc + ' url=' + url2);
+      this.pageLoaded = false;
     });
 
     this.window.on('blur', () => {
       console.log('[Overlay] ' + '窗口失焦');
       this.onBlurCallback?.();
+    });
+
+    // 拦截关闭按钮（X），改为隐藏而非销毁窗口，保留 React 状态
+    this.window.on('close', (event) => {
+      console.log('[Overlay] ' + '窗口关闭按钮点击 → 隐藏而非销毁');
+      event.preventDefault();
+      this.window?.hide();
+      this.isVisible = false;
     });
 
     this.window.on('closed', () => {
@@ -97,6 +109,12 @@ export class OverlayManager {
   show(): void {
     console.log('[Overlay] ' + 'show() 被调用, 当前可见=' + this.isVisible);
     const win = this.ensureWindow();
+
+    // 如果之前页面加载失败，重新加载
+    if (!this.pageLoaded) {
+      console.log('[Overlay] ' + '页面之前加载失败，重新加载...');
+      win.webContents.reload();
+    }
 
     // 固定位置：屏幕中央偏上
     const { width: sw, height: sh } = screen.getPrimaryDisplay().workArea;
