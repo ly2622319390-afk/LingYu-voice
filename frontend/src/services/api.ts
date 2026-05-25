@@ -63,12 +63,6 @@ export const optimizeApi = {
     }),
 };
 
-// 表情
-export const emojiApi = {
-  list: (scene = '聊天', emotion = '', limit = 10) =>
-    request<any[]>(`/emoji?scene=${scene}&emotion=${emotion}&limit=${limit}`),
-};
-
 // 行业专业词库
 export const industryApi = {
   /** 获取所有行业分类 */
@@ -144,5 +138,50 @@ export const documentsApi = {
     request<{ terms: { term: string; type: string }[]; count: number; mode: string }>('/documents/extract-terms', {
       method: 'POST',
       body: JSON.stringify({ text, doc_type: docType }),
+    }),
+};
+
+// 编辑分析
+export const editsApi = {
+  analyze: (originalText: string, editedText: string, sceneType = '', userId = 'default') =>
+    request<any>('/analyze-edits', {
+      method: 'POST',
+      body: JSON.stringify({
+        original_text: originalText, edited_text: editedText,
+        scene_type: sceneType, user_id: userId,
+      }),
+    }),
+  history: (userId = 'default') =>
+    request<any[]>(`/analyze-edits/history?user_id=${userId}`),
+};
+
+// 创作工作区
+export const creationApi = {
+  createSession: (mode: string) =>
+    request<{ session_id: string; mode: string; status: string; created_at: string }>('/creation/session', {
+      method: 'POST',
+      body: JSON.stringify({ mode }),
+    }),
+
+  submitInput: (sessionId: string, text: string) =>
+    request<import('../types').SubmitInputResponse>(`/creation/session/${sessionId}/input`, {
+      method: 'POST',
+      body: JSON.stringify({ text }),
+    }),
+
+  finishSession: (sessionId: string) =>
+    request<{ status: string; session: import('../types').CreationSession }>(`/creation/session/${sessionId}/finish`, {
+      method: 'POST',
+    }),
+
+  getSession: (sessionId: string) =>
+    request<any>(`/creation/session/${sessionId}`),
+
+  listSessions: (status = '') =>
+    request<any>(`/creation/sessions?status=${status}`),
+
+  trackCopy: (sessionId: string, roundNumber: number, target: 'organized' | 'raw') =>
+    request<any>(`/creation/session/${sessionId}/round/${roundNumber}/copy-${target}`, {
+      method: 'POST',
     }),
 };
