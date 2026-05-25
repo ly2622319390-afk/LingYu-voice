@@ -47,14 +47,18 @@ class SenseVoiceAdapter(ASREngine):
         logger.info("正在加载 SenseVoice 模型 (device=%s)", self.device)
         logger.info("首次加载会自动下载模型（约 400MB），请耐心等待...")
 
-        from funasr import AutoModel
-        self._model = AutoModel(
-            model="iic/SenseVoiceSmall",
-            vad_model="fsmn-vad",
-            device=self.device,
-            disable_update=True,
-        )
-        logger.info("SenseVoice 模型加载成功")
+        try:
+            from funasr import AutoModel
+            self._model = AutoModel(
+                model="iic/SenseVoiceSmall",
+                vad_model="fsmn-vad",
+                device=self.device,
+                disable_update=True,
+            )
+            logger.info("SenseVoice 模型加载成功")
+        except Exception as e:
+            logger.error("SenseVoice 模型加载失败: %s", e)
+            raise
 
     async def close(self):
         self._model = None
@@ -78,9 +82,10 @@ class SenseVoiceAdapter(ASREngine):
             text = await self._run_inference()
 
             if text and text != self._last_text:
+                logger.info(f"[SV] ✨ 新部分结果: '{text[:60]}...' " + ("" if len(text) <= 60 else ""))
                 yield {
                     "type": ASREvent.PARTIAL,
-                    "text": text,                  # 完整文本，非增量
+                    "text": text,
                     "confidence": 0.95,
                 }
                 self._last_text = text
@@ -145,15 +150,22 @@ class SenseVoiceAdapter(ASREngine):
         完全无磁盘 I/O，相比旧实现（写 tempfile → ffmpeg → 读 tempfile）
         速度提升 3-5 倍。
         """
-        if not self._model or not self._all_chunks:
+        if not self._model:
+            logger.warning("[SV] _run_inference 跳过: _model 为空")
+            return ""
+        if not self._all_chunks:
+            logger.warning("[SV] _run_inference 跳过: 无音频数据")
             return ""
 
         try:
+            total_bytes = sum(len(c) for c in self._all_chunks)
             wav_bytes = await self._decode_webm_to_wav()
             if not wav_bytes or len(wav_bytes) < 100:
+                logger.warning(f"[SV] ffmpeg 解码结果为空 (输入 {total_bytes} 字节)")
                 return ""
 
             audio_array = self._wav_to_float32(wav_bytes)
+            logger.info(f"[SV] 推理输入: {total_bytes} bytes → {len(wav_bytes)} WAV → {len(audio_array)} samples")
 
             result = self._model.generate(
                 input=audio_array,
@@ -162,13 +174,14 @@ class SenseVoiceAdapter(ASREngine):
                 ban_emoji=False,   # 保留表情符号
             )
             text = self._extract_text(result)
+            logger.info(f"[SV] 推理输出: '{text[:80]}...' " + ("" if len(text) <= 80 else ""))
             return text.strip()
 
         except asyncio.TimeoutError:
-            logger.warning("ffmpeg 转码超时")
+            logger.warning("[SV] ffmpeg 转码超时")
             return ""
         except Exception as e:
-            logger.warning("SenseVoice 推理异常: %s", e)
+            logger.warning("[SV] SenseVoice 推理异常: %s", e)
             return ""
 
     async def _decode_webm_to_wav(self) -> bytes:
