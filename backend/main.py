@@ -30,18 +30,23 @@ logger = logging.getLogger("voice-input")
 
 from config import settings
 from database.db_manager import db_manager
-from database import lexicon_db, corrections_db, history_db, emoji_db, documents_db
+from database import lexicon_db, corrections_db, history_db, documents_db, profiles_db, edit_log_db
 from services.term_extraction_service import extract_terms
+from services.edit_analyzer import analyze_edits
+from services.profile_prompt_builder import build_full_context
 from database import industry_lexicon_db
+from database import creation_db
 from database.seed_industry_words import INDUSTRY_WORDS
 from services.optimization_service import office_polish, chat_recommend, creation_process
+from services.creation_service import (create_session, get_session, finish_session,
+                                       add_round, process_with_llm, rule_based_fallback,
+                                       mark_copy_organized, mark_copy_raw,
+                                       get_active_sessions)
 
 # ─── AI 服务层 ───
 from ai_services.nlp.punctuation import PunctuationRestorer, PunctuationService
 from ai_services.nlp.correction import TermCorrector
 from ai_services.nlp.rewrite_engine import RewriteEngine
-from ai_services.emotion.emotion_detector import EmotionDetector
-from ai_services.emotion.emoji_recommender import EmojiRecommender
 from ai_services.lexicon.lexicon_rag import LexiconRAG
 from ai_services.lexicon.user_profile import UserProfile
 from ai_services.lexicon.industry_lexicon_system import IndustryLexiconSystem, get_industry_lexicon_system
@@ -64,8 +69,6 @@ punctuation_service = PunctuationService()
 punctuation_restorer = PunctuationRestorer()
 term_corrector = TermCorrector()
 rewrite_engine = RewriteEngine()
-emotion_detector = EmotionDetector()
-emoji_recommender = EmojiRecommender()
 lexicon_rag = LexiconRAG()
 hotword_manager = HotwordManager(max_hotwords=settings.MAX_HOTWORDS)
 cache_manager = CacheManager()
@@ -167,9 +170,11 @@ def startup():
     lexicon_db.init_db()
     corrections_db.init_db()
     history_db.init_db()
-    emoji_db.init_db()
     documents_db.init_db()
     industry_lexicon_db.init_db()
+    profiles_db.init_db()
+    edit_log_db.init_db()
+    creation_db.init_db()
     _seed_industry_words()
 
     # 配置大模型
@@ -274,6 +279,25 @@ class AIPipelineRequest(BaseModel):
     scene_type: str = "办公"
     user_id: str = "default"
     use_llm: bool = False
+
+
+class AnalyzeEditsRequest(BaseModel):
+    """编辑分析请求"""
+    original_text: str
+    edited_text: str
+    scene_type: str = ""
+    user_id: str = "default"
+    session_id: str = ""
+
+
+class CreateSessionRequest(BaseModel):
+    """创建创作会话请求"""
+    mode: str
+
+
+class SubmitInputRequest(BaseModel):
+    """提交创作输入请求"""
+    text: str
 
 
 # ═══════════════════════════════════════════════
@@ -578,7 +602,14 @@ async def optimize_text(req: OptimizeRequest):
                 logger.warning(f"LLM 办公优化失败，降级到规则处理: {e}")
                 result = office_polish(req.text)
     elif req.scene_type == "聊天":
-        result = chat_recommend(req.text)
+        if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
+            result = chat_recommend(req.text)
+        else:
+            try:
+                result = await _llm_chat_optimize(req.text)
+            except Exception as e:
+                logger.warning(f"LLM 聊天优化失败，降级到规则处理: {e}")
+                result = chat_recommend(req.text)
     elif req.scene_type == "创作":
         if settings.MVP_MODE or not settings.LLM_ENABLED or not prompt_manager.llm:
             result = creation_process(req.text)
@@ -602,11 +633,14 @@ async def _llm_office_optimize(text: str) -> dict:
     """
     使用大模型进行办公场景优化
 
-    1. 通过 prompt_manager 获取并渲染办公场景模板
-    2. 调用大模型
-    3. 解析 markdown 输出为前端期望的 versions 格式
+    1. 注入用户偏好上下文
+    2. 通过 prompt_manager 获取并渲染办公场景模板
+    3. 调用大模型
+    4. 解析 markdown 输出为前端期望的 versions 格式
     """
-    llm_output = await prompt_manager.execute("office_rewrite", text=text)
+    profile_context = build_full_context()
+    llm_output = await prompt_manager.execute("office_rewrite", text=text,
+                                               profile_context=profile_context)
     versions = _parse_llm_versions(llm_output)
     # 确保至少有一个版本
     if not versions:
@@ -618,9 +652,27 @@ async def _llm_office_optimize(text: str) -> dict:
     }
 
 
+async def _llm_chat_optimize(text: str) -> dict:
+    """使用大模型进行聊天场景优化 — 生成 emoji/颜文字版本"""
+    profile_context = build_full_context()
+    llm_output = await prompt_manager.execute("chat_emoji", text=text,
+                                               profile_context=profile_context,
+                                               use_cache=True)
+    versions = _parse_llm_versions(llm_output)
+    if not versions:
+        logger.warning("LLM 聊天输出解析结果为空，使用规则处理结果")
+        return chat_recommend(text)
+    return {
+        "origin": text,
+        "versions": versions
+    }
+
+
 async def _llm_creation_process(text: str) -> dict:
-    """使用大模型进行创作场景优化"""
-    llm_output = await prompt_manager.execute("creation_process", text=text)
+    """使用大模型进行创作场景优化（注入用户偏好）"""
+    profile_context = build_full_context()
+    llm_output = await prompt_manager.execute("creation_process", text=text,
+                                               profile_context=profile_context)
     # 尝试解析为三个版本
     versions = _parse_llm_versions(llm_output)
     if versions:
@@ -689,6 +741,159 @@ def _parse_llm_versions(markdown_text: str) -> list[dict]:
 
 
 # ═══════════════════════════════════════════════
+#  6.5 编辑分析 (Edit Tracking & Learning)
+# ═══════════════════════════════════════════════
+
+@app.post("/api/analyze-edits")
+def analyze_edits_endpoint(req: AnalyzeEditsRequest):
+    """
+    分析用户对转写文本的手动编辑。
+
+    全流程:
+      1. 词级别 diff（jieba + difflib）
+      2. 分类每处改动（asr_fix / style_change / content_add / content_delete / punctuation）
+      3. 执行学习动作（更新热词 / 词库 / 偏好）
+      4. 写入 edit_log
+    """
+    result = analyze_edits(
+        original=req.original_text,
+        edited=req.edited_text,
+        scene=req.scene_type,
+        user_id=req.user_id,
+        session_id=req.session_id
+    )
+    return result
+
+
+@app.get("/api/analyze-edits/history")
+def analyze_edits_history(user_id: str = "default"):
+    """获取编辑历史"""
+    return edit_log_db.get_edit_history(user_id)
+
+
+# ═══════════════════════════════════════════════
+#  6.7 创作工作区 (Interactive Creation)
+# ═══════════════════════════════════════════════
+
+@app.post("/api/creation/session")
+def create_creation_session(req: CreateSessionRequest):
+    """创建新的创作会话"""
+    if req.mode not in ("novel", "project"):
+        raise HTTPException(400, "mode must be 'novel' or 'project'")
+    session = create_session(req.mode)
+    creation_db.save_session(session.session_id, session.mode)
+    return {
+        "session_id": session.session_id,
+        "mode": session.mode,
+        "status": session.status,
+        "created_at": session.created_at,
+    }
+
+
+@app.post("/api/creation/session/{session_id}/input")
+async def submit_creation_input(session_id: str, req: SubmitInputRequest):
+    """提交新一轮语音输入"""
+    if not req.text.strip():
+        raise HTTPException(400, "Input text cannot be empty")
+
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(404, "Session not found or already finished")
+
+    # LLM 处理
+    try:
+        llm_result = await process_with_llm(session, req.text, prompt_manager)
+    except Exception as e:
+        logger.warning(f"LLM creation round failed, using fallback: {e}")
+        llm_result = rule_based_fallback(session.mode, req.text)
+
+    # 记录到会话
+    new_round = add_round(session_id, req.text, llm_result)
+
+    # 持久化到数据库
+    creation_db.save_round(
+        session_id, new_round.round_number, req.text,
+        new_round.organized_output,
+        new_round.extraction,
+        new_round.tips, new_round.innovations, new_round.improvements,
+    )
+
+    # 记录场景使用
+    try:
+        from database import profiles_db
+        profiles_db.record_scene_usage("default", "创作")
+    except Exception:
+        pass
+
+    return new_round.to_dict()
+
+
+@app.post("/api/creation/session/{session_id}/finish")
+def finish_creation_session(session_id: str):
+    """结束创作会话并保存到历史"""
+    session = finish_session(session_id)
+    if not session:
+        raise HTTPException(404, "Session not found")
+
+    creation_db.finish_session_in_db(session_id)
+
+    # 写入历史记录摘要
+    mode_label = "写小说" if session.mode == "novel" else "代码项目策划"
+    last_round = session.rounds[-1] if session.rounds else None
+    summary = f"[创作] {mode_label} 共{len(session.rounds)}轮"
+    try:
+        history_db.save_history(
+            "default",
+            content_raw=last_round.raw_input if last_round else "",
+            content_optimized=json.dumps(session.to_dict(), ensure_ascii=False),
+            scene_type="创作",
+            title=summary,
+            tags=f"creation_session,{session.mode}",
+        )
+    except Exception as e:
+        logger.warning(f"保存创作历史失败: {e}")
+
+    return {"status": "finished", "session": session.to_dict()}
+
+
+@app.post("/api/creation/session/{session_id}/round/{round_number}/copy-organized")
+def track_copy_organized(session_id: str, round_number: int):
+    """记录复制推荐文本"""
+    mark_copy_organized(session_id, round_number)
+    creation_db.update_copy_status(session_id, round_number, "organized")
+    return {"ok": True}
+
+
+@app.post("/api/creation/session/{session_id}/round/{round_number}/copy-raw")
+def track_copy_raw(session_id: str, round_number: int):
+    """记录复制原始语音"""
+    mark_copy_raw(session_id, round_number)
+    creation_db.update_copy_status(session_id, round_number, "raw")
+    return {"ok": True}
+
+
+@app.get("/api/creation/session/{session_id}")
+def get_creation_session(session_id: str):
+    """获取会话详情"""
+    session = get_session(session_id)
+    if session:
+        return session.to_dict()
+
+    # 从数据库获取
+    db_session = creation_db.get_session_by_id(session_id)
+    if not db_session:
+        raise HTTPException(404, "Session not found")
+    rounds = creation_db.get_rounds_by_session(session_id)
+    return {"session": db_session, "rounds": rounds}
+
+
+@app.get("/api/creation/sessions")
+def list_creation_sessions(status: str = ""):
+    """列出历史创作会话"""
+    return creation_db.get_all_sessions(status=status)
+
+
+# ═══════════════════════════════════════════════
 #  7. AI 全链路处理 (Pipeline)
 # ═══════════════════════════════════════════════
 
@@ -715,16 +920,11 @@ def ai_pipeline(req: AIPipelineRequest):
     corrected = correction_result["text"]
     pipeline_steps.append({"step": "correction", "output": corrected, "details": correction_result})
 
-    # Step 3: 情绪识别
-    emotion_result = emotion_detector.detect(corrected)
-    pipeline_steps.append({"step": "emotion", "result": emotion_result})
-
-    # Step 4: 场景优化
+    # Step 3: 场景优化
     if scene == "办公":
         optimized = office_polish(corrected)
     elif scene == "聊天":
-        emoji_rec = emoji_recommender.recommend(corrected, scene, emotion_result)
-        optimized = emoji_rec
+        optimized = chat_recommend(corrected)
     else:
         optimized = creation_process(corrected)
 
@@ -739,54 +939,14 @@ def ai_pipeline(req: AIPipelineRequest):
         "pipeline": pipeline_steps,
         "final": {
             "text": corrected,
-            "emotion": emotion_result,
             "optimization": optimized
         }
     }
 
 
-# ═══════════════════════════════════════════════
-#  8. 情绪 & Emoji
-# ═══════════════════════════════════════════════
 
-@app.post("/api/emotion/detect")
-def detect_emotion(text: str = Query(...)):
-    """情绪识别 — AI 架构第 5 项"""
-    # 缓存检查
-    text_hash = hashlib.md5(text.encode()).hexdigest()
-    if settings.CACHE_ENABLED:
-        cached = cache_manager.get_emotion(text_hash)
-        if cached:
-            return cached
-
-    result = emotion_detector.detect(text)
-    if settings.CACHE_ENABLED:
-        cache_manager.set_emotion(text_hash, result)
-    return result
-
-
-@app.get("/api/emoji")
-def get_emoji(scene: str = "聊天", emotion: str = "", limit: int = 10):
-    if emotion:
-        return emoji_db.get_emoji_by_emotion(emotion, scene, min(limit, 10))
-    return emoji_db.get_emoji_by_scene(scene, min(limit, 10))
-
-
-@app.post("/api/emoji/recommend")
-def recommend_emoji(text: str = Query(...), scene: str = "聊天"):
-    """结合情绪识别的 emoji 推荐"""
-    emotion_result = emotion_detector.detect(text)
-    emoji_list = emoji_db.get_emoji_by_emotion(
-        emotion_result["primary_emotion"], scene, 10
-    )
-    return {
-        "text": text,
-        "emotion": emotion_result,
-        "emoji_suggestions": [
-            {"label": "推荐", "emojis": " ".join(e["emoji"] for e in emoji_list[:4])}
-        ],
-        "all_emojis": [{"emoji": e["emoji"], "desc": e.get("emotion_tags", "")} for e in emoji_list[:6]]
-    }
+	# ═══════════════════════════════════════════════
+	#  8. （已移除 emoji/emotion 本地模块，聊天模式改用 LLM）
 
 
 # ═══════════════════════════════════════════════

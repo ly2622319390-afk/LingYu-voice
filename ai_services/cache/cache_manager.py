@@ -127,10 +127,3 @@ class CacheManager:
         key = f"optimize:{scene}:{text_hash}"
         self.memory_long.set(key, result, ttl=3600)
         self.disk.set(key, json.dumps(result, ensure_ascii=False))
-
-    def get_emotion(self, text_hash: str) -> Optional[dict]:
-        """获取缓存的情绪结果"""
-        return self.memory.get(f"emotion:{text_hash}")
-
-    def set_emotion(self, text_hash: str, result: dict):
-        self.memory.set(f"emotion:{text_hash}", result, ttl=300)

@@ -1,5 +1,4 @@
 """场景化文本优化服务"""
-import json
 import random
 import re
 
@@ -34,41 +33,24 @@ def office_polish(text: str) -> dict:
 
 
 def chat_recommend(text: str) -> dict:
-    """聊天模式：推荐 emoji / 颜文字"""
-    emotion = _detect_emotion(text)
-
-    # 从 emoji 库获取推荐 (通过 API 调用)
-    emoji_sets = {
-        "positive": [("😊", "开心友好"), ("👍", "赞同肯定"), ("✨", "精彩"), ("🎉", "祝贺")],
-        "joy": [("😂", "太好笑了"), ("😄", "开心"), ("🎉", "庆祝")],
-        "sad": [("😢", "有点难过"), ("💪", "加油"), ("🤗", "抱抱")],
-        "thinking": [("🤔", "思考中"), ("💡", "有想法了"), ("📝", "记下来")],
-        "neutral": [("😌", "好的"), ("👌", "OK"), ("🤝", "握手")],
-        "frustrated": [("😤", "郁闷"), ("💪", "努力"), ("😅", "无奈")],
-        "angry": [("😤", "生气"), ("💪", "冷静"), ("😮‍💨", "深呼吸")],
-        "surprised": [("😮", "真的吗"), ("🤩", "太棒了"), ("😯", "惊讶")],
-    }
-
-    matched = emoji_sets.get(emotion, emoji_sets["neutral"])
-
-    # 颜文字
-    kaomoji_list = [
-        "(´▽`ʃ♡ƪ)", "(｀・ω・´)", "(◕‿◕✿)",
-        "(•̀ᴗ•́)و", "(∼‾▽‾)∼", "(｡ŏ_ŏ)"
-    ]
-
-    selected_kaomoji = random.sample(kaomoji_list, min(2, len(kaomoji_list)))
-    selected_emoji = matched[:3]
+    """聊天模式：规则降级 — 添加基础 emoji/颜文字（无 LLM 时使用）"""
+    basic_emojis = ["😊", "✨", "💬"]
+    kaomoji_list = ["(´▽`ʃ♡ƪ)", "(•̀ᴗ•́)و", "(◕‿◕✿)"]
 
     return {
         "origin": text,
-        "emotion": emotion,
-        "emoji_suggestions": [
-            {"label": "轻松自然", "emojis": " ".join(e[0] for e in selected_emoji)},
-            {"label": "颜文字风格", "emojis": " ".join(selected_kaomoji)}
-        ],
-        "all_emojis": [{"emoji": e[0], "desc": e[1]} for e in selected_emoji] +
-                      [{"emoji": k, "desc": "颜文字"} for k in selected_kaomoji]
+        "versions": [
+            {
+                "style": "自然颜文",
+                "description": "文字自然融入emoji，提升氛围",
+                "text": f"{text} {' '.join(basic_emojis)}"
+            },
+            {
+                "style": "颜文字风格",
+                "description": "使用日式颜文字增添趣味",
+                "text": f"{text} {random.choice(kaomoji_list)}"
+            }
+        ]
     }
 
 
@@ -151,35 +133,6 @@ def _make_concise(text: str) -> str:
         key_points = [text]
     result = "\n".join(f"• {p}" for p in key_points[:5])
     return result
-
-
-def _detect_emotion(text: str) -> str:
-    positive_words = ["开心", "高兴", "好", "棒", "赞", "喜欢", "爱", "完美", "漂亮", "厉害", "优秀", "成功", "感谢", "谢谢", "恭喜"]
-    sad_words = ["难过", "伤心", "哭", "失落", "遗憾", "可惜", "悲伤", "痛苦"]
-    thinking_words = ["想", "思考", "考虑", "琢磨", "觉得", "认为", "可能", "也许", "应该", "是否", "怎么", "什么", "为什么"]
-    frustrated_words = ["烦", "累", "郁闷", "崩溃", "无语", "受不了", "讨厌", "可恶", "烦死了"]
-    angry_words = ["生气", "愤怒", "火大", "气死", "滚", "过分", "可恶"]
-    surprised_words = ["哇", "真的", "居然", "竟然", "没想到", "天哪", "惊讶", "太"]
-
-    text_lower = text
-    pos_count = sum(1 for w in positive_words if w in text_lower)
-    sad_count = sum(1 for w in sad_words if w in text_lower)
-    think_count = sum(1 for w in thinking_words if w in text_lower)
-    frust_count = sum(1 for w in frustrated_words if w in text_lower)
-    angry_count = sum(1 for w in angry_words if w in text_lower)
-    surprise_count = sum(1 for w in surprised_words if w in text_lower)
-
-    if angry_count > 0: return "angry"
-    if frust_count > 0: return "frustrated"
-    if sad_count > 0: return "sad"
-    if surprise_count > 0: return "surprised"
-    if pos_count > 0: return "joy"
-    if think_count > 2: return "thinking"
-
-    exclamation = text.count("！") + text.count("!")
-    if exclamation > 1: return "positive"
-
-    return "neutral"
 
 
 def _auto_paragraph(text: str) -> list[str]:
