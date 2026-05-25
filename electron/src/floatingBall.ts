@@ -9,7 +9,7 @@ import { BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import { IPC_CHANNELS } from './ipc';
 
-const BALL_SIZE = 56;
+const BALL_SIZE = 52;
 
 export class FloatingBall {
   private window: BrowserWindow | null = null;
