@@ -14,6 +14,21 @@ interface OptimizedViewProps {
 
 export default function OptimizedView({ scene, text, originalText, result, onOptimize, onAcceptVersion, isAnalyzing }: OptimizedViewProps) {
   const [loading, setLoading] = useState(false)
+
+  // 文本清理：去除换行、符号和生成描述
+  const cleanText = (s: string): string => {
+    if (!s) return s;
+    return s
+      .replace(/\n+/g, ' ')
+      .replace(/[•└]/g, '')
+      .replace(/^\d+\.\s*/gm, '')
+      .replace(/[，,]\s*具体来说[^，。]*[，。]?/g, '')
+      .replace(/[，,]\s*这一点的关键在于[^，。]*[，。]?/g, '')
+      .replace(/[。.]\s*在此基础上[^，。]*[，。]?/g, '')
+      .replace(/[，,]\s*我们需要[^，。]*[，。]?/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
   const [activeVersion, setActiveVersion] = useState(0)
   const [accepted, setAccepted] = useState(false)
   const hasEdits = originalText !== undefined && text !== originalText
@@ -62,8 +77,7 @@ export default function OptimizedView({ scene, text, originalText, result, onOpt
           ))}
         </div>
         <div className="optimize-content">
-          <div className="optimize-desc">{current.description}</div>
-          <div className="optimize-text">{current.text}</div>
+          <div className="optimize-text">{cleanText(current.text)}</div>
         </div>
         <div className="optimize-actions">
           <button className="action-btn primary" onClick={() => handleAcceptVersion(current.text)} disabled={accepted}>
@@ -99,8 +113,7 @@ export default function OptimizedView({ scene, text, originalText, result, onOpt
           ))}
         </div>
         <div className="optimize-content">
-          <div className="optimize-desc">{current.description}</div>
-          <div className="optimize-text">{current.text}</div>
+          <div className="optimize-text">{cleanText(current.text)}</div>
         </div>
         <div className="optimize-actions">
           <button className="action-btn primary" onClick={() => handleAcceptVersion(current.text)} disabled={accepted}>

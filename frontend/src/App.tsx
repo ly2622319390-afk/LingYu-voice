@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import './App.css'
 import { SceneType, EditAnalysis } from './types'
 import { useSpeechRecognition } from './hooks/useSpeechRecognition'
@@ -12,7 +12,7 @@ import LexiconIndustryManager from './components/LexiconIndustryManager'
 import HistoryView from './components/HistoryView'
 import CompactOverlay from './components/CompactOverlay'
 import CreationWorkspace from './components/CreationWorkspace'
-import { industryApi, editsApi } from './services/api'
+import { industryApi, editsApi, optimizeApi, correctionsApi } from './services/api'
 
 type PageView = 'main' | 'lexicon' | 'history'
 type AppMode = 'web' | 'overlay' | 'full'
@@ -58,6 +58,36 @@ export default function App() {
     setEditedTranscript(transcript)
     setEditAnalysis(null)
   }, [transcript])
+
+  // 从办公/聊天切换到创作时，清空转录文本让用户重新录音
+  const prevSceneRef = useRef(scene)
+  useEffect(() => {
+    if (prevSceneRef.current !== '创作' && scene === '创作') {
+      resetTranscript()
+      setOptimizedResult(null)
+      setEditAnalysis(null)
+      setUncertainWords([])
+      autoTriggeredRef.current = false
+    }
+    prevSceneRef.current = scene
+  }, [scene])
+
+  // 录音结束后自动触发优化（修复时序：等 SenseVoice 返回 final 文本后再触发）
+  const autoTriggeredRef = useRef(false)
+  useEffect(() => {
+    if (isListening) {
+      autoTriggeredRef.current = false // 新录音开始时重置
+      return
+    }
+    // 录音已停止，且文本非空，且尚未触发过自动优化
+    if (transcript.trim() && !autoTriggeredRef.current) {
+      autoTriggeredRef.current = true
+      if (scene === '创作') return // 创作模式走创作工作室，不自动优化
+      optimizeApi.process(transcript, scene).then(res => {
+        setOptimizedResult(res)
+      }).catch(() => {})
+    }
+  }, [isListening, transcript, scene])
 
   const handleTranscriptChange = (newTranscript: string) => {
     resetTranscript()
@@ -154,6 +184,7 @@ export default function App() {
               onStop={stopListening}
               onNewTranscript={handleTranscriptChange}
               error={error}
+              isSupported={isSupported}
             />
             <Transcript
               transcript={transcript}
@@ -163,6 +194,10 @@ export default function App() {
                 const newText = editedTranscript.replace(oldWord, newWord)
                 setEditedTranscript(newText)
                 setUncertainWords(prev => prev.filter(w => w.word !== oldWord))
+                // 记录修正到历史
+                correctionsApi.log(oldWord, newWord, scene, transcript, newText).catch(() => {})
+                // 触发编辑分析
+                editsApi.analyze(transcript, newText, scene).catch(() => {})
               }}
               onEditComplete={handleEditComplete}
             />
@@ -216,6 +251,9 @@ export default function App() {
             {scene === '创作' ? (
               <CreationWorkspace
                 transcript={editedTranscript}
+                isListening={isListening}
+                onStartRecording={startListening}
+                onStopRecording={stopListening}
                 onClearTranscript={() => {
                   resetTranscript()
                   setOptimizedResult(null)

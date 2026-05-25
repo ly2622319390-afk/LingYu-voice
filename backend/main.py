@@ -16,6 +16,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+import asyncio
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -27,6 +28,13 @@ import logging
 import threading
 
 logger = logging.getLogger("voice-input")
+
+# 文件日志配置（用户可复制日志内容报告错误）
+_log_file = Path(PROJECT_ROOT) / "backend.log"
+_fh = logging.FileHandler(str(_log_file), encoding="utf-8", mode="a")
+_fh.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s"))
+logger.addHandler(_fh)
+logger.setLevel(logging.INFO)
 
 from config import settings
 from database.db_manager import db_manager
@@ -166,6 +174,13 @@ def _init_llm():
 # ─── 生命周期 ───
 @app.on_event("startup")
 def startup():
+    logger.info("=" * 60)
+    logger.info(f"  智能语音输入法 v{settings.VERSION} 启动")
+    logger.info(f"  ASR 引擎: {settings.ASR_ENGINE}")
+    logger.info(f"  LLM 模式: {'已启用' if settings.LLM_ENABLED else '未启用'}")
+    logger.info(f"  日志文件: {_log_file}")
+    logger.info("=" * 60)
+
     # 初始化数据库
     lexicon_db.init_db()
     corrections_db.init_db()
@@ -197,7 +212,6 @@ def _init_asr_engine():
     global _asr_engine_instance, _asr_engine_loaded
     with _asr_engine_lock:
         try:
-            import asyncio
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
 
@@ -316,51 +330,54 @@ def transcribe():
 
 @app.websocket("/ws/asr")
 async def asr_websocket(websocket: WebSocket):
-    """WebSocket 流式 ASR 识别链路
-
-    接收: 二进制音频数据 (WebM/Opus 块)
-    发送: {"type":"partial","text":"...","confidence":0.9}
-          {"type":"final","text":"...","confidence":0.95}
-          {"type":"error","message":"..."}
-
-    支持 FunASR（若已安装）和模拟模式两种后端。
-    """
+    """WebSocket 流式 ASR 识别链路"""
     await websocket.accept()
+    ws_client = f"{websocket.client.host}:{websocket.client.port}" if websocket.client else "unknown"
+    logger.info(f"[WS] 新连接: {ws_client}")
 
-    # 使用全局 ASR 引擎（如果尚未加载，则尝试加载）
     global _asr_engine_instance, _asr_engine_loaded
     asr_engine = None
+    audio_chunks_received = 0
+
     if settings.ASR_ENGINE in ("funasr", "sensevoice"):
         if _asr_engine_loaded and _asr_engine_instance:
             asr_engine = _asr_engine_instance
+            logger.info(f"[WS] ✓ 使用预加载的 SenseVoice 引擎")
         else:
-            # 加锁避免后台线程同时加载
-            if _asr_engine_lock.acquire(blocking=False):
-                try:
-                    if settings.ASR_ENGINE == "sensevoice":
-                        from ai_services.asr.sensevoice_adapter import SenseVoiceAdapter
-                        logger.info("按需加载 SenseVoice 引擎...")
-                        asr_engine = SenseVoiceAdapter(device=settings.ASR_DEVICE)
-                    else:
-                        from ai_services.asr.funasr_adapter import FunASRAdapter
-                        logger.info("按需加载 FunASR 引擎...")
-                        asr_engine = FunASRAdapter(device=settings.ASR_DEVICE)
-                    await asr_engine.initialize()
-                    _asr_engine_instance = asr_engine
-                    _asr_engine_loaded = True
-                except Exception as e:
-                    logger.warning(f"ASR 按需加载失败，使用模拟模式: {e}")
-                    asr_engine = None
-                finally:
-                    _asr_engine_lock.release()
-            else:
-                # 后台正在加载，等待并重试
-                logger.info("等待后台 ASR 引擎加载...")
-                with _asr_engine_lock:
-                    if _asr_engine_loaded and _asr_engine_instance:
-                        asr_engine = _asr_engine_instance
+            logger.info(f"[WS] ⏳ SenseVoice 模型尚未加载完成，异步等待...")
+            for _ in range(30):
+                if _asr_engine_loaded and _asr_engine_instance:
+                    asr_engine = _asr_engine_instance
+                    logger.info(f"[WS] ✓ 异步等待成功，引擎已就绪")
+                    break
+                await asyncio.sleep(1)
+            if not asr_engine:
+                if _asr_engine_lock.acquire(blocking=False):
+                    try:
+                        logger.info(f"[WS] 自行加载 SenseVoice 引擎...")
+                        if settings.ASR_ENGINE == "sensevoice":
+                            from ai_services.asr.sensevoice_adapter import SenseVoiceAdapter
+                            asr_engine = SenseVoiceAdapter(device=settings.ASR_DEVICE)
+                        else:
+                            from ai_services.asr.funasr_adapter import FunASRAdapter
+                            asr_engine = FunASRAdapter(device=settings.ASR_DEVICE)
+                        await asr_engine.initialize()
+                        _asr_engine_instance = asr_engine
+                        _asr_engine_loaded = True
+                        logger.info(f"[WS] ✓ 自行加载成功")
+                    except Exception as e:
+                        logger.error(f"[WS] ✗ 自行加载失败: {e}")
+                        asr_engine = None
+                    finally:
+                        _asr_engine_lock.release()
+                else:
+                    logger.error(f"[WS] ✗ 引擎加载超时（>30秒），ModelScope 下载可能被阻断")
+                if not asr_engine:
+                    await websocket.send_json({
+                        "type": "error",
+                        "message": "ASR 引擎加载失败（模型下载超时），请检查网络后重启软件"
+                    })
 
-    # 模拟模式：音频缓冲区
     simulated_chunks = 0
     simulated_texts = [
         "今天", "今天的天气", "今天的天气真不错", "今天的天气真不错我们",
@@ -373,6 +390,7 @@ async def asr_websocket(websocket: WebSocket):
             try:
                 message = await websocket.receive()
             except WebSocketDisconnect:
+                logger.info(f"[WS] 客户端断开: {ws_client}")
                 break
 
             if message["type"] == "websocket.receive":
@@ -382,11 +400,12 @@ async def asr_websocket(websocket: WebSocket):
                 if isinstance(msg_data, str):
                     msg = json.loads(msg_data)
                     msg_type = msg.get("type", "")
+                    logger.info(f"[WS] 收到命令: {msg_type} (engine={'sensevoice' if asr_engine else 'simulated'}, chunks={audio_chunks_received})")
 
                     if msg_type == "ping":
                         await websocket.send_json({
                             "type": "pong",
-                            "asr_engine": "funasr" if asr_engine else "simulated",
+                            "asr_engine": "sensevoice" if asr_engine else "simulated",
                             "hotwords": len(hotword_manager._hotwords),
                         })
                     elif msg_type == "set_hotwords":
@@ -397,22 +416,25 @@ async def asr_websocket(websocket: WebSocket):
                         await websocket.send_json({"type": "hotword_updated"})
                     elif msg_type == "stop":
                         if asr_engine:
-                            # SenseVoice/FunASR 模式：对完整累积音频做最终识别
                             result = await asr_engine.transcribe_buffer()
-                            if result.get("text"):
-                                raw_text = result["text"]
+                            text = result.get("text", "")
+                            confidence = result.get("confidence", 0.0)
+                            logger.info(f"[WS] transcribe_buffer 返回: text_len={len(text)}, confidence={confidence}, text='{text[:50]}...' " + ("" if len(text) <= 50 else ""))
+                            if text:
                                 if settings.LLM_ENABLED:
-                                    corrected = industry_lexicon.correct_text_llm(raw_text)
+                                    corrected = industry_lexicon.correct_text_llm(text)
                                 else:
-                                    corrected = industry_lexicon.correct_text(raw_text)
+                                    corrected = industry_lexicon.correct_text(text)
                                 await websocket.send_json({
                                     "type": "final",
                                     "text": corrected["corrected"],
-                                    "confidence": result.get("confidence", 0.95),
+                                    "confidence": confidence,
                                     "corrections": corrected["corrections"],
                                 })
+                                logger.info(f"[WS] ✓ 已发送 final 文本 ({len(corrected['corrected'])} 字)")
+                            else:
+                                logger.warning(f"[WS] ✗ transcribe_buffer 返回空文本！音频块数: {audio_chunks_received}")
                         else:
-                            # 模拟模式
                             if simulated_chunks > 0:
                                 final_text = simulated_texts[-1] if simulated_chunks >= len(simulated_texts) else simulated_texts[min(simulated_chunks, len(simulated_texts) - 1)]
                                 corrected = industry_lexicon.correct_text(final_text)
@@ -421,16 +443,16 @@ async def asr_websocket(websocket: WebSocket):
                                     "corrections": corrected["corrections"],
                                 })
                         await websocket.send_json({"type": "end"})
+                        logger.info(f"[WS] ✓ 已发送 end，关闭连接")
                         break
 
                 # 二进制消息（音频数据）
                 elif isinstance(msg_data, bytes):
+                    audio_chunks_received += 1
                     if asr_engine:
-                        # FunASR 模式
                         async for result in asr_engine.transcribe_stream(msg_data):
                             await websocket.send_json(result)
                     else:
-                        # 模拟模式：每接收 5 块音频发送一次 partial 结果
                         simulated_chunks += 1
                         if simulated_chunks % 3 == 0:
                             idx = min(simulated_chunks // 3, len(simulated_texts) - 1)
@@ -441,11 +463,11 @@ async def asr_websocket(websocket: WebSocket):
                             })
 
     except WebSocketDisconnect:
-        pass
+        logger.info(f"[WS] 连接异常断开: {ws_client}")
     finally:
-        # 不关闭全局共享引擎
         if asr_engine and asr_engine is not _asr_engine_instance:
             await asr_engine.close()
+        logger.info(f"[WS] 连接关闭: {ws_client}，共接收 {audio_chunks_received} 个音频块")
 
 
 # ═══════════════════════════════════════════════
@@ -688,54 +710,69 @@ async def _llm_creation_process(text: str) -> dict:
 def _parse_llm_versions(markdown_text: str) -> list[dict]:
     """
     将大模型输出的 markdown 解析为 versions 列表
-
-    输入格式:
-        ### 版本一：正式邮件版
-        **适用场景**：说明文字
-        正文内容...
-
-    输出:
-        [{"style": "正式邮件版", "description": "说明文字", "text": "正文内容"}, ...]
+    自动清理 **场景判断**、---、**适用场景** 等多余内容。
     """
     import re
+
+    # ── 预处理：彻底清理多余内容 ──
+    text = markdown_text
+
+    # 去掉 **场景判断** 行及类似行
+    text = re.sub(r'\*\*?场景判断\*\*?[^\n]*', '', text)
+    text = re.sub(r'\*\*?适用场景\*\*?[^\n]*', '', text)
+
+    # 去掉所有 --- 分隔线（独立行）
+    text = re.sub(r'\n[ \t]*---+[ \t]*\n', '\n', text)
+
+    # 去掉 ** 包裹的标记行（如 **沟通润色**）
+    text = re.sub(r'\n[ \t]*\*\*[^*]+\*\*[^\n]*', '\n', text)
+
+    # 去掉多余的空白行，只保留一个换行
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    text = text.strip()
+
     versions = []
 
-    # 按 ### 分割版本块
-    blocks = re.split(r'\n###\s+', markdown_text)
+    # 按 ### 分割版本块（兼容开头就是 ### 的情况）
+    blocks = re.split(r'(?:^|\n)###\s+', text)
     for block in blocks:
         if not block.strip():
             continue
 
         lines = block.strip().split('\n')
 
-        # 第一行是版本标题: "版本一：正式邮件版" 或 "正式邮件版"
-        title_line = lines[0].strip()
-        # 提取版本名称（去掉 "版本一：" 前缀）
-        style_match = re.match(r'(?:版本[一二三]\s*[：:]?\s*)?(.+)', title_line)
+        # 第一行是版本标题，清理 ### 前缀和 "版本一：" 前缀
+        title_line = lines[0].strip().lstrip('#').strip()
+        style_match = re.match(r'(?:版本[一二三]\s*[：:]\s*)?(.+)', title_line)
         style = style_match.group(1).strip() if style_match else title_line
 
-        # 查找 **适用场景** 行
-        desc = ""
-        text_lines = []
-        in_desc = False
+        # 剩下的是正文（跳过空行和加粗标记行）
+        body_lines = []
         for line in lines[1:]:
             stripped = line.strip()
-            if stripped.startswith('**适用场景**') or stripped.startswith('**适用场景：'):
-                desc = stripped.replace('**适用场景**', '').replace('**适用场景：', '').replace('**', '').strip()
-                in_desc = True
-            elif stripped.startswith('**') and '**' in stripped[2:]:
-                # 其他加粗标记，跳过
+            if not stripped:
                 continue
-            else:
-                text_lines.append(line)
+            if stripped.startswith('**') and stripped.endswith('**') and len(stripped) > 4:
+                continue
+            body_lines.append(line)
 
-        text = '\n'.join(text_lines).strip()
-        if text:
+        text_body = '\n'.join(body_lines).strip()
+        if text_body:
             versions.append({
                 "style": style,
-                "description": desc or f"适用于{style}场景",
-                "text": text
+                "description": "",
+                "text": text_body
             })
+
+    # 如果没有按 ### 分割到版本，尝试把整段当作文本
+    if not versions and text.strip():
+        versions.append({
+            "style": "整理版",
+            "description": "",
+            "text": text.strip()
+        })
+
+    return versions
 
     return versions
 
@@ -837,15 +874,23 @@ def finish_creation_session(session_id: str):
 
     creation_db.finish_session_in_db(session_id)
 
-    # 写入历史记录摘要
+    # 写入历史记录摘要 — 存储可读文本而非 JSON
     mode_label = "写小说" if session.mode == "novel" else "代码项目策划"
     last_round = session.rounds[-1] if session.rounds else None
     summary = f"[创作] {mode_label} 共{len(session.rounds)}轮"
     try:
+        # 构建可读的优化文本摘要
+        clean_parts = [f"【{mode_label}】共{len(session.rounds)}轮创作"]
+        for r in session.rounds:
+            clean_parts.append(f"\n\n=== 第{r.round_number}轮 ===")
+            clean_parts.append(f"原始语音：{r.raw_input}")
+            clean_parts.append(f"整理内容：{r.organized_output}")
+        clean_text = "".join(clean_parts)
+
         history_db.save_history(
             "default",
             content_raw=last_round.raw_input if last_round else "",
-            content_optimized=json.dumps(session.to_dict(), ensure_ascii=False),
+            content_optimized=clean_text,
             scene_type="创作",
             title=summary,
             tags=f"creation_session,{session.mode}",

@@ -197,6 +197,24 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .history-detail-card .h-raw { white-space: pre-wrap; background: #fafafa; padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 14px; }
 .history-detail-card .h-optimized { white-space: pre-wrap; background: #f0f8ff; padding: 12px; border-radius: 8px; margin: 8px 0; font-size: 14px; }
 
+/* 创作历史轮次展示 */
+.h-creation-rounds { display: flex; flex-direction: column; gap: 12px; margin: 8px 0; }
+.h-creation-round { background: #f0f8ff; padding: 12px; border-radius: 8px; border-left: 3px solid #667eea; }
+.h-round-title { font-weight: 600; font-size: 14px; color: #667eea; margin-bottom: 8px; }
+.h-round-label { font-size: 12px; color: #888; margin-top: 6px; margin-bottom: 2px; }
+.h-round-text { font-size: 14px; color: #333; line-height: 1.5; white-space: pre-wrap; }
+
+/* 常用修正表格 */
+.freq-corrections { font-size: 14px; }
+.freq-header { display: flex; align-items: center; padding: 8px 12px; background: #f5f5f5; border-radius: 6px; font-weight: 600; color: #666; font-size: 13px; margin-bottom: 4px; }
+.freq-row { display: flex; align-items: center; padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+.freq-row:hover { background: #fafafa; }
+.freq-col-original { flex: 2; color: #e74c3c; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.freq-col-arrow { flex: 0 0 24px; text-align: center; color: #999; }
+.freq-col-corrected { flex: 2; color: #27ae60; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.freq-col-count { flex: 0 0 50px; text-align: right; }
+.freq-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; background: #667eea; color: #fff; font-size: 12px; font-weight: 600; }
+
 /* ─── Tab menu for sub-views within lexicon/history ─── */
 .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .sub-nav-btn {
@@ -500,6 +518,37 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   border: 1px solid #f0d0d0; border-radius: 8px;
   color: #e74c3c; font-size: 13px;
 }
+.cw-btn-record {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white; border: none; border-radius: 8px;
+  padding: 12px 32px; font-size: 15px; cursor: pointer;
+  margin-top: 8px;
+}
+.cw-btn-record:hover { box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+
+/* New round submit prompt */
+.cw-submit-round {
+  padding: 12px; background: #f0fff4; border-radius: 8px;
+  border: 1px solid #b8e6c8; display: flex; flex-direction: column; gap: 8px;
+}
+.cw-submit-round .cw-submit-label { color: #27ae60; font-weight: 500; }
+.cw-submit-round .cw-submit-text {
+  background: white; font-size: 13px;
+}
+.cw-edit-area {
+  width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px;
+  font-size: 14px; line-height: 1.6; font-family: inherit;
+  resize: vertical; box-sizing: border-box; background: #fff;
+}
+.cw-edit-area:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 2px rgba(102,126,234,0.15); }
+.cw-edit-actions { display: flex; gap: 6px; }
+.cw-edit-actions .cw-btn { font-size: 12px; padding: 4px 12px; }
+
+/* Recording hint */
+.cw-recording-hint {
+  text-align: center; font-size: 12px; color: #e74c3c;
+  padding: 4px 0;
+}
 
 /* Submit prompt */
 .cw-submit-prompt {
@@ -536,3 +585,44 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 }
 .cw-finished-title { font-size: 18px; font-weight: 600; color: #333; }
 .cw-finished-desc { font-size: 13px; color: #999; }
+
+/* 原文弹窗 */
+.cw-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.cw-modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.cw-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.cw-modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.cw-modal-body .cw-section + .cw-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}

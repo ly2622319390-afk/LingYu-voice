@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { creationApi } from '../services/api';
+import { useState, useEffect } from 'react';
+import { creationApi, correctionsApi } from '../services/api';
 
 type CreationMode = 'novel' | 'project';
 
@@ -16,10 +16,28 @@ interface CreationRoundData {
 
 interface CreationWorkspaceProps {
   transcript: string;
+  isListening: boolean;
+  onStartRecording: () => void;
+  onStopRecording: () => void;
   onClearTranscript: () => void;
 }
 
-export default function CreationWorkspace({ transcript, onClearTranscript }: CreationWorkspaceProps) {
+export default function CreationWorkspace({ transcript, isListening, onStartRecording, onStopRecording, onClearTranscript }: CreationWorkspaceProps) {
+  // 文本清理工具
+  const cleanDisplayText = (s: string): string => {
+    if (!s) return s;
+    return s
+      .replace(/\n+/g, ' ')
+      .replace(/[•└]/g, '')
+      .replace(/^\d+\.\s*/gm, '')
+      .replace(/[，,]\s*具体来说[^，。]*[，。]?/g, '')
+      .replace(/[，,]\s*这一点的关键在于[^，。]*[，。]?/g, '')
+      .replace(/[。.]\s*在此基础上[^，。]*[，。]?/g, '')
+      .replace(/[，,]\s*我们需要[^，。]*[，。]?/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  };
+
   const [mode, setMode] = useState<CreationMode | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [rounds, setRounds] = useState<CreationRoundData[]>([]);
@@ -27,6 +45,23 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
   const [error, setError] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [showOriginalText, setShowOriginalText] = useState(false);
+  const [editingText, setEditingText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+
+  // 同步编辑文本与转录文本
+  useEffect(() => {
+    if (!isEditing) setEditingText(transcript);
+  }, [transcript, isEditing]);
+
+  const handleStartEdit = () => {
+    setEditingText(transcript);
+    setIsEditing(true);
+  };
+
+  const handleConfirmEdit = () => {
+    setIsEditing(false);
+  };
 
   // ─── Handlers ───
 
@@ -38,9 +73,7 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
     try {
       const res = await creationApi.createSession(m);
       setSessionId(res.session_id);
-      if (transcript.trim()) {
-        await handleSubmit(res.session_id, transcript);
-      }
+      // 不自动提交文本 — 让用户手动点击"提交创作灵感"
     } catch {
       setError('创建会话失败，请重试');
     } finally {
@@ -54,6 +87,11 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
     try {
       const result = await creationApi.submitInput(sid, text);
       setRounds(prev => [...prev, result]);
+      // 追踪编辑行为
+      if (text !== transcript) {
+        correctionsApi.log(transcript, text, '创作', transcript, text).catch(() => {});
+      }
+      onClearTranscript();
     } catch {
       setError('提交失败，请重试');
     } finally {
@@ -63,6 +101,7 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
 
   const handleContinue = () => {
     onClearTranscript();
+    onStartRecording();
   };
 
   const handleFinish = async () => {
@@ -131,7 +170,7 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
           </div>
         </div>
         <div className="cw-hint">
-          选择创作方向后，录制语音或输入文字，AI 将帮助您结构化整理
+          选择创作方向后，点击"开始录音"说出您的灵感
         </div>
       </div>
     );
@@ -173,16 +212,44 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
         {transcript.trim() ? (
           <div className="cw-submit-prompt">
             <div className="cw-submit-label">检测到语音输入，点击提交开始创作：</div>
-            <div className="cw-submit-text" title={transcript}>{transcript}</div>
-            <button className="cw-btn cw-btn-primary" onClick={() => sessionId && handleSubmit(sessionId, transcript)}>
-              🚀 提交创作灵感
-            </button>
+            {isEditing ? (
+              <>
+                <textarea
+                  className="cw-edit-area"
+                  value={editingText}
+                  onChange={e => setEditingText(e.target.value)}
+                  rows={4}
+                />
+                <div className="cw-edit-actions">
+                  <button className="cw-btn cw-btn-copy-outline" onClick={() => { setEditingText(transcript); setIsEditing(false) }}>取消</button>
+                  <button className="cw-btn cw-btn-primary" onClick={() => { setIsEditing(false); sessionId && handleSubmit(sessionId, editingText) }}>
+                    🚀 提交创作灵感
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="cw-submit-text" title={transcript}>{transcript}</div>
+                <div className="cw-edit-actions">
+                  <button className="cw-btn cw-btn-copy-outline" onClick={handleStartEdit}>✏️ 编辑文本</button>
+                </div>
+                <button className="cw-btn cw-btn-primary" onClick={() => sessionId && handleSubmit(sessionId, transcript)}>
+                  🚀 提交创作灵感
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <div className="cw-empty">
             <div className="cw-empty-icon">🎤</div>
-            <div className="cw-empty-text">录制语音后提交创作灵感</div>
-            <div className="cw-empty-hint">或使用左侧文本编辑区输入内容</div>
+            <div className="cw-empty-text">点击下方按钮开始录音</div>
+            <button
+              className="cw-btn cw-btn-record"
+              onClick={isListening ? onStopRecording : onStartRecording}
+            >
+              {isListening ? '⏹ 结束录音' : '🎤 开始录音'}
+            </button>
+            <div className="cw-empty-hint">录音完成后会自动识别，点击"提交创作灵感"开始分析</div>
           </div>
         )}
       </div>
@@ -223,8 +290,8 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
               {/* Organized output */}
               <div className="cw-section">
                 <div className="cw-section-title">整理内容</div>
-                <div className="cw-text cw-text-hover" title={round.organized_output}>
-                  {round.organized_output}
+                <div className="cw-text cw-text-hover" title={cleanDisplayText(round.organized_output)}>
+                  {cleanDisplayText(round.organized_output)}
                 </div>
               </div>
 
@@ -289,15 +356,78 @@ export default function CreationWorkspace({ transcript, onClearTranscript }: Cre
         ))}
       </div>
 
+      {/* 新一轮录音补充 — 检测到新文本时显示提交入口 */}
+      {transcript.trim() && (
+        <div className="cw-submit-round">
+          <div className="cw-submit-label">检测到补充内容：</div>
+          {isEditing ? (
+            <>
+              <textarea
+                className="cw-edit-area"
+                value={editingText}
+                onChange={e => setEditingText(e.target.value)}
+                rows={3}
+              />
+              <div className="cw-edit-actions" style={{ marginTop: 6 }}>
+                <button className="cw-btn cw-btn-copy-outline" onClick={() => { setEditingText(transcript); setIsEditing(false) }}>取消</button>
+                <button className="cw-btn cw-btn-primary" onClick={() => { setIsEditing(false); sessionId && handleSubmit(sessionId, editingText) }}>
+                  🚀 提交补充内容
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="cw-submit-text" title={transcript}>{transcript}</div>
+              <div className="cw-edit-actions" style={{ marginTop: 6 }}>
+                <button className="cw-btn cw-btn-copy-outline" onClick={handleStartEdit}>✏️ 编辑文本</button>
+              </div>
+              <button className="cw-btn cw-btn-primary" onClick={() => sessionId && handleSubmit(sessionId, transcript)}>
+                🚀 提交补充内容
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Actions */}
       <div className="cw-actions">
-        <button className="cw-btn cw-btn-continue" onClick={handleContinue}>
-          🎤 继续补充
+        <button className="cw-btn cw-btn-continue" onClick={isListening ? onStopRecording : handleContinue}>
+          {isListening ? '⏹ 结束录音' : '🎤 继续补充'}
+        </button>
+        <button className="cw-btn cw-btn-copy-outline" onClick={() => setShowOriginalText(true)}>
+          📋 原文
         </button>
         <button className="cw-btn cw-btn-finish" onClick={handleFinish}>
           ✓ 结束创作
         </button>
       </div>
+      {isListening && (
+        <div className="cw-recording-hint">🔴 录音中，请对着麦克风说话...</div>
+      )}
+
+      {/* 原文弹窗 */}
+      {showOriginalText && (
+        <div className="cw-modal-overlay" onClick={() => setShowOriginalText(false)}>
+          <div className="cw-modal" onClick={e => e.stopPropagation()}>
+            <div className="cw-modal-header">
+              <span>📋 原文查看</span>
+              <button className="cw-btn cw-btn-copy-outline" onClick={() => setShowOriginalText(false)} style={{ border: 'none', fontSize: 16, padding: '2px 8px' }}>✕</button>
+            </div>
+            <div className="cw-modal-body">
+              <div className="cw-section">
+                <div className="cw-section-title">全部累积文本</div>
+                <div className="cw-text">{rounds.map(r => r.raw_input).join('\n')}</div>
+              </div>
+              {rounds.map(r => (
+                <div key={r.round_number} className="cw-section">
+                  <div className="cw-section-title">第 {r.round_number} 轮原文</div>
+                  <div className="cw-text">{r.raw_input}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
