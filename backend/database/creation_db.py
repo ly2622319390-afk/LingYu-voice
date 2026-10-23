@@ -61,11 +61,11 @@ def save_session(session_id: str, mode: str, user_id: str = "default") -> dict:
     return {"session_id": session_id, "mode": mode, "status": "active"}
 
 
-def finish_session_in_db(session_id: str) -> bool:
+def finish_session_in_db(session_id: str, user_id: str = "default") -> bool:
     conn = db_manager.get_connection(DB_NAME)
     cur = conn.execute(
-        "UPDATE creation_sessions SET status='finished', finished_at=datetime('now','localtime') WHERE session_id=?",
-        (session_id,),
+        "UPDATE creation_sessions SET status='finished', finished_at=datetime('now','localtime') WHERE session_id=? AND user_id=?",
+        (session_id, user_id),
     )
     conn.commit()
     return cur.rowcount > 0
@@ -95,20 +95,22 @@ def save_round(session_id: str, round_number: int, raw_input: str,
     return cur.lastrowid
 
 
-def update_copy_status(session_id: str, round_number: int, target: str):
+def update_copy_status(session_id: str, round_number: int, target: str,
+                       user_id: str = "default"):
     col = "user_copied_organized" if target == "organized" else "user_copied_raw"
     conn = db_manager.get_connection(DB_NAME)
     conn.execute(
-        f"UPDATE creation_rounds SET {col}=1 WHERE session_id=? AND round_number=?",
-        (session_id, round_number),
+        f"UPDATE creation_rounds SET {col}=1 WHERE session_id=? AND round_number=? "
+        "AND session_id IN (SELECT session_id FROM creation_sessions WHERE session_id=? AND user_id=?)",
+        (session_id, round_number, session_id, user_id),
     )
     conn.commit()
 
 
-def get_session_by_id(session_id: str) -> dict | None:
+def get_session_by_id(session_id: str, user_id: str = "default") -> dict | None:
     conn = db_manager.get_connection(DB_NAME)
     row = conn.execute(
-        "SELECT * FROM creation_sessions WHERE session_id=?", (session_id,)
+        "SELECT * FROM creation_sessions WHERE session_id=? AND user_id=?", (session_id, user_id)
     ).fetchone()
     return dict(row) if row else None
 

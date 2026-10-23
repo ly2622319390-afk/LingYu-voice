@@ -144,11 +144,11 @@ def _is_oral_to_written(original_word: str, edited_word: str) -> bool:
     return ORAL_TO_WRITTEN.get(original_word) == edited_word
 
 
-def _is_in_lexicon(word: str) -> bool:
+def _is_in_lexicon(word: str, user_id: str = "default") -> bool:
     """检查词是否在任何词库中"""
     try:
         from database import lexicon_db
-        result = lexicon_db.check_known_word("default", word)
+        result = lexicon_db.check_known_word(user_id, word)
         if result:
             return True
     except Exception:
@@ -168,7 +168,8 @@ def _is_in_lexicon(word: str) -> bool:
 
 
 def classify_edit(change: dict, scene: str = "",
-                  user_history: Optional[list] = None) -> str:
+                  user_history: Optional[list] = None,
+                  user_id: str = "default") -> str:
     """
     对单处改动进行分类。
 
@@ -190,7 +191,7 @@ def classify_edit(change: dict, scene: str = "",
     if op_type == "replace":
         # ASR 修正：同音词 或 编辑后的词在词库中
         pinyin_score = _pinyin_similar(ow, ew)
-        if pinyin_score > 0.6 or _is_in_lexicon(ew):
+        if pinyin_score > 0.6 or _is_in_lexicon(ew, user_id):
             return "asr_fix"
 
         # 口语→书面
@@ -302,7 +303,7 @@ def analyze_edits(original: str, edited: str, scene: str = "",
     # Step 2: 对每处改动分类
     classifications = {}
     for change in changes:
-        cls = classify_edit(change, scene)
+        cls = classify_edit(change, scene, user_id=user_id)
         change["classification"] = cls
         classifications[cls] = classifications.get(cls, 0) + 1
 

@@ -44,8 +44,8 @@ def get_documents(user_id: str = "default") -> list[dict]:
     return result
 
 
-def delete_document(doc_id: int) -> bool:
+def delete_document(doc_id: int, user_id: str = "default") -> bool:
     conn = db_manager.get_connection(DB_NAME)
-    cur = conn.execute("DELETE FROM document_sources WHERE id=?", (doc_id,))
+    cur = conn.execute("DELETE FROM document_sources WHERE id=? AND user_id=?", (doc_id, user_id))
     conn.commit()
     return cur.rowcount > 0

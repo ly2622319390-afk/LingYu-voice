@@ -62,14 +62,14 @@ def get_history(user_id: str = "default", scene_type: str = "",
     }
 
 
-def delete_history(item_id: int) -> bool:
+def delete_history(item_id: int, user_id: str = "default") -> bool:
     conn = db_manager.get_connection(DB_NAME)
-    cur = conn.execute("DELETE FROM history_items WHERE id=?", (item_id,))
+    cur = conn.execute("DELETE FROM history_items WHERE id=? AND user_id=?", (item_id, user_id))
     conn.commit()
     return cur.rowcount > 0
 
 
-def get_history_detail(item_id: int) -> dict | None:
+def get_history_detail(item_id: int, user_id: str = "default") -> dict | None:
     conn = db_manager.get_connection(DB_NAME)
-    row = conn.execute("SELECT * FROM history_items WHERE id=?", (item_id,)).fetchone()
+    row = conn.execute("SELECT * FROM history_items WHERE id=? AND user_id=?", (item_id, user_id)).fetchone()
     return dict(row) if row else None

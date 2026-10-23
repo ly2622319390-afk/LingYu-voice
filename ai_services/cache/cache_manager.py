@@ -110,9 +110,10 @@ class CacheManager:
         self.memory_long = MemoryCache(ttl_seconds=3600)  # 1 小时
         self.disk = DiskCache()
 
-    def get_optimization(self, text_hash: str, scene: str) -> Optional[dict]:
+    def get_optimization(self, text_hash: str, scene: str,
+                         user_id: str = "default") -> Optional[dict]:
         """获取缓存的优化结果"""
-        key = f"optimize:{scene}:{text_hash}"
+        key = f"optimize:{user_id}:{scene}:{text_hash}"
         cached = self.memory_long.get(key)
         if cached:
             return cached
@@ -122,8 +123,9 @@ class CacheManager:
             return json.loads(cached)
         return None
 
-    def set_optimization(self, text_hash: str, scene: str, result: dict):
+    def set_optimization(self, text_hash: str, scene: str, result: dict,
+                         user_id: str = "default"):
         """缓存优化结果"""
-        key = f"optimize:{scene}:{text_hash}"
+        key = f"optimize:{user_id}:{scene}:{text_hash}"
         self.memory_long.set(key, result, ttl=3600)
         self.disk.set(key, json.dumps(result, ensure_ascii=False))

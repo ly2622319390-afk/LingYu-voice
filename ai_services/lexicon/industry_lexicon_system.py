@@ -74,17 +74,12 @@ class IndustryLexiconSystem:
 
     def __init__(self):
         # 当前加载的行业
-        self._active_industries: list[str] = []
-
         # ─── 缓存 ───
-        self._hotword_cache: list[str] = []           # 热词缓存
-        self._hotword_cache_time = 0
-        self._alias_cache: dict[str, str] = {}         # 误识别映射缓存
-        self._alias_cache_time = 0
+        self._hotword_cache: dict[tuple[str, tuple[str, ...]], tuple[float, list[str]]] = {}
+        self._alias_cache: dict[tuple[str, tuple[str, ...]], tuple[float, dict[str, str]]] = {}
         self._word_cache: dict[str, list[dict]] = {}   # 行业词条缓存 {industry: [...]}
         self._word_cache_time: dict[str, float] = {}
-        self._user_correction_cache: dict[str, str] = {}  # 用户修正映射缓存
-        self._user_cache_time = 0
+        self._user_correction_cache: dict[str, tuple[float, dict[str, str]]] = {}
         self._high_freq_cache: list[str] = []          # 高频词缓存
         self._high_freq_time = 0
 
@@ -102,15 +97,13 @@ class IndustryLexiconSystem:
     def select_industries(self, user_id: str, industries: list[str]):
         """用户选择行业 → 更新并加载对应词库"""
         db.set_user_industries(user_id, industries)
-        self._active_industries = industries
-        self._clear_cache()
+        self._hotword_cache = {k: v for k, v in self._hotword_cache.items() if k[0] != user_id}
+        self._alias_cache = {k: v for k, v in self._alias_cache.items() if k[0] != user_id}
         logger.info(f"用户 {user_id} 选择行业: {industries}")
 
     def get_selected_industries(self, user_id: str) -> list[str]:
         """获取用户已选择的行业"""
-        industries = db.get_user_industries(user_id)
-        self._active_industries = industries
-        return industries
+        return db.get_user_industries(user_id)
 
     # ─── 热词获取 ────────────────────────────────────────────────
 
@@ -121,13 +114,14 @@ class IndustryLexiconSystem:
         优先级: 用户词库高频词 > 行业高频词 > 行业普通词
         目标: < 200ms
         """
-        now = time.time()
-        if not force_refresh and self._hotword_cache and (now - self._hotword_cache_time) < self.CACHE_TTL["hotword"]:
-            return self._hotword_cache
-
-        industries = self._active_industries or self.get_selected_industries(user_id)
+        industries = self.get_selected_industries(user_id)
         if not industries:
             return []
+        now = time.time()
+        cache_key = (user_id, tuple(industries))
+        cached = self._hotword_cache.get(cache_key)
+        if not force_refresh and cached and now - cached[0] < self.CACHE_TTL["hotword"]:
+            return cached[1]
 
         # 1. 从行业词库获取热词
         industry_words = db.get_words_for_hotwords(industries)
@@ -157,8 +151,7 @@ class IndustryLexiconSystem:
         # 限制数量
         hotwords = hotwords[:200]
 
-        self._hotword_cache = hotwords
-        self._hotword_cache_time = now
+        self._hotword_cache[cache_key] = (now, hotwords)
         logger.debug(f"热词加载完成: {len(hotwords)} 个 (行业: {industries})")
         return hotwords
 
@@ -243,7 +236,7 @@ class IndustryLexiconSystem:
 
             # 收集上下文: 当前活跃行业的词条
             industry_context = ""
-            industries = self._active_industries or self.get_selected_industries(user_id)
+            industries = self.get_selected_industries(user_id)
             if industries:
                 industry_context = "当前行业: " + ", ".join(industries)
 
@@ -302,8 +295,10 @@ class IndustryLexiconSystem:
         if re.match(r'^[一-鿿]$', wrong):
             return False
 
-        # 中文词（2字以上）: 用预切词的 tokens set 做 O(1) 查找
-        if re.match(r'^[一-鿿\w]{2,}$', wrong):
+        # 纯中文词（2字以上）: 用预切词的 tokens set 做 O(1) 查找。
+        # 不能使用 \w：它包含 ASCII 字母，会把 "ai" 当作普通子串，
+        # 从而误伤 "langchain" 这类英文专业词。
+        if re.match(r'^[一-鿿]{2,}$', wrong):
             if tokens and wrong in tokens:
                 return True
             # 检查是否被中文/标点包围或独立出现
@@ -343,7 +338,7 @@ class IndustryLexiconSystem:
 
         目标: < 150ms
         """
-        industries = self._active_industries or self.get_selected_industries(user_id)
+        industries = self.get_selected_industries(user_id)
         if not text or not industries:
             return []
 
@@ -396,7 +391,7 @@ class IndustryLexiconSystem:
         lexicon_db.add_word(user_id, correct, source="用户修正")
 
         # 清除用户修正缓存，下次重新加载
-        self._user_cache_time = 0
+        self._user_correction_cache.pop(user_id, None)
 
         logger.info(f"用户 {user_id} 修正: '{wrong}' → '{correct}'")
 
@@ -429,23 +424,25 @@ class IndustryLexiconSystem:
     def _get_user_correction_map(self, user_id: str) -> dict[str, str]:
         """获取用户修正映射（带缓存）"""
         now = time.time()
-        if not self._user_correction_cache or (now - self._user_cache_time) > self.CACHE_TTL["user_correction"]:
-            self._user_correction_cache = db.get_user_correction_map(user_id)
-            self._user_cache_time = now
-        return self._user_correction_cache
+        cached = self._user_correction_cache.get(user_id)
+        if not cached or now - cached[0] > self.CACHE_TTL["user_correction"]:
+            cached = (now, db.get_user_correction_map(user_id))
+            self._user_correction_cache[user_id] = cached
+        return cached[1]
 
     def _get_alias_map(self, user_id: str = "default") -> dict[str, str]:
         """获取行业词库误识别映射（带缓存）
 
-        修复: 如果内存中的 _active_industries 为空（重启后），
-        自动从数据库回退读取用户已选的行业。
+        缓存按用户及其行业选择区分，避免不同用户复用彼此的别名映射。
         """
         now = time.time()
-        if not self._alias_cache or (now - self._alias_cache_time) > self.CACHE_TTL["alias"]:
-            industries = self._active_industries or self.get_selected_industries(user_id)
-            self._alias_cache = db.get_alias_map(industries)
-            self._alias_cache_time = now
-        return self._alias_cache
+        industries = self.get_selected_industries(user_id)
+        cache_key = (user_id, tuple(industries))
+        cached = self._alias_cache.get(cache_key)
+        if not cached or now - cached[0] > self.CACHE_TTL["alias"]:
+            cached = (now, db.get_alias_map(industries))
+            self._alias_cache[cache_key] = cached
+        return cached[1]
 
     def _get_cached_words(self, industry: str) -> list[dict]:
         """获取行业词条（带缓存）"""
@@ -458,12 +455,11 @@ class IndustryLexiconSystem:
 
     def _clear_cache(self):
         """清除所有缓存"""
-        self._hotword_cache = []
-        self._hotword_cache_time = 0
+        self._hotword_cache = {}
         self._alias_cache = {}
-        self._alias_cache_time = 0
         self._word_cache = {}
         self._word_cache_time = {}
+        self._user_correction_cache = {}
         self._high_freq_cache = []
         self._high_freq_time = 0
 

@@ -12,7 +12,7 @@ import LexiconIndustryManager from './components/LexiconIndustryManager'
 import HistoryView from './components/HistoryView'
 import CompactOverlay from './components/CompactOverlay'
 import CreationWorkspace from './components/CreationWorkspace'
-import { industryApi, editsApi, optimizeApi, correctionsApi } from './services/api'
+import { industryApi, editsApi, optimizeApi } from './services/api'
 
 type PageView = 'main' | 'lexicon' | 'history'
 type AppMode = 'web' | 'overlay' | 'full'
@@ -44,7 +44,6 @@ export default function App() {
   const [scene, setScene] = useState<SceneType>('办公')
   const [view, setView] = useState<PageView>('main')
   const [optimizedResult, setOptimizedResult] = useState<any>(null)
-  const [uncertainWords, setUncertainWords] = useState<{ word: string; suggestions: string[]; position: number }[]>([])
   const [industrySelected, setIndustrySelected] = useState<string[]>([])
   const [industryHotwords, setIndustryHotwords] = useState(0)
 
@@ -66,7 +65,6 @@ export default function App() {
       resetTranscript()
       setOptimizedResult(null)
       setEditAnalysis(null)
-      setUncertainWords([])
       autoTriggeredRef.current = false
     }
     prevSceneRef.current = scene
@@ -91,16 +89,6 @@ export default function App() {
 
   const handleTranscriptChange = (newTranscript: string) => {
     resetTranscript()
-    const words = newTranscript.split(/[\s，。、；：]+/).filter(w => w.length > 1)
-    const uncertain = words
-      .filter(w => w.length >= 2 && Math.random() > 0.85)
-      .slice(0, 3)
-      .map((w, i) => ({
-        word: w,
-        suggestions: [w, w + '（候选）', '候选词' + (i + 1)],
-        position: newTranscript.indexOf(w),
-      }))
-    setUncertainWords(uncertain)
     setOptimizedResult(null)
   }
 
@@ -149,7 +137,6 @@ export default function App() {
         onReset={() => {
           resetTranscript()
           setOptimizedResult(null)
-          setUncertainWords([])
         }}
         isElectron={isElectron}
       />
@@ -189,16 +176,6 @@ export default function App() {
             <Transcript
               transcript={transcript}
               interimTranscript={interimTranscript}
-              uncertainWords={uncertainWords}
-              onReplaceWord={(oldWord, newWord) => {
-                const newText = editedTranscript.replace(oldWord, newWord)
-                setEditedTranscript(newText)
-                setUncertainWords(prev => prev.filter(w => w.word !== oldWord))
-                // 记录修正到历史
-                correctionsApi.log(oldWord, newWord, scene, transcript, newText).catch(() => {})
-                // 触发编辑分析
-                editsApi.analyze(transcript, newText, scene).catch(() => {})
-              }}
               onEditComplete={handleEditComplete}
             />
             {editAnalysis && editAnalysis.has_changes && (
@@ -257,7 +234,6 @@ export default function App() {
                 onClearTranscript={() => {
                   resetTranscript()
                   setOptimizedResult(null)
-                  setUncertainWords([])
                 }}
               />
             ) : (

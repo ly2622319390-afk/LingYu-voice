@@ -303,6 +303,7 @@ class HistorySave(BaseModel):
 class OptimizeRequest(BaseModel):
     text: str
     scene_type: str = "办公"
+    user_id: str = "default"
 
 
 class IndustrySelectRequest(BaseModel):
@@ -334,11 +335,13 @@ class AnalyzeEditsRequest(BaseModel):
 class CreateSessionRequest(BaseModel):
     """创建创作会话请求"""
     mode: str
+    user_id: str = "default"
 
 
 class SubmitInputRequest(BaseModel):
     """提交创作输入请求"""
     text: str
+    user_id: str = "default"
 
 
 # ═══════════════════════════════════════════════
@@ -434,13 +437,17 @@ async def asr_websocket(websocket: WebSocket):
                             "type": "pong",
                             "asr_engine": "sensevoice" if asr_engine else "simulated",
                             "hotwords": len(hotword_manager._hotwords),
+                            "runtime_hotwords_supported": settings.ASR_ENGINE == "funasr",
                         })
                     elif msg_type == "set_hotwords":
                         hw = msg.get("hotwords", [])
                         hotword_manager._hotwords = {w: 50 for w in hw}
                         if asr_engine:
                             await asr_engine.set_hotwords(hw)
-                        await websocket.send_json({"type": "hotword_updated"})
+                        await websocket.send_json({
+                            "type": "hotword_updated",
+                            "runtime_injection_supported": settings.ASR_ENGINE == "funasr",
+                        })
                     elif msg_type == "stop":
                         if asr_engine:
                             result = await asr_engine.transcribe_buffer()
@@ -515,13 +522,22 @@ async def asr_websocket(websocket: WebSocket):
 
 @app.get("/api/hotwords")
 def list_hotwords():
-    return {"hotwords": hotword_manager.get_top_hotwords(), "total": len(hotword_manager._hotwords)}
+    return {
+        "hotwords": hotword_manager.get_top_hotwords(),
+        "total": len(hotword_manager._hotwords),
+        "asr_runtime_injection_supported": settings.ASR_ENGINE == "funasr",
+        "usage": "asr_runtime_injection" if settings.ASR_ENGINE == "funasr" else "catalog_only",
+    }
 
 
 @app.post("/api/hotwords/sync")
 def sync_hotwords():
     _sync_hotwords()
-    return {"status": "synced", "count": len(hotword_manager._hotwords)}
+    return {
+        "status": "synced",
+        "count": len(hotword_manager._hotwords),
+        "asr_runtime_injection_supported": settings.ASR_ENGINE == "funasr",
+    }
 
 
 # ═══════════════════════════════════════════════
@@ -544,8 +560,8 @@ def add_lexicon(word: WordAdd, user_id: str = "default"):
 
 
 @app.delete("/api/lexicon/{word_id}")
-def delete_lexicon(word_id: int):
-    if not lexicon_db.delete_word(word_id):
+def delete_lexicon(word_id: int, user_id: str = "default"):
+    if not lexicon_db.delete_word(word_id, user_id):
         raise HTTPException(404, "词条不存在")
     return {"status": "deleted"}
 
@@ -615,16 +631,16 @@ def save_history(item: HistorySave, user_id: str = "default"):
 
 
 @app.get("/api/history/{item_id}")
-def history_detail(item_id: int):
-    item = history_db.get_history_detail(item_id)
+def history_detail(item_id: int, user_id: str = "default"):
+    item = history_db.get_history_detail(item_id, user_id)
     if not item:
         raise HTTPException(404, "记录不存在")
     return item
 
 
 @app.delete("/api/history/{item_id}")
-def delete_history(item_id: int):
-    if not history_db.delete_history(item_id):
+def delete_history(item_id: int, user_id: str = "default"):
+    if not history_db.delete_history(item_id, user_id):
         raise HTTPException(404, "记录不存在")
     return {"status": "deleted"}
 
@@ -641,12 +657,12 @@ async def optimize_text(req: OptimizeRequest):
 
     使用大模型直接生成优化结果，不经过规则中间阶段。
     """
-    profile = get_user_profile()
+    profile = get_user_profile(req.user_id)
     profile.record_scene_usage(req.scene_type)
 
     # 行业词库纠错（对所有模式生效）
     text = req.text
-    correction = industry_lexicon.correct_text(text)
+    correction = industry_lexicon.correct_text(text, req.user_id)
     if correction["corrections"]:
         text = correction["corrected"]
         logger.info(f"[optimize] 行业词库纠错 {correction['correction_count']} 处: {correction['corrections']}")
@@ -654,18 +670,18 @@ async def optimize_text(req: OptimizeRequest):
     # 缓存检查
     text_hash = hashlib.md5(text.encode()).hexdigest()
     if settings.CACHE_ENABLED:
-        cached = cache_manager.get_optimization(text_hash, req.scene_type)
+        cached = cache_manager.get_optimization(text_hash, req.scene_type, req.user_id)
         if cached:
             return cached
 
     # LLM 优化（直接等待结果）
     if not settings.MVP_MODE and settings.LLM_ENABLED and prompt_manager.llm:
         if req.scene_type == "办公":
-            result = await _llm_office_optimize(text)
+            result = await _llm_office_optimize(text, req.user_id)
         elif req.scene_type == "聊天":
-            result = await _llm_chat_optimize(text)
+            result = await _llm_chat_optimize(text, req.user_id)
         elif req.scene_type == "创作":
-            result = await _llm_creation_process(text)
+            result = await _llm_creation_process(text, req.user_id)
         else:
             raise HTTPException(400, f"未知场景: {req.scene_type}")
     else:
@@ -681,12 +697,12 @@ async def optimize_text(req: OptimizeRequest):
 
     # 写入缓存
     if settings.CACHE_ENABLED and result:
-        cache_manager.set_optimization(text_hash, req.scene_type, result)
+        cache_manager.set_optimization(text_hash, req.scene_type, result, req.user_id)
 
     return result
 
 
-async def _llm_office_optimize(text: str) -> dict:
+async def _llm_office_optimize(text: str, user_id: str = "default") -> dict:
     """
     使用大模型进行办公场景优化
 
@@ -695,7 +711,7 @@ async def _llm_office_optimize(text: str) -> dict:
     3. 调用大模型
     4. 解析 markdown 输出为前端期望的 versions 格式
     """
-    profile_context = build_full_context()
+    profile_context = build_full_context(user_id)
     llm_output = await prompt_manager.execute("office_rewrite", text=text,
                                                profile_context=profile_context)
     versions = _parse_llm_versions(llm_output)
@@ -709,9 +725,9 @@ async def _llm_office_optimize(text: str) -> dict:
     }
 
 
-async def _llm_chat_optimize(text: str) -> dict:
+async def _llm_chat_optimize(text: str, user_id: str = "default") -> dict:
     """使用大模型进行聊天场景优化 — 生成 emoji/颜文字版本"""
-    profile_context = build_full_context()
+    profile_context = build_full_context(user_id)
     llm_output = await prompt_manager.execute("chat_emoji", text=text,
                                                profile_context=profile_context,
                                                use_cache=True)
@@ -725,9 +741,9 @@ async def _llm_chat_optimize(text: str) -> dict:
     }
 
 
-async def _llm_creation_process(text: str) -> dict:
+async def _llm_creation_process(text: str, user_id: str = "default") -> dict:
     """使用大模型进行创作场景优化（注入用户偏好）"""
-    profile_context = build_full_context()
+    profile_context = build_full_context(user_id)
     llm_output = await prompt_manager.execute("creation_process", text=text,
                                                profile_context=profile_context)
     # 尝试解析为三个版本
@@ -852,8 +868,8 @@ def create_creation_session(req: CreateSessionRequest):
     """创建新的创作会话"""
     if req.mode not in ("novel", "project"):
         raise HTTPException(400, "mode must be 'novel' or 'project'")
-    session = create_session(req.mode)
-    creation_db.save_session(session.session_id, session.mode)
+    session = create_session(req.mode, req.user_id)
+    creation_db.save_session(session.session_id, session.mode, req.user_id)
     return {
         "session_id": session.session_id,
         "mode": session.mode,
@@ -870,6 +886,8 @@ async def submit_creation_input(session_id: str, req: SubmitInputRequest):
 
     session = get_session(session_id)
     if not session:
+        raise HTTPException(404, "Session not found or already finished")
+    if session.user_id != req.user_id:
         raise HTTPException(404, "Session not found or already finished")
 
     # LLM 处理
@@ -893,7 +911,7 @@ async def submit_creation_input(session_id: str, req: SubmitInputRequest):
     # 记录场景使用
     try:
         from database import profiles_db
-        profiles_db.record_scene_usage("default", "创作")
+        profiles_db.record_scene_usage(session.user_id, "创作")
     except Exception:
         pass
 
@@ -901,13 +919,16 @@ async def submit_creation_input(session_id: str, req: SubmitInputRequest):
 
 
 @app.post("/api/creation/session/{session_id}/finish")
-def finish_creation_session(session_id: str):
+def finish_creation_session(session_id: str, user_id: str = "default"):
     """结束创作会话并保存到历史"""
-    session = finish_session(session_id)
+    session = get_session(session_id)
     if not session:
         raise HTTPException(404, "Session not found")
+    if session.user_id != user_id:
+        raise HTTPException(404, "Session not found")
+    session = finish_session(session_id)
 
-    creation_db.finish_session_in_db(session_id)
+    creation_db.finish_session_in_db(session_id, user_id)
 
     # 写入历史记录摘要 — 存储可读文本而非 JSON
     mode_label = "写小说" if session.mode == "novel" else "代码项目策划"
@@ -923,7 +944,7 @@ def finish_creation_session(session_id: str):
         clean_text = "".join(clean_parts)
 
         history_db.save_history(
-            "default",
+            user_id,
             content_raw=last_round.raw_input if last_round else "",
             content_optimized=clean_text,
             scene_type="创作",
@@ -937,30 +958,42 @@ def finish_creation_session(session_id: str):
 
 
 @app.post("/api/creation/session/{session_id}/round/{round_number}/copy-organized")
-def track_copy_organized(session_id: str, round_number: int):
+def track_copy_organized(session_id: str, round_number: int,
+                         user_id: str = "default"):
     """记录复制推荐文本"""
-    mark_copy_organized(session_id, round_number)
-    creation_db.update_copy_status(session_id, round_number, "organized")
+    session = get_session(session_id)
+    if not session or session.user_id != user_id:
+        raise HTTPException(404, "Session not found")
+    if not mark_copy_organized(session_id, round_number):
+        raise HTTPException(404, "Round not found")
+    creation_db.update_copy_status(session_id, round_number, "organized", user_id)
     return {"ok": True}
 
 
 @app.post("/api/creation/session/{session_id}/round/{round_number}/copy-raw")
-def track_copy_raw(session_id: str, round_number: int):
+def track_copy_raw(session_id: str, round_number: int,
+                   user_id: str = "default"):
     """记录复制原始语音"""
-    mark_copy_raw(session_id, round_number)
-    creation_db.update_copy_status(session_id, round_number, "raw")
+    session = get_session(session_id)
+    if not session or session.user_id != user_id:
+        raise HTTPException(404, "Session not found")
+    if not mark_copy_raw(session_id, round_number):
+        raise HTTPException(404, "Round not found")
+    creation_db.update_copy_status(session_id, round_number, "raw", user_id)
     return {"ok": True}
 
 
 @app.get("/api/creation/session/{session_id}")
-def get_creation_session(session_id: str):
+def get_creation_session(session_id: str, user_id: str = "default"):
     """获取会话详情"""
     session = get_session(session_id)
     if session:
+        if session.user_id != user_id:
+            raise HTTPException(404, "Session not found")
         return session.to_dict()
 
     # 从数据库获取
-    db_session = creation_db.get_session_by_id(session_id)
+    db_session = creation_db.get_session_by_id(session_id, user_id)
     if not db_session:
         raise HTTPException(404, "Session not found")
     rounds = creation_db.get_rounds_by_session(session_id)
@@ -968,9 +1001,9 @@ def get_creation_session(session_id: str):
 
 
 @app.get("/api/creation/sessions")
-def list_creation_sessions(status: str = ""):
+def list_creation_sessions(status: str = "", user_id: str = "default"):
     """列出历史创作会话"""
-    return creation_db.get_all_sessions(status=status)
+    return creation_db.get_all_sessions(user_id=user_id, status=status)
 
 
 # ═══════════════════════════════════════════════
@@ -1050,8 +1083,8 @@ def import_document(file_name: str, file_type: str, extracted_terms: list[str],
 
 
 @app.delete("/api/documents/{doc_id}")
-def delete_document(doc_id: int):
-    if not documents_db.delete_document(doc_id):
+def delete_document(doc_id: int, user_id: str = "default"):
+    if not documents_db.delete_document(doc_id, user_id):
         raise HTTPException(404, "文档不存在")
     return {"status": "deleted"}
 
@@ -1119,7 +1152,8 @@ def select_industries(req: IndustrySelectRequest):
     return {
         "status": "ok",
         "industries": req.industries,
-        "hotwords_loaded": len(hotwords)
+        "hotwords_loaded": len(hotwords),
+        "asr_runtime_injection_supported": settings.ASR_ENGINE == "funasr",
     }
 
 
@@ -1209,25 +1243,34 @@ def cache_stats():
 @app.get("/api/ai/status")
 def ai_status():
     """返回当前 AI 架构各模块状态"""
+    asr_loaded = _asr_engine_loaded and _asr_engine_instance is not None
+    asr_status = "loaded" if asr_loaded else "configured_not_loaded"
+    if settings.ASR_ENGINE not in ("funasr", "sensevoice"):
+        asr_status = "external_or_browser"
+    llm_ready = settings.LLM_ENABLED and prompt_manager.llm is not None
     return {
         "version": settings.VERSION,
         "mvp_mode": settings.MVP_MODE,
         "llm_enabled": settings.LLM_ENABLED,
         "modules": {
-            "asr": {"engine": settings.ASR_ENGINE, "status": "ready"},
-            "punctuation": {"mode": settings.PUNCTUATION_MODEL, "status": "ready"},
-            "correction": {"status": "ready", "hotwords": len(hotword_manager._hotwords)},
-            "emotion": {"status": "ready"},
-            "emoji": {"status": "ready"},
-            "rewrite": {"mode": "rule" if settings.MVP_MODE else "llm", "status": "ready"},
+            "asr": {
+                "engine": settings.ASR_ENGINE,
+                "status": asr_status,
+                "runtime_hotwords_supported": settings.ASR_ENGINE == "funasr",
+            },
+            "punctuation": {"mode": "rule", "status": "available"},
+            "correction": {"status": "available", "hotwords": len(hotword_manager._hotwords)},
+            "emotion": {"status": "not_implemented"},
+            "emoji": {"status": "llm_prompt" if llm_ready else "rule_fallback"},
+            "rewrite": {"mode": "llm" if llm_ready and not settings.MVP_MODE else "rule", "status": "available"},
             "cache": {"enabled": settings.CACHE_ENABLED, "type": "memory+disk"},
-            "prompts": {"templates": len(prompt_manager._templates)},
-            "rag": {"status": "ready"},
-            "user_profile": {"status": "ready"},
+            "prompts": {"status": "registered" if prompt_manager._templates else "not_registered", "templates": len(prompt_manager._templates)},
+            "rag": {"status": "lexical_matching"},
+            "user_profile": {"status": "database_backed"},
             "industry_lexicon": {
                 "status": "ready",
                 "industries": len(industry_lexicon_db.get_all_industries()),
-                "active": industry_lexicon._active_industries
+                "active": industry_lexicon.get_selected_industries("default")
             },
         }
     }

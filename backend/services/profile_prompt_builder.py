@@ -79,7 +79,7 @@ def build_full_context(user_id: str = "default") -> str:
         parts.append(pref)
 
     # 热词上下文
-    hotwords = _get_hotwords()
+    hotwords = _get_hotwords(user_id)
     if hotwords:
         parts.append("\n## 当前活跃热词\n" + ", ".join(hotwords[:20]))
 
@@ -140,9 +140,9 @@ def _get_asr_fixes(user_id: str) -> list[dict]:
     ]
 
 
-def _get_hotwords() -> list:
+def _get_hotwords(user_id: str = "default") -> list:
     try:
-        from main import hotword_manager
-        return hotword_manager.get_top_hotwords(20)
+        from main import industry_lexicon
+        return industry_lexicon.get_hotwords(user_id)[:20]
     except Exception:
         return []

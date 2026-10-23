@@ -68,9 +68,9 @@ def add_word(user_id: str, word: str, word_type: str = "自定义",
         return result
 
 
-def delete_word(word_id: int) -> bool:
+def delete_word(word_id: int, user_id: str = "default") -> bool:
     conn = db_manager.get_connection(DB_NAME)
-    cur = conn.execute("DELETE FROM user_lexicon WHERE id=?", (word_id,))
+    cur = conn.execute("DELETE FROM user_lexicon WHERE id=? AND user_id=?", (word_id, user_id))
     conn.commit()
     return cur.rowcount > 0
 

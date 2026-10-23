@@ -55,8 +55,9 @@ class CreationRound:
 class CreationSession:
     """一个完整的创作会话（多轮）"""
 
-    def __init__(self, mode: str):
+    def __init__(self, mode: str, user_id: str = "default"):
         self.session_id = uuid.uuid4().hex[:8]
+        self.user_id = user_id
         self.mode = mode  # "novel" | "project"
         self.status = "active"
         self.rounds: list[CreationRound] = []
@@ -92,8 +93,8 @@ class CreationSession:
 # ─── 会话管理 ───
 
 
-def create_session(mode: str) -> CreationSession:
-    session = CreationSession(mode)
+def create_session(mode: str, user_id: str = "default") -> CreationSession:
+    session = CreationSession(mode, user_id)
     _active_sessions[session.session_id] = session
     logger.info(f"创作会话已创建: {session.session_id} mode={mode}")
     return session
@@ -184,7 +185,7 @@ async def process_with_llm(session: CreationSession, new_input: str,
     profile_context = ""
     try:
         from services.profile_prompt_builder import build_full_context
-        profile_context = build_full_context()
+        profile_context = build_full_context(session.user_id)
     except ImportError:
         pass
 
